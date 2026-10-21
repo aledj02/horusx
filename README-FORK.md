@@ -1,7 +1,7 @@
 # horusx — fork interno de Horusec
 
 > Fork privado de [ZupIT/horusec](https://github.com/ZupIT/horusec) para uso interno.
-> Prefix de imágenes: **`horusx/*`**. Baseline tag: `v2.10.0-fork.0` (commit `873d4104`).
+> Prefix de imágenes: **`horusx/horusx-{python,go,shell,js}`**. Baseline tag upstream: `v2.10.0-fork.0` (commit `873d4104`). Tags propios desde Fase 5: **SemVer estándar** (ej. `v2.10.1`) — sin el suffix `-fork`.
 > Objeto del fork: modernizar el toolchain **Go 1.24 + docker SDK v24**, habilitar **custom rules JSON** para **Python / Go / Shell / Swift**, y refresh de herramientas Docker (bandit, safety, gosec, nancy, shellcheck, node) cuando la Fase 5 se aplique.
 >
 > Changelog completo en [`CHANGELOG-FORK.md`](./CHANGELOG-FORK.md). Plan de trabajo de referenciaci[ó]n en [`migration-plan.md`](./migration-plan.md).
@@ -138,10 +138,10 @@ El fork apunta a `horusx/*` en Docker Hub (Docker Hub público, user `horusx`), 
 
 ```go
 const (
-    Python     = "<registry>/horusx-python:<tag>"
-    Go         = "<registry>/horusx-go:<tag>"
-    Shell      = "<registry>/horusx-shell:<tag>"
-    Javascript = "<registry>/horusx-js:<tag>"
+    Python     = "horusx/horusx-python:<tag>"
+    Go         = "horusx/horusx-go:<tag>"
+    Shell      = "horusx/horusx-shell:<tag>"
+    Javascript = "horusx/horusx-js:<tag>"
 )
 ```
 
@@ -157,7 +157,8 @@ docker login <registry>
 ```bash
 docker buildx create --name horusx --use
 docker buildx build --platform linux/amd64,linux/arm64 \
-  -t <registry>/horusx-python:v1.0.1-fork.1 \
+  -t horusx/horusx-python:v2.10.1 \
+  -t horusx/horusx-python:latest \
   -f internal/services/formatters/python/deployments/Dockerfile . \
   --push
 ```

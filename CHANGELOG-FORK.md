@@ -1,7 +1,8 @@
 # Horizon fork changelog (`horusx`)
 
 > **Fork de**: [ZupIT/horusec](https://github.com/ZupIT/horusec) — commit `873d4104` (v2.9.0-beta.3 upstream era la referencia de baseline)
-> **Tag baseline**: `v2.10.0-fork.0` (equivalente al último upstream; el fork versionea `fork.N` por encima)
+> **Tag baseline**: `v2.10.0-fork.0` (equivalente al último upstream)
+> **Convención de versión desde F5**: SemVer estándar (`v2.10.1`, `v2.11.0`, …), **sin el sufijo `-fork.N`** (decision 2026-10-21).
 > **Objetivo**: fork interno, SAST modernizado para **JS, TS, Java, Go, Python, Shell, Kotlin, Swift** — con custom rules RE2-validadas y Docker images frescas (cuando se aplique Fase 5).
 
 > **Formato**: [keep-a-changelog](https://keepachangelog.com/es/1.1.0/) + [conventional commits](https://www.conventionalcommits.org/es/) de referencia.
@@ -173,11 +174,13 @@ Todo cambio relevante quedó registrado como:
 ## Cómo generar el próximo tag
 
 1. Asegurar `go build ./...` + `go test ./...` verdes.
-2. Bump de version:
-   - `v2.10.0-fork.1` (si el próximo release incluye la F5 — Docker images).
-   - `v2.11.0-fork.1` (si el próximo release incluye nuevas reglas JSON).
+2. Bump de version (SemVer, SIN suffix `-fork`):
+   - **`v2.10.1`** (Fase 5 — Docker images `horusx/horusx-{python,go,shell,js}:v2.10.1`)
+   - `v2.11.0` (si el próximo release incluye nuevas reglas JSON u otras features)
+   - `v2.10.2` (fixes menores)
 3. ```bash
-   git tag v2.10.0-fork.1
-   git push origin v2.10.0-fork.1
+   git tag v2.10.1
+   git push origin v2.10.1
    ```
-4. Append un bloque nuevo arriba de este changelog (formato `[v2.10.0-fork.1]` con fecha).
+4. Append un bloque nuevo arriba de este changelog (formato `[v2.10.1]` con fecha).
+5. **Docker images** (cuando se pushen): `horusx/horusx-{python,go,shell,js}:v2.10.1` + `:latest`.
