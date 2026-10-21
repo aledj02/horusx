@@ -24,11 +24,14 @@ import (
 	"github.com/ZupIT/horusec/internal/services/formatters"
 	"github.com/ZupIT/horusec/internal/services/formatters/csharp/horuseccsharp"
 	"github.com/ZupIT/horusec/internal/services/formatters/dart/horusecdart"
+	"github.com/ZupIT/horusec/internal/services/formatters/go/horusecgo"
 	"github.com/ZupIT/horusec/internal/services/formatters/java/horusecjava"
 	"github.com/ZupIT/horusec/internal/services/formatters/javascript/horusecjavascript"
 	"github.com/ZupIT/horusec/internal/services/formatters/kotlin/horuseckotlin"
 	"github.com/ZupIT/horusec/internal/services/formatters/leaks/horusecleaks"
 	"github.com/ZupIT/horusec/internal/services/formatters/nginx/horusecnginx"
+	"github.com/ZupIT/horusec/internal/services/formatters/python/horusecpython"
+	"github.com/ZupIT/horusec/internal/services/formatters/shell/horusecshell"
 	"github.com/ZupIT/horusec/internal/services/formatters/swift/horusecswift"
 	"github.com/ZupIT/horusec/internal/services/formatters/yaml/horuseckubernetes"
 	"github.com/ZupIT/horusec/internal/utils/testutil"
@@ -70,6 +73,18 @@ func TestStartAnalysis(t *testing.T) {
 		{
 			engine:    "Kubernetes",
 			formatter: horuseckubernetes.NewFormatter,
+		},
+		{
+			engine:    "Python",
+			formatter: horusecpython.NewFormatter,
+		},
+		{
+			engine:    "Go",
+			formatter: horusecgo.NewFormatter,
+		},
+		{
+			engine:    "Shell",
+			formatter: horusecshell.NewFormatter,
 		},
 		{
 			engine:    "Swift",
