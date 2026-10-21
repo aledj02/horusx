@@ -39,18 +39,37 @@ done
 [ -n "${HORUX_VERSION:-}" ] && VERSION="$HORUX_VERSION"
 
 if [ -z "$VERSION" ]; then
-  VERSION="$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -1)"
+  VERSION="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" | grep -o '"tag_name"[[:space:]]*:[[:space:]]*"[^"]*"' | head -n1 | sed -E 's/.*"([^"]+)"$/\1/')"
   [ -n "$VERSION" ] || { echo "could not resolve latest release tag" >&2; exit 1; }
 fi
-case "$VERSION" in v*) ;; *) VERSION="v$VERSION" ;; esac
+case "$VERSION" in v*) ;; *) VERSION="v${VERSION}" ;; esac
 
-ASSET="$BIN_NAME_${VERSION#v}_${OS}_${ARCH}.tar.gz"
-URL="https://github.com/$REPO/releases/download/${VERSION}/${ASSET}"
+ASSET="${BIN_NAME}_${VERSION#v}_${OS}_${ARCH}.tar.gz"
+AUTH_TOKEN="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-echo ">> downloading $URL"
-curl -fL --progress-bar -o "$TMP/$ASSET" "$URL"
+
+download_asset() {
+  if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+    echo ">> downloading via gh from ${REPO} tag ${VERSION}"
+    gh release download "$VERSION" --repo "$REPO" --pattern "$ASSET" --dir "$TMP"
+  elif [ -n "$AUTH_TOKEN" ]; then
+    echo ">> downloading via GitHub API (auth) from ${REPO}"
+    ASSET_ID="$(curl -fsSL -H "Authorization: token $AUTH_TOKEN" \
+        "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}" \
+        | python3 -c "import sys,json; print(next(a['id'] for a in json.load(sys.stdin)['assets'] if a['name']=='${ASSET}'))" 2>/dev/null)"
+    [ -n "$ASSET_ID" ] || { echo "no matching asset ${ASSET} found" >&2; return 1; }
+    curl -fL --progress-bar -H "Authorization: token $AUTH_TOKEN" \
+        -H "Accept: application/octet-stream" \
+        -o "$TMP/$ASSET" "https://api.github.com/repos/${REPO}/releases/assets/${ASSET_ID}"
+  else
+    echo ">> downloading from https://github.com/${REPO}/releases/download/${VERSION}/${ASSET}"
+    curl -fL --progress-bar -o "$TMP/$ASSET" \
+        "https://github.com/${REPO}/releases/download/${VERSION}/${ASSET}"
+  fi
+}
+download_asset
 tar -xzf "$TMP/$ASSET" -C "$TMP"
 
 if [ -z "$BIN_DIR" ]; then
