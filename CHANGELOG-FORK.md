@@ -119,6 +119,72 @@ Resultados (`analysisVulnerabilities[].vulnerabilities.rule_id`):
 
 ---
 
+## [v2.12.2] — Reemplazo `semgrep` → `OpenGrep` (image `generic`)
+
+**Fecha**: 2026-10-21 · **Tag**: `v2.12.2` · **Fork**: `aledj02/horusx`
+**Docker image**: `aledj02/horusx-generic:v2.12.2` (multi-arch: `linux/amd64` + `linux/arm64`)
+
+### BREAKING
+- **Herramienta**: `semgrep` (R2C, requiere login / cuenta) → **`opengrep` v1.31.0** (fork OSS de Semgrep v1.100.0, LGPL-2.1, **sin login**).
+- Image base `generic`: `azul/zulu-openjdk-alpine:21` (musl) → **`python:3.12-slim`** (Debian trixie, glibc) + JDK 21 ligado con `jlink`.
+- Pack de reglas del scan `generic`: `p/r2c-ci` (registrio R2C, no soportado sin cuenta) → **`p/secrets` + `p/ci`** (packs abiertos).
+
+### Changed
+- `internal/services/formatters/generic/deployments/Dockerfile` — base multi-stage (`zulu-openjdk:21` solo para `jlink`) + `python:3.12-slim`; OpenGrep binario estático `manylinux` por `TARGETARCH` (`amd64`→`x86`, `arm64`→`aarch64`); `unzip` agregado (dependency-check lo requiere); `dependency-check 12.1.0` + `trivy 0.76.1`.
+- `internal/services/formatters/generic/semgrep/` → **`internal/services/formatters/generic/opengrep/`** (carpeta + `package` en los 4 files: `config.go`, `entities.go`, `formatter.go`, `formatter_test.go`).
+- `opengrep/config.go` — CMD: `opengrep scan --config=p/secrets --config=p/ci --json .`.
+- `internal/controllers/analyzer/runner.go:46,313` — import `.../generic/opengrep` + `spawn(wg, opengrep.NewFormatter(r.formatter), ...)`.
+- `internal/enums/images/images.go:24` — `Generic = "aledj02/horusx-generic:v2.12.2"`.
+
+### NOT BREAKING
+- `entities.go` — **no cambia**: el schema de output JSON de OpenGrep es idéntico al de Semgrep (es su fork).
+- `tools.Semgrep` de `ZupIT/horusec-devkit` (EXTERNO) y la config key `semgrep` en `horusx-config.json` — se preservan por compatibilidad backward. Solo cambia el formatter + la image + el binario que corre dentro del contenedor.
+- Los otros 7 languages (`c`, `csharp`, `elixir`, `hcl`, `leaks`, `php`, `ruby`) **no tocan** `semgrep`/`opengrep`.
+
+### Verified
+- `go build ./...` → ok (todo el repo).
+- `go test ./internal/services/formatters/generic/opengrep/...` → ok (4 tests PASS).
+- `docker buildx build --platform linux/amd64,linux/arm64 --push -t aledj02/horusx-generic:v2.12.2` → push OK.
+- Docker Hub `hub.docker.com/v2/repositories/aledj02/horusx-generic/tags/v2.12.2` → manifest list multi-arch presente (digest `sha256:afe8aeae…`).
+
+### Build + Push (reproducible)
+```bash
+docker buildx build \
+  --builder desktop-linux \
+  --platform linux/amd64,linux/arm64 \
+  -t aledj02/horusx-generic:v2.12.2 \
+  -f internal/services/formatters/generic/deployments/Dockerfile \
+  . --push
+```
+
+---
+
+## [v2.12.1] — 8 imágenes de tools migradas al fork `aledj02/horusx-*`
+
+**Fecha**: 2026-10-21 · **Tag**: `v2.12.1` · **Commit**: `8577c6d9`
+**Fork**: `aledj02/horusx` · **Release**: `https://github.com/aledj02/horusx/releases/tag/v2.12.1`
+
+### BREAKING
+- Las 8 imágenes de tools de lenguajes migran de `horuszup/horusec-*` (upstream EOL 2021) al fork `aledj02/horusx-*:v2.12.0` (bases LTS modernas + tools con pins verificados).
+  - `aledj02/horusx-{c,csharp,elixir,generic,hcl,leaks,php,ruby}:v2.12.0`.
+
+### Changed
+- `internal/enums/images/images.go` — 8 constants migradas a `aledj02/horusx-*:v2.12.0`.
+- `internal/services/formatters/{c,csharp,elixir,generic,hcl,leaks,php,ruby}/deployments/Dockerfile` — reescritos con bases LTS + tools modernos.
+- `deployments/scripts/build-push-fork.sh` — script bash 3.2-safe con flags `TAG=` y `PUSH=0|1`.
+
+### Verified
+- `go build ./...` → ok.
+- Build local de las 8 images (`PUSH=0`) → ok.
+- Push de las 8 a Docker Hub — verificado vía `hub.docker.com/v2/repositories/aledj02/horusx-{lang}/tags/v2.12.0` (200 OK).
+- E2E: `install.sh --version v2.12.1` → binario con tag `8577c6d9`; `strings` muestra las 8 fork images, 0 refs a `horuszup/horusec-*`.
+
+### NOT BREAKING
+- Las 4 images F5 (`python`, `go`, `shell`, `js/`) NO se tocan — siguen en `aledj02/horusx-*:v2.10.1`.
+- `internal/services/docker/docker_api_test.go:40` (`horuszup/gitleaks:latest`) — es una image pública distinta, no se afecta.
+
+---
+
 ## [v2.12.0] — Rename `horusec` → `horusx`
 
 **Fecha**: 2026-10-21 · **Tag**: `v2.12.0` · **Commit**: `9e6a772d`

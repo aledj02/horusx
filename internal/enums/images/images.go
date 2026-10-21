@@ -21,7 +21,7 @@ const (
 	C               = "aledj02/horusx-c:v2.12.0"
 	Csharp          = "aledj02/horusx-csharp:v2.12.0"
 	Elixir          = "aledj02/horusx-elixir:v2.12.0"
-	Generic         = "aledj02/horusx-generic:v2.12.0"
+	Generic         = "aledj02/horusx-generic:v2.12.2"
 	Go              = "aledj02/horusx-go:v2.10.1"
 	HCL             = "aledj02/horusx-hcl:v2.12.0"
 	Javascript      = "aledj02/horusx-js:v2.10.1"

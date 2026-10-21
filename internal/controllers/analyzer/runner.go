@@ -43,7 +43,7 @@ import (
 	"github.com/ZupIT/horusec/internal/services/formatters/elixir/mixaudit"
 	"github.com/ZupIT/horusec/internal/services/formatters/elixir/sobelow"
 	dependencycheck "github.com/ZupIT/horusec/internal/services/formatters/generic/dependency_check"
-	"github.com/ZupIT/horusec/internal/services/formatters/generic/semgrep"
+	"github.com/ZupIT/horusec/internal/services/formatters/generic/opengrep"
 	"github.com/ZupIT/horusec/internal/services/formatters/generic/trivy"
 	"github.com/ZupIT/horusec/internal/services/formatters/go/gosec"
 	"github.com/ZupIT/horusec/internal/services/formatters/go/horusxgo"
@@ -310,7 +310,7 @@ func (r *runner) detectVulnerabilityGeneric(wg *sync.WaitGroup, projectSubPath s
 	}
 
 	spawn(wg, trivy.NewFormatter(r.formatter), projectSubPath)
-	spawn(wg, semgrep.NewFormatter(r.formatter), projectSubPath)
+	spawn(wg, opengrep.NewFormatter(r.formatter), projectSubPath)
 	dependencycheck.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
