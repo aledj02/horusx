@@ -119,6 +119,78 @@ Resultados (`analysisVulnerabilities[].vulnerabilities.rule_id`):
 
 ---
 
+## [v2.12.0] — Rename `horusec` → `horusx`
+
+**Fecha**: 2026-10-21 · **Tag**: `v2.12.0` · **Commit**: `9e6a772d`
+**Fork**: `aledj02/horusx` · **Release**: `https://github.com/aledj02/horusx/releases/tag/v2.12.0`
+**Assets**: `horusx_2.12.0_{darwin_arm64,linux_amd64,linux_arm64}.tar.gz` + checksums.
+
+### BREAKING
+- Binario: `horusec` → `horusx`.
+- Env vars: `HORUSEC_CLI_*` → `HORUSX_CLI_*`.
+- Config file: `horusec-config.json` → `horusx-config.json`.
+- Packages Go: `horusecpython` → `horusxpython`, `internal/services/horusec_api` → `horusx_api`, `internal/services/formatters/*horusec*` → `*horusx*` (10 dirs).
+- Custom-rules catalog: `custom_rules/horusec-custom-rules.json` → `horusx-custom-rules.json`.
+- Workflows: `.github/workflows/update-horusec-*.yml` → `update-horusx-*.yml` (10).
+- Install script env vars: `HORUX_*` → `HORUSX_*` (corruption del sed del rename).
+
+### NOT BREAKING
+- **`github.com/ZupIT/horusec`** (module path en `go.mod`) — NO se renombra (upstream).
+- **`tools.HorusecEngine`** (`ZupIT/horusec-devkit` @ v1.0.24) — valor string literal `"HorusecEngine"` EXTERNO al fork; se preserva en `internal/entities/toolsconfig/tools_config.go:43,72`, `horusx-config.json:75`, y en los tests (`config_test.go:515`).
+- **Docker images** — siguen siendo `aledj02/horusx-{python,go,shell,js}` (ya se llamaban `horusx`, sin cambio).
+
+### Changed (148 files, 1288+/1285-)
+- Branding: `Horusx` / `HORUSX` / `horusx` a lo largo de workflows, config, README, docs.
+- `.goreleaser.yml` — binary name `horusx`.
+- `install.sh` — BIN_NAME=`horusx`, env vars `HORUSX_{VERSION,BIN_DIR,REPO}`.
+- `horusx-config.json` — nuevo filename (content re-branded).
+
+### Verified
+- `go build ./...` → EXIT=0.
+- `gofmt -l .` → 0 files.
+- `go test ./config/ ./internal/entities/toolsconfig/ ./internal/services/formatters/ ./internal/controllers/printresults/` → ok/ok/ok/ok.
+- E2E: `HORUSX_BIN_DIR=/tmp/hx-e2e/bin HORUSX_VERSION=v2.12.0 bash install.sh` → `/tmp/hx-e2e/bin/horusx version` → `Version: 2.12.0, Git commit: 9e6a772d`.
+
+### Not included
+- `internal/services/formatters/*` y `e2e/*` pre-existing failures (por fixtures ausentes o docker pulls de `horuszup/*` que no existen) — NO causados por el rename.
+
+---
+
+## [v2.11.0] — Distribución (release pipeline)
+
+**Fecha**: 2026-10-21 · **Tag**: `v2.11.0`
+**Release**: `https://github.com/aledj02/horusx/releases/tag/v2.11.0`
+**Assets**: `horusec_2.11.0_{darwin_arm64,linux_amd64,linux_arm64}.tar.gz` + checksums. (El binario aún se decía `horusec`; el rename a `horusx` llega en v2.12.0.)
+
+### Added
+- `.goreleaser.yml` — build matrix `darwin/arm64`, `linux/amd64`, `linux/arm64` + checksums.
+- `install.sh` — downloader de 3 rutas: `gh release download` → GitHub API → `github.com/.../releases/download`.
+- `.github/workflows/release.yml` — dispara goreleaser al push de tag `v*`.
+
+### Verified
+- Local: `goreleaser release --clean` → 3 binaries + checksums.
+- E2E: binario descargado + `horusec version` reporta 2.11.0, commit correcto.
+
+---
+
+## [v2.10.1] — Docker images publicadas
+
+**Fecha**: 2026-10-21 · **Tag**: `v2.10.1`
+**Images**: `aledj02/horusx-{python,go,shell,js}:{v2.10.1,latest}` en Docker Hub.
+
+### Added
+- 4 Dockerfiles: `docker/python/Dockerfile`, `docker/go/Dockerfile`, `docker/shell/Dockerfile`, `docker/js/Dockerfile`.
+- Publish multi-arch (amd64 + arm64) en Docker Hub.
+
+### Verified
+- Smoke: `docker run aledj02/horusx-{python,go,shell,js}:v2.10.1` responde.
+- `internal/enums/images/images.go` actualizado con los 4 nuevos IDs.
+
+### Not included
+- Cosign / firma de imágenes (D5).
+
+---
+
 ## [v2.10.0-fork.0] — Baseline (`873d4104`)
 
 Este tag marca el **upstream** en el punto de fork. No hay cambios propios del fork todavía — es la referencia de "antes".
