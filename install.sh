@@ -7,15 +7,15 @@
 #   curl -fsSL .../install.sh | sh -s -- --bin-dir /usr/local/bin --version v2.10.1
 #
 # Env overrides:
-#   HORUX_VERSION   same as --version
-#   HORUX_BIN_DIR   same as --bin-dir (default: first writable of ~/.local/bin, /usr/local/bin, /usr/bin)
-#   HORUX_REPO      default aledj02/horusx
+#   HORUSX_VERSION   same as --version
+#   HORUSX_BIN_DIR   same as --bin-dir (default: first writable of ~/.local/bin, /usr/local/bin, /usr/bin)
+#   HORUSX_REPO      default aledj02/horusx
 set -eu
 
-REPO="${HORUX_REPO:-aledj02/horusx}"
+REPO="${HORUSX_REPO:-aledj02/horusx}"
 BIN_NAME="horusx"
 VERSION=""
-BIN_DIR="${HORUX_BIN_DIR:-}"
+BIN_DIR="${HORUSX_BIN_DIR:-}"
 OS="$(uname -s)"; ARCH="$(uname -m)"
 
 case "$OS" in
@@ -36,7 +36,7 @@ while [ $# -gt 0 ]; do
     *) echo "unknown arg: $1" >&2; exit 1 ;;
   esac
 done
-[ -n "${HORUX_VERSION:-}" ] && VERSION="$HORUX_VERSION"
+[ -n "${HORUSX_VERSION:-}" ] && VERSION="$HORUSX_VERSION"
 
 if [ -z "$VERSION" ]; then
   VERSION="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" | grep -o '"tag_name"[[:space:]]*:[[:space:]]*"[^"]*"' | head -n1 | sed -E 's/.*"([^"]+)"$/\1/')"
