@@ -15,4 +15,5 @@ horusec-analysis-*.json
 cmd/horusec/start/examples/
 vendor
 obj/
-/dist
+/dist.DS_Store
+.DS_Store

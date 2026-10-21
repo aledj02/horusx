@@ -175,7 +175,7 @@ Todo cambio relevante quedó registrado como:
 
 1. Asegurar `go build ./...` + `go test ./...` verdes.
 2. Bump de version (SemVer, SIN suffix `-fork`):
-   - **`v2.10.1`** (Fase 5 — Docker images `horusx/horusx-{python,go,shell,js}:v2.10.1`)
+   - **`v2.10.1`** (Fase 5 — Docker images `aledj02/horusx-{python,go,shell,js}:v2.10.1`)
    - `v2.11.0` (si el próximo release incluye nuevas reglas JSON u otras features)
    - `v2.10.2` (fixes menores)
 3. ```bash
@@ -183,4 +183,4 @@ Todo cambio relevante quedó registrado como:
    git push origin v2.10.1
    ```
 4. Append un bloque nuevo arriba de este changelog (formato `[v2.10.1]` con fecha).
-5. **Docker images** (cuando se pushen): `horusx/horusx-{python,go,shell,js}:v2.10.1` + `:latest`.
+5. **Docker images** (cuando se pushen): `aledj02/horusx-{python,go,shell,js}:v2.10.1` + `:latest`.

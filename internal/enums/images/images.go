@@ -22,14 +22,14 @@ const (
 	Csharp          = "horuszup/horusec-csharp:v1.2.0"
 	Elixir          = "horuszup/horusec-elixir:v1.1.0"
 	Generic         = "horuszup/horusec-generic:v1.2.0"
-	Go              = "horusx/horusx-go:v2.10.1"
+	Go              = "aledj02/horusx-go:v2.10.1"
 	HCL             = "horuszup/horusec-hcl:v1.1.0"
-	Javascript      = "horusx/horusx-js:v2.10.1"
+	Javascript      = "aledj02/horusx-js:v2.10.1"
 	Leaks           = "horuszup/horusec-leaks:v1.2.0"
 	PHP             = "horuszup/horusec-php:v1.0.1"
-	Python          = "horusx/horusx-python:v2.10.1"
+	Python          = "aledj02/horusx-python:v2.10.1"
 	Ruby            = "horuszup/horusec-ruby:v1.2.0"
-	Shell           = "horusx/horusx-shell:v2.10.1"
+	Shell           = "aledj02/horusx-shell:v2.10.1"
 )
 
 func MapValues() map[languages.Language]string {
