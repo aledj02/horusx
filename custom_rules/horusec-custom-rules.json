@@ -1,0 +1,635 @@
+[
+  {
+    "id": "HS-GO-100",
+    "name": "TLS certificate verification disabled",
+    "description": "tls.Config.InsecureSkipVerify = true lets MITM read/modify traffic. Use proper CA bundle (x509.SystemCertPool or custom). CWE-295 (Improper Certificate Validation).",
+    "language": "Go",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "InsecureSkipVerify\\s*:\\s*true"
+    ]
+  },
+  {
+    "id": "HS-GO-101",
+    "name": "os/exec with shell interpolation",
+    "description": "exec.Command(\"sh\", \"-c\", stringWithArgs) or \"bash\" -c allows shell injection if strings contain metachars. Use exec.Command(name, args...) with no shell. CWE-78 (OS Command Injection).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "exec\\.Command\\(\\s*\"(sh|bash)\"\\s*,\\s*\"-c\"\\s*[,)]"
+    ]
+  },
+  {
+    "id": "HS-GO-102",
+    "name": "Weak hash (md5/sha1) for security purposes",
+    "description": "md5/sha1 is collision-prone; do not use for signatures, passwords, tokens. Use sha256/sha512 (hash/crc32 for integrity only). CWE-328 (Weak Hash).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "md5\\.New\\s*\\(",
+      "sha1\\.New\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-GO-103",
+    "name": "Weak PRNG (math/rand) for secrets",
+    "description": "math/rand is deterministic (seeded by time); do not use for tokens, salts, nonces. Use crypto/rand. CWE-338 (Use of Cryptographically Weak PRNG).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "math/rand[\".\\s]+(Intn|Read|Int63n|Float64|Uint32|Uint64|Int|NewIntn|Read|Float32)\\s*\\(",
+      "rand\\.(Intn|Read|Int63n|Float64|Uint32|Uint64|Int)\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-GO-104",
+    "name": "SQL query interpolated with user input",
+    "description": "fmt.Sprintf(\"SELECT * FROM x WHERE id=%s\", in) is SQL injection. Use prepared statements: db.Query(\"SELECT ... WHERE id=?\", in). CWE-89 (SQL Injection).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\.Query(All)?\\s*\\(\\s*fmt\\.Sprintf\\s*\\(",
+      "\\.Query(All)?\\s*\\(\\s*f?[\"']\\s*SELECT[^\"']*\\{[^\"']*\\}",
+      "\\.Query(All)?\\s*\\(\\s*fmt\\.Sprintf\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-GO-105",
+    "name": "template.HTML unescaped user input",
+    "description": "template.HTML(userInput) marks a string as safe and disables HTML escaping \u2192 XSS. Use text/template or html/template auto-escape. CWE-79 (XSS).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "template\\.HTML\\s*\\(\\s*[^)]*(r|w|data|input|body|html|user|name|q|query)\\)\\s*$"
+    ]
+  },
+  {
+    "id": "HS-GO-106",
+    "name": "http/plaintext listener without TLS",
+    "description": "net/http ListenAndServe on 0.0.0.0:80 or :80 without TLS terminates traffic in cleartext. Use http2/tls.Listen or a reverse proxy. CWE-319 (Cleartext Transmission).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "ListenAndServe\\s*\\(\\s*\"?(0\\.|127\\.|[a-z0-9-]+\\.local|:80|:8080)?"
+    ]
+  },
+  {
+    "id": "HS-GO-107",
+    "name": "JWT HS256 with weak / hardcoded secret",
+    "description": "jwt.NewWithClaims(jwt.SigningMethodHS256, ...) with a hard-coded secret makes token forgery trivial. Load secret from env/KMS and rotate. CWE-798 (Hard-coded Credentials).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "jwt\\.NewWithClaims\\s*\\(\\s*jwt\\.SigningMethodHS2\\d\\d\\s*,[\\s\\S]{0,200}secret\\s*[:=]\\s*[\"'][^\"']{4,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-GO-108",
+    "name": "file permission 0777 / world-writable",
+    "description": "os.Chmod(path, 0777) / os.OpenFile(..., 0666) leaves the file writable by everyone on multi-user hosts. Use 0640/0644 or stricter. CWE-732 (Incorrect Permission Assignment).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\.Chmod\\s*\\([^,]+,\\s*0?0?777\\)",
+      "os\\.OpenFile\\s*\\([^,]+[^,]*,\\s*0?0?666\\)"
+    ]
+  },
+  {
+    "id": "HS-GO-109",
+    "name": "Hard-coded AWS / generic secret in Go source",
+    "description": "AKIA[ASLOIDQW]{16} or long secret-looking string assigned to key/password/secret. Move to env or secrets manager. CWE-798 (Hard-coded Credentials).",
+    "language": "Go",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "AKIA[ASLOIDQW]{16}",
+      "(?m)\\s*(secret|password|passwd|api_?key|token|private_?key)\\s*[:\\s]*=\\s*[\"'][A-Za-z0-9+/=_\\-]{16,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-GO-110",
+    "name": "unsafe pointer cast to interface",
+    "description": "unsafe.Pointer / uintptr conversion used in non-internal code is a classic source of memory-safety bugs and GC bypass. Audit necessity. CWE-843 (Access of Resource Using Incompatible Type).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "unsafe\\.Pointer\\s*\\(",
+      "uintptr\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-100",
+    "name": "Deserializaci\u00f3n insegura de pickle",
+    "description": "pickle.loads / pickle.load puede ejecutar c\u00f3digo remoto arbitrario durante la deserializaci\u00f3n. Usar SafeLoader, json, o un esquema firmado. CWE-502 (Deserialization of Untrusted Data).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\bpickle\\.loads\\s*\\(",
+      "\\bpickle\\.load\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-101",
+    "name": "Uso de eval() en datos din\u00e1micos",
+    "description": "eval() interpreta strings arbitrarios como c\u00f3digo y permite ejecuci\u00f3n de c\u00f3digo remoto cuando la entrada no es controlada. Preferir ast.literal_eval o if/elif. CWE-94 (Code Injection).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(?m)\\beval\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-102",
+    "name": "Uso de exec() en datos din\u00e1micos",
+    "description": "exec() ejecuta c\u00f3digo arbitrario y es una puerta de RCE directa si la entrada no es controlada. CWE-94 (Code Injection).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(?m)\\bexec\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-103",
+    "name": "subprocess con shell=True",
+    "description": "subprocess Popen/call/run con shell=True pasa el comando por /bin/sh -c, permitiendo inyecci\u00f3n de shell cuando las variables no se citan o son controladas por el usuario. Usar listas de args sin shell=True. CWE-78 (OS Command Injection).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "shell\\s*=\\s*True"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-104",
+    "name": "os.system con command string",
+    "description": "os.system() invoca /bin/sh -c con el string; permite inyecci\u00f3n de shell. Usar subprocess con lista de args. CWE-78 (OS Command Injection).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\bos\\.system\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-105",
+    "name": "yaml.load sin SafeLoader",
+    "description": "yaml.load(constr=FullLoader/UnsafeLoader) deserializa tipos Python arbitrarios \u2192 RCE. Usar yaml.safe_load. CWE-502 (Deserialization of Untrusted Data).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\byaml\\.load\\s*\\([^)]*$"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-106",
+    "name": "peticiones HTTP con verify=False",
+    "description": "requests.get/post(..., verify=False) deshabilita la validaci\u00f3n de certificados TLS \u2192 MITM. CWE-295 (Improper Cert. Validation).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "verify\\s*=\\s*False"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-107",
+    "name": "hash md5/sha1 sin context de seguridad",
+    "description": "hashlib md5/sha1 no es apropiado para firmas, passwords, o tokens (colisiones). Usar sha256/sha512 con salt. CWE-328 (Weak Hash), CWE-757 (Hash Collision).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\bhashlib\\.md5\\s*\\(",
+      "\\bhashlib\\.sha1\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-108",
+    "name": "assert como comprobaci\u00f3n de seguridad",
+    "description": "assert() se elimina en producci\u00f3n con `python -O`. NO usar para validar permisos, input, o l\u00edmites. Usar ValueError/PermissionError/Exception. CWE-754 (Improper Check for Unusual/Exceptional Conditions).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*assert\\s+\\S.*#.*[Ss]ecret",
+      "(?m)^\\s*assert\\s+.*in\\s+\\w+"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-109",
+    "name": "sqlite3 query interpolada",
+    "description": "cursor.execute/execute() con f-string o .format() en el SQL \u2192 SQL Injection. Usar par\u00e1metros ? con placeholder. CWE-89 (SQL Injection).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "execute\\s*\\(\\s*f[\"']",
+      "execute\\s*\\([^)]*\\.format\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-110",
+    "name": "tempfile con path predecible / mktemp",
+    "description": "tempfile.mktemp y mkdir(name) con nombre predecible son vulnerables a symlinks. Usar tempfile.mkdtemp(). CWE-377 (Insecure Temporary File).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\btempfile\\.mktemp\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-111",
+    "name": "modulos telnet/plaintext",
+    "description": "El m\u00f3dulo telnetlib transporta credenciales en plaintext. Deprecado en 3.13. Usar SSH. CWE-319 (Cleartext Transmission).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\bimport\\s+telnetlib\\b",
+      "\\bfrom\\s+telnetlib\\s+import\\b"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-112",
+    "name": "random para tokens/secrets (no crypto)",
+    "description": "random.Random() usa PRNG determinista; NO usar para tokens, salt, nonce, o secrets. Usar secrets.token_hex/bytes. CWE-338 (Use of Cryptographically Weak PRNG).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\brandom\\.getrandbits\\s*\\(",
+      "\\brandom\\.randrange\\s*\\([^)]*[\\w_](token|key|secret|salt|pass)"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-113",
+    "name": "credenciales hardcodeadas (AWS)",
+    "description": "AWS Access Key ID (AKIA[ASLOID]+) o secret key en el c\u00f3digo. Mover a env vars, AWS Secrets Manager, o SSM. CWE-798 (Hard-coded Credentials).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "AKIA[ASLOIDQW]{16}",
+      "(?m)^\\s*(aws_access_key_id|access_key_id|secret_access_key|secret_key|api_key|private_key)\\s*=\\s*[\"'][^\"']{8,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-114",
+    "name": "private key PEM en c\u00f3digo",
+    "description": "Blobs PRIVATE KEY / RSA PRIVATE KEY / EC PRIVATE KEY embebidos. Mover a almac\u00e9n seguro. CWE-798 (Hard-coded Credentials).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "-----BEGIN ((RSA|EC|DSA|OPENSSH) )?PRIVATE KEY-----",
+      "(?m)^\\s*\\w*[Kk]ey\\w*\\s*=\\s*[\"'][^\"']{20,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-115",
+    "name": "path traversal con user input en open()",
+    "description": "open(user_input) o os.path con input externo sin normalizar pueden escapar de ra\u00edz. Sanear con os.path.basename / pathlib.Path.resolve(). CWE-22 (Path Traversal).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "LOW",
+    "type": "Regular",
+    "expressions": [
+      "\\bopen\\s*\\(\\s*(file_path|filepath|path|user_dir|filename|f\\s*\\+|f['\"][^'\"]*\\{)"
+    ]
+  },
+  {
+    "id": "HS-SHELL-100",
+    "name": "curl piped directly to shell",
+    "description": "curl ... | sh or | bash executes remote content with no integrity check (TOFU). Pin a checksum, download first, then verify and execute. CWE-494 (Download of Code Without Integrity Check).",
+    "language": "Shell",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "curl\\s+[^|;&]{0,400}\\|\\s*(sudo\\s+)?(ba)?sh"
+    ]
+  },
+  {
+    "id": "HS-SHELL-101",
+    "name": "wget piped directly to shell",
+    "description": "wget -qO- ... | sh executes remote content without integrity check. Download first, verify, then execute. CWE-494 (Download of Code Without Integrity Check).",
+    "language": "Shell",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "wget\\s+([^|;&]{0,300})?\\|\\s*(sudo\\s+)?(ba)?sh"
+    ]
+  },
+  {
+    "id": "HS-SHELL-102",
+    "name": "rm -rf with unquoted variable",
+    "description": "rm -rf $DIR or rm -rf ${HOME}/... will delete the entire filesystem if the variable is empty. Always quote or validate the variable. CWE-22 (Path Traversal) / CWE-143.",
+    "language": "Shell",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "rm\\s+(-{1,2}[a-zA-Z]*[fF][a-zA-Z-]*|\\s+){1,3}\\s*(\\$\\w+|\\$\\{[^}]+\\})\\s*$"
+    ]
+  },
+  {
+    "id": "HS-SHELL-103",
+    "name": "chmod 777 / 666 world-writable",
+    "description": "chmod 777 grants world rw to any user on the host. Use 750 / 640 / 600 depending on need. CWE-732 (Incorrect Permission Assignment).",
+    "language": "Shell",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "chmod\\s+(-{1,2}[a-zA-Z]+\\s+)?777\\b",
+      "chmod\\s+(-{1,2}[a-zA-Z]+\\s+)?666\\b"
+    ]
+  },
+  {
+    "id": "HS-SHELL-104",
+    "name": "SSH with StrictHostKeyChecking=no",
+    "description": "ssh -o StrictHostKeyChecking=no accepts any host key \u2192 MITM possible on first connect. Pre-stage known_hosts or pin the public key. CWE-295 (Improper Certificate Validation).",
+    "language": "Shell",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(-{1,2}o\\s+StrictHostKeyChecking=no|StrictHostKeyChecking=no|UserKnownHostsFile=/dev/null)"
+    ]
+  },
+  {
+    "id": "HS-SHELL-105",
+    "name": "eval with untrusted input",
+    "description": "eval \"$USER_INPUT\" interprets arbitrary shell. Quote, sanitize, or avoid eval; prefer direct expansion of controlled tokens. CWE-78 (OS Command Injection).",
+    "language": "Shell",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*eval\\s+[\"']?\\$[\\w{]"
+    ]
+  },
+  {
+    "id": "HS-SHELL-106",
+    "name": "curl/wget to plaintext HTTP",
+    "description": "curl http://... or wget http://... transmits credentials/tokens in plaintext. Use https:// or a pinned CA. CWE-319 (Cleartext Transmission).",
+    "language": "Shell",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(curl|wget)\\s+[^|;&]{0,20}http://[a-zA-Z0-9-]+\\."
+    ]
+  },
+  {
+    "id": "HS-SHELL-107",
+    "name": "echo / printf of secrets to stdout",
+    "description": "echo \"$PASSWORD\", printf '%s\\n' \"$TOKEN\" \u2014 secrets land in shell history, logs, stdout captures. Mask with *** or redirect to fd. CWE-532 (Insertion of Sensitive Info into Log).",
+    "language": "Shell",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*(echo|printf|cat|write)\\s+.*\\$(PASSWORD|PASSWD|TOKEN|API_?KEY|SECRET|PRIVATE_?KEY|AUTH)\\b"
+    ]
+  },
+  {
+    "id": "HS-SHELL-108",
+    "name": "sudo -S reading password from stdin",
+    "description": "sudo -S ... reads the password from stdin (often piped) and exposes it via pipe / process listing. Use a PAM module, keychain, or non-sudo user. CWE-212 (Info Exposure Through Error Message).",
+    "language": "Shell",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "sudo\\s+-S\\b"
+    ]
+  },
+  {
+    "id": "HS-SHELL-109",
+    "name": "scp / ftp / sftp without key pinning",
+    "description": "scp/ftp/sftp with default host key handling is vulnerable to MITM on first connect. Use StrictHostKeyChecking=ask and pre-staged keys. CWE-295.",
+    "language": "Shell",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\b(ftp|sftp)\\s+[^|;&]{0,30}$"
+    ]
+  },
+  {
+    "id": "HS-SHELL-110",
+    "name": "history disabled or HISTFILE cleared in shared job",
+    "description": "unset HISTFILE or histfile='' hides actions from audit; combined with admin shell it is often a persistence/anti-forensics move. Investigate if in a job script. CWE-778 (Insufficient Logging).",
+    "language": "Shell",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*(unset\\s+HISTFILE|HISTFILE=|histfile=)"
+    ]
+  },
+  {
+    "id": "HS-SHELL-111",
+    "name": "nc / netcat listener on 0.0.0.0",
+    "description": "nc -l 0.0.0.0 / nc.lnk 0.0.0.0 exposes a listener to any source. Bind to 127.0.0.1 or a trusted interface. CWE-605 (Multiple Bind).",
+    "language": "Shell",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\bnc(-l{1,2})?\\s+(-{1,2}[a-zA-Z]*l[a-zA-Z]*\\s*)?0\\.0\\.0\\.0",
+      "\\bncat\\s+.*-l\\b.*0\\.0\\.0\\.0"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-100",
+    "name": "NSLog / print used to log sensitive data",
+    "description": "NSLog, print(), or os_log can dump user credentials, tokens, or PII into device logs (visible to anyone with access). Strip or mask sensitive values. CWE-532 (Insertion of Sensitive Information into Log File).",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*(NSLog|print|os_log)\\s*\\(.*(?:password|passwd|token|api_?key|secret|credential|session|jwt|access_?key|private_?key|\\bpassword\\b|\\.user\\.password|\\.token|\\.accessToken)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-101",
+    "name": "InsecureUnarchive / NSKeyedUnarchiver with untrusted data",
+    "description": "NSKeyedUnarchiver.unarchiveObject(with:) is deprecated and unsafe on untrusted data \u2014 deserialization of attacker-controlled payloads allows RCE via NSCoding. Use Codable/JSON or allow-listed classes. CWE-502.",
+    "language": "Swift",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "NSKeyedUnarchiver\\.unarchiveObject\\s*\\(",
+      "NSKeyedUnarchiver\\.unarchiveTopLevelObject\\s*\\(",
+      "unarchiveObject\\s*\\(\\s*from"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-102",
+    "name": "CFNetwork / URLSession with TLS validation disabled",
+    "description": "Ignoring SecTrustEvaluate / returning .ignoreCertAuth / using an empty allow-list lets MITM strip traffic. Always validate the chain with SecTrustEvaluate + pinned root. CWE-295.",
+    "language": "Swift",
+    "severity": "CRITICAL",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "SecTrustEvaluate\\s*\\(",
+      "willValidatePeer\\s*=\\s*false",
+      "ignoreUnknownTrust",
+      "\\.evaluate\\s*\\(\\s*\\)[^\\n]*true",
+      "URLSession\\(\"[^\"]*\",\\s*[A-Za-z0-9]+\\.shared\\)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-103",
+    "name": "Insecure HTTP (http://) endpoint",
+    "description": "URL(string: \"http://...\") or HTTPURLSession on http:// transmits tokens/PINs in cleartext. Use https:// with App Transport Security (ATS). CWE-319.",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "URL\\s*\\(\\s*string\\s*:\\s*[\"']http://[a-zA-Z0-9-]+\\.",
+      "URLSession\\.configuration\\s*\\{[\\s\\S]{0,200}URL\\s*\\(\\s*string\\s*:\\s*[\"']http://"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-104",
+    "name": "Hard-coded API key / secret in source",
+    "description": "Let apiKey = \"sk-...\" / let secretKey = \"...\" \u2014 secrets in source are leaked with the .ipa. Move to Keychain / config server. CWE-798.",
+    "language": "Swift",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*(let|static\\s+let)\\s+(?:api_?key|secret(?:_?key)?|access_?key|client_?secret|private_?key|token)\\s*[:=]\\s*[\"'][A-Za-z0-9+/=_\\-]{8,}[\"']",
+      "AKIA[ASLOIDQW]{16}",
+      "(?m)(sk|pk|ghp|gho|xoxb|AIza)[-_][A-Za-z0-9]{20,}"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-105",
+    "name": "KeychainItem with kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly missing",
+    "description": "Storing secrets in Keychain without `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` lets them be copied via backup or other apps post-unlock. Pin the attribute. CWE-312 (Cleartext Storage of Sensitive Info).",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "AndMatch",
+    "expressions": [
+      "\\bsendable\\s*=\\s*KeychainItem|kSecClassGenericPassword",
+      "kSecAttrAccessible\\s*[:=]\\s*(kSecAttrAccessibleAlways|kSecAttrAccessibleAfterFirstUnlock)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-106",
+    "name": "SecTrustEvaluate not called on peer trust",
+    "description": "Using SecTrustCreateCertificateColumns without SecTrustEvaluate (or evaluate(_:)) skips chain validation. Call SecTrustEvaluate or SecTrustEvaluateAsync. CWE-297 (Improper Validation of Certificate).",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "AndMatch",
+    "expressions": [
+      "SecTrustCreateCertificateColumns",
+      "(?m)[^\\w]evaluate\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-SWIFT-107",
+    "name": "NSXPC / mach ports exposed with no auth",
+    "description": "NSXPCListener / mach ports without an identity check let other apps invoke your services. Validate process / team id before handling. CWE-306 (Missing Authentication for Critical Function).",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "NSXPCListener\\(.*\\)\\s*\\.resume",
+      "NSXPCListener\\s*\\(\\)\\s*\\{\\s*\\}",
+      "mach_port_allocate"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-108",
+    "name": "UserDefaults used for secrets/tokens",
+    "description": "UserDefaults is world-readable on device (backed by plist). Store tokens, keys, and sessions in Keychain. CWE-312.",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)UserDefaults\\.standard\\.set\\s*\\(.*(?:token|key|secret|password|session|jwt)[^)]*\\)",
+      "(?m)UserDefaults\\.standard\\.string\\(forKey\\s*:\\s*[\"'](?:token|key|secret|password|session|jwt)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-109",
+    "name": "UIWebView (deprecated) \u2014 XSS surface",
+    "description": "UIWebView is long-deprecated and allows navigation to arbitrary URLs with JS bridge. Migrate to WKWebView sandbox. CWE-79.",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "UIWebView\\s*\\(\\)",
+      "UIWebView\\.loadRequest",
+      "UIWebView\\.stringByEvaluatingJavaScript"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-110",
+    "name": "InsecureRandomNumberGenerator / SystemRandomNumberGenerator for secrets",
+    "description": "Avoid SystemRandomNumberGenerator for tokens \u2014 use Crypto (SecureEnclave) or Keychain-backed randomness where applicable. CWE-338.",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "LOW",
+    "type": "Regular",
+    "expressions": [
+      "SystemRandomNumberGenerator\\s*\\(\\)"
+    ]
+  }
+]

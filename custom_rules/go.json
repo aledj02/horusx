@@ -1,0 +1,141 @@
+[
+  {
+    "id": "HS-GO-100",
+    "name": "TLS certificate verification disabled",
+    "description": "tls.Config.InsecureSkipVerify = true lets MITM read/modify traffic. Use proper CA bundle (x509.SystemCertPool or custom). CWE-295 (Improper Certificate Validation).",
+    "language": "Go",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "InsecureSkipVerify\\s*:\\s*true"
+    ]
+  },
+  {
+    "id": "HS-GO-101",
+    "name": "os/exec with shell interpolation",
+    "description": "exec.Command(\"sh\", \"-c\", stringWithArgs) or \"bash\" -c allows shell injection if strings contain metachars. Use exec.Command(name, args...) with no shell. CWE-78 (OS Command Injection).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "exec\\.Command\\(\\s*\"(sh|bash)\"\\s*,\\s*\"-c\"\\s*[,)]"
+    ]
+  },
+  {
+    "id": "HS-GO-102",
+    "name": "Weak hash (md5/sha1) for security purposes",
+    "description": "md5/sha1 is collision-prone; do not use for signatures, passwords, tokens. Use sha256/sha512 (hash/crc32 for integrity only). CWE-328 (Weak Hash).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "md5\\.New\\s*\\(",
+      "sha1\\.New\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-GO-103",
+    "name": "Weak PRNG (math/rand) for secrets",
+    "description": "math/rand is deterministic (seeded by time); do not use for tokens, salts, nonces. Use crypto/rand. CWE-338 (Use of Cryptographically Weak PRNG).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "math/rand[\".\\s]+(Intn|Read|Int63n|Float64|Uint32|Uint64|Int|NewIntn|Read|Float32)\\s*\\(",
+      "rand\\.(Intn|Read|Int63n|Float64|Uint32|Uint64|Int)\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-GO-104",
+    "name": "SQL query interpolated with user input",
+    "description": "fmt.Sprintf(\"SELECT * FROM x WHERE id=%s\", in) is SQL injection. Use prepared statements: db.Query(\"SELECT ... WHERE id=?\", in). CWE-89 (SQL Injection).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\.Query(All)?\\s*\\(\\s*fmt\\.Sprintf\\s*\\(",
+      "\\.Query(All)?\\s*\\(\\s*f?[\"']\\s*SELECT[^\"']*\\{[^\"']*\\}",
+      "\\.Query(All)?\\s*\\(\\s*fmt\\.Sprintf\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-GO-105",
+    "name": "template.HTML unescaped user input",
+    "description": "template.HTML(userInput) marks a string as safe and disables HTML escaping → XSS. Use text/template or html/template auto-escape. CWE-79 (XSS).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "template\\.HTML\\s*\\(\\s*[^)]*(r|w|data|input|body|html|user|name|q|query)\\)\\s*$"
+    ]
+  },
+  {
+    "id": "HS-GO-106",
+    "name": "http/plaintext listener without TLS",
+    "description": "net/http ListenAndServe on 0.0.0.0:80 or :80 without TLS terminates traffic in cleartext. Use http2/tls.Listen or a reverse proxy. CWE-319 (Cleartext Transmission).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "ListenAndServe\\s*\\(\\s*\"?(0\\.|127\\.|[a-z0-9-]+\\.local|:80|:8080)?"
+    ]
+  },
+  {
+    "id": "HS-GO-107",
+    "name": "JWT HS256 with weak / hardcoded secret",
+    "description": "jwt.NewWithClaims(jwt.SigningMethodHS256, ...) with a hard-coded secret makes token forgery trivial. Load secret from env/KMS and rotate. CWE-798 (Hard-coded Credentials).",
+    "language": "Go",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "jwt\\.NewWithClaims\\s*\\(\\s*jwt\\.SigningMethodHS2\\d\\d\\s*,[\\s\\S]{0,200}secret\\s*[:=]\\s*[\"'][^\"']{4,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-GO-108",
+    "name": "file permission 0777 / world-writable",
+    "description": "os.Chmod(path, 0777) / os.OpenFile(..., 0666) leaves the file writable by everyone on multi-user hosts. Use 0640/0644 or stricter. CWE-732 (Incorrect Permission Assignment).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\.Chmod\\s*\\([^,]+,\\s*0?0?777\\)",
+      "os\\.OpenFile\\s*\\([^,]+[^,]*,\\s*0?0?666\\)"
+    ]
+  },
+  {
+    "id": "HS-GO-109",
+    "name": "Hard-coded AWS / generic secret in Go source",
+    "description": "AKIA[ASLOIDQW]{16} or long secret-looking string assigned to key/password/secret. Move to env or secrets manager. CWE-798 (Hard-coded Credentials).",
+    "language": "Go",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "AKIA[ASLOIDQW]{16}",
+      "(?m)\\s*(secret|password|passwd|api_?key|token|private_?key)\\s*[:\\s]*=\\s*[\"'][A-Za-z0-9+/=_\\-]{16,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-GO-110",
+    "name": "unsafe pointer cast to interface",
+    "description": "unsafe.Pointer / uintptr conversion used in non-internal code is a classic source of memory-safety bugs and GC bypass. Audit necessity. CWE-843 (Access of Resource Using Incompatible Type).",
+    "language": "Go",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "unsafe\\.Pointer\\s*\\(",
+      "uintptr\\s*\\("
+    ]
+  }
+]

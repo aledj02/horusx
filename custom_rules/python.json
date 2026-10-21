@@ -1,0 +1,202 @@
+[
+  {
+    "id": "HS-PYTHON-100",
+    "name": "Deserialización insegura de pickle",
+    "description": "pickle.loads / pickle.load puede ejecutar código remoto arbitrario durante la deserialización. Usar SafeLoader, json, o un esquema firmado. CWE-502 (Deserialization of Untrusted Data).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\bpickle\\.loads\\s*\\(",
+      "\\bpickle\\.load\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-101",
+    "name": "Uso de eval() en datos dinámicos",
+    "description": "eval() interpreta strings arbitrarios como código y permite ejecución de código remoto cuando la entrada no es controlada. Preferir ast.literal_eval o if/elif. CWE-94 (Code Injection).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(?m)\\beval\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-102",
+    "name": "Uso de exec() en datos dinámicos",
+    "description": "exec() ejecuta código arbitrario y es una puerta de RCE directa si la entrada no es controlada. CWE-94 (Code Injection).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(?m)\\bexec\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-103",
+    "name": "subprocess con shell=True",
+    "description": "subprocess Popen/call/run con shell=True pasa el comando por /bin/sh -c, permitiendo inyección de shell cuando las variables no se citan o son controladas por el usuario. Usar listas de args sin shell=True. CWE-78 (OS Command Injection).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "shell\\s*=\\s*True"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-104",
+    "name": "os.system con command string",
+    "description": "os.system() invoca /bin/sh -c con el string; permite inyección de shell. Usar subprocess con lista de args. CWE-78 (OS Command Injection).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\bos\\.system\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-105",
+    "name": "yaml.load sin SafeLoader",
+    "description": "yaml.load(constr=FullLoader/UnsafeLoader) deserializa tipos Python arbitrarios → RCE. Usar yaml.safe_load. CWE-502 (Deserialization of Untrusted Data).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\byaml\\.load\\s*\\([^)]*$"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-106",
+    "name": "peticiones HTTP con verify=False",
+    "description": "requests.get/post(..., verify=False) deshabilita la validación de certificados TLS → MITM. CWE-295 (Improper Cert. Validation).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "verify\\s*=\\s*False"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-107",
+    "name": "hash md5/sha1 sin context de seguridad",
+    "description": "hashlib md5/sha1 no es apropiado para firmas, passwords, o tokens (colisiones). Usar sha256/sha512 con salt. CWE-328 (Weak Hash), CWE-757 (Hash Collision).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\bhashlib\\.md5\\s*\\(",
+      "\\bhashlib\\.sha1\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-108",
+    "name": "assert como comprobación de seguridad",
+    "description": "assert() se elimina en producción con `python -O`. NO usar para validar permisos, input, o límites. Usar ValueError/PermissionError/Exception. CWE-754 (Improper Check for Unusual/Exceptional Conditions).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*assert\\s+\\S.*#.*[Ss]ecret",
+      "(?m)^\\s*assert\\s+.*in\\s+\\w+"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-109",
+    "name": "sqlite3 query interpolada",
+    "description": "cursor.execute/execute() con f-string o .format() en el SQL → SQL Injection. Usar parámetros ? con placeholder. CWE-89 (SQL Injection).",
+    "language": "Python",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "execute\\s*\\(\\s*f[\"']",
+      "execute\\s*\\([^)]*\\.format\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-110",
+    "name": "tempfile con path predecible / mktemp",
+    "description": "tempfile.mktemp y mkdir(name) con nombre predecible son vulnerables a symlinks. Usar tempfile.mkdtemp(). CWE-377 (Insecure Temporary File).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\btempfile\\.mktemp\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-PYTHON-111",
+    "name": "modulos telnet/plaintext",
+    "description": "El módulo telnetlib transporta credenciales en plaintext. Deprecado en 3.13. Usar SSH. CWE-319 (Cleartext Transmission).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "\\bimport\\s+telnetlib\\b",
+      "\\bfrom\\s+telnetlib\\s+import\\b"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-112",
+    "name": "random para tokens/secrets (no crypto)",
+    "description": "random.Random() usa PRNG determinista; NO usar para tokens, salt, nonce, o secrets. Usar secrets.token_hex/bytes. CWE-338 (Use of Cryptographically Weak PRNG).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "\\brandom\\.getrandbits\\s*\\(",
+      "\\brandom\\.randrange\\s*\\([^)]*[\\w_](token|key|secret|salt|pass)"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-113",
+    "name": "credenciales hardcodeadas (AWS)",
+    "description": "AWS Access Key ID (AKIA[ASLOID]+) o secret key en el código. Mover a env vars, AWS Secrets Manager, o SSM. CWE-798 (Hard-coded Credentials).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "AKIA[ASLOIDQW]{16}",
+      "(?m)^\\s*(aws_access_key_id|access_key_id|secret_access_key|secret_key|api_key|private_key)\\s*=\\s*[\"'][^\"']{8,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-114",
+    "name": "private key PEM en código",
+    "description": "Blobs PRIVATE KEY / RSA PRIVATE KEY / EC PRIVATE KEY embebidos. Mover a almacén seguro. CWE-798 (Hard-coded Credentials).",
+    "language": "Python",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "-----BEGIN ((RSA|EC|DSA|OPENSSH) )?PRIVATE KEY-----",
+      "(?m)^\\s*\\w*[Kk]ey\\w*\\s*=\\s*[\"'][^\"']{20,}[\"']"
+    ]
+  },
+  {
+    "id": "HS-PYTHON-115",
+    "name": "path traversal con user input en open()",
+    "description": "open(user_input) o os.path con input externo sin normalizar pueden escapar de raíz. Sanear con os.path.basename / pathlib.Path.resolve(). CWE-22 (Path Traversal).",
+    "language": "Python",
+    "severity": "MEDIUM",
+    "confidence": "LOW",
+    "type": "Regular",
+    "expressions": [
+      "\\bopen\\s*\\(\\s*(file_path|filepath|path|user_dir|filename|f\\s*\\+|f['\"][^'\"]*\\{)"
+    ]
+  }
+]

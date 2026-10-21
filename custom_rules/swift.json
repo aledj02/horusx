@@ -1,0 +1,150 @@
+[
+  {
+    "id": "HS-SWIFT-100",
+    "name": "NSLog / print used to log sensitive data",
+    "description": "NSLog, print(), or os_log can dump user credentials, tokens, or PII into device logs (visible to anyone with access). Strip or mask sensitive values. CWE-532 (Insertion of Sensitive Information into Log File).",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*(NSLog|print|os_log)\\s*\\(.*(?:password|passwd|token|api_?key|secret|credential|session|jwt|access_?key|private_?key|\\bpassword\\b|\\.user\\.password|\\.token|\\.accessToken)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-101",
+    "name": "InsecureUnarchive / NSKeyedUnarchiver with untrusted data",
+    "description": "NSKeyedUnarchiver.unarchiveObject(with:) is deprecated and unsafe on untrusted data — deserialization of attacker-controlled payloads allows RCE via NSCoding. Use Codable/JSON or allow-listed classes. CWE-502.",
+    "language": "Swift",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "NSKeyedUnarchiver\\.unarchiveObject\\s*\\(",
+      "NSKeyedUnarchiver\\.unarchiveTopLevelObject\\s*\\(",
+      "unarchiveObject\\s*\\(\\s*from"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-102",
+    "name": "CFNetwork / URLSession with TLS validation disabled",
+    "description": "Ignoring SecTrustEvaluate / returning .ignoreCertAuth / using an empty allow-list lets MITM strip traffic. Always validate the chain with SecTrustEvaluate + pinned root. CWE-295.",
+    "language": "Swift",
+    "severity": "CRITICAL",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "SecTrustEvaluate\\s*\\(",
+      "willValidatePeer\\s*=\\s*false",
+      "ignoreUnknownTrust",
+      "\\.evaluate\\s*\\(\\s*\\)[^\\n]*true",
+      "URLSession\\(\"[^\"]*\",\\s*[A-Za-z0-9]+\\.shared\\)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-103",
+    "name": "Insecure HTTP (http://) endpoint",
+    "description": "URL(string: \"http://...\") or HTTPURLSession on http:// transmits tokens/PINs in cleartext. Use https:// with App Transport Security (ATS). CWE-319.",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "URL\\s*\\(\\s*string\\s*:\\s*[\"']http://[a-zA-Z0-9-]+\\.",
+      "URLSession\\.configuration\\s*\\{[\\s\\S]{0,200}URL\\s*\\(\\s*string\\s*:\\s*[\"']http://"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-104",
+    "name": "Hard-coded API key / secret in source",
+    "description": "Let apiKey = \"sk-...\" / let secretKey = \"...\" — secrets in source are leaked with the .ipa. Move to Keychain / config server. CWE-798.",
+    "language": "Swift",
+    "severity": "CRITICAL",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "(?m)^\\s*(let|static\\s+let)\\s+(?:api_?key|secret(?:_?key)?|access_?key|client_?secret|private_?key|token)\\s*[:=]\\s*[\"'][A-Za-z0-9+/=_\\-]{8,}[\"']",
+      "AKIA[ASLOIDQW]{16}",
+      "(?m)(sk|pk|ghp|gho|xoxb|AIza)[-_][A-Za-z0-9]{20,}"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-105",
+    "name": "KeychainItem with kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly missing",
+    "description": "Storing secrets in Keychain without `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` lets them be copied via backup or other apps post-unlock. Pin the attribute. CWE-312 (Cleartext Storage of Sensitive Info).",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "AndMatch",
+    "expressions": [
+      "\\bsendable\\s*=\\s*KeychainItem|kSecClassGenericPassword",
+      "kSecAttrAccessible\\s*[:=]\\s*(kSecAttrAccessibleAlways|kSecAttrAccessibleAfterFirstUnlock)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-106",
+    "name": "SecTrustEvaluate not called on peer trust",
+    "description": "Using SecTrustCreateCertificateColumns without SecTrustEvaluate (or evaluate(_:)) skips chain validation. Call SecTrustEvaluate or SecTrustEvaluateAsync. CWE-297 (Improper Validation of Certificate).",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "AndMatch",
+    "expressions": [
+      "SecTrustCreateCertificateColumns",
+      "(?m)[^\\w]evaluate\\s*\\("
+    ]
+  },
+  {
+    "id": "HS-SWIFT-107",
+    "name": "NSXPC / mach ports exposed with no auth",
+    "description": "NSXPCListener / mach ports without an identity check let other apps invoke your services. Validate process / team id before handling. CWE-306 (Missing Authentication for Critical Function).",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "NSXPCListener\\(.*\\)\\s*\\.resume",
+      "NSXPCListener\\s*\\(\\)\\s*\\{\\s*\\}",
+      "mach_port_allocate"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-108",
+    "name": "UserDefaults used for secrets/tokens",
+    "description": "UserDefaults is world-readable on device (backed by plist). Store tokens, keys, and sessions in Keychain. CWE-312.",
+    "language": "Swift",
+    "severity": "HIGH",
+    "confidence": "MEDIUM",
+    "type": "Regular",
+    "expressions": [
+      "(?m)UserDefaults\\.standard\\.set\\s*\\(.*(?:token|key|secret|password|session|jwt)[^)]*\\)",
+      "(?m)UserDefaults\\.standard\\.string\\(forKey\\s*:\\s*[\"'](?:token|key|secret|password|session|jwt)"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-109",
+    "name": "UIWebView (deprecated) — XSS surface",
+    "description": "UIWebView is long-deprecated and allows navigation to arbitrary URLs with JS bridge. Migrate to WKWebView sandbox. CWE-79.",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "HIGH",
+    "type": "Regular",
+    "expressions": [
+      "UIWebView\\s*\\(\\)",
+      "UIWebView\\.loadRequest",
+      "UIWebView\\.stringByEvaluatingJavaScript"
+    ]
+  },
+  {
+    "id": "HS-SWIFT-110",
+    "name": "InsecureRandomNumberGenerator / SystemRandomNumberGenerator for secrets",
+    "description": "Avoid SystemRandomNumberGenerator for tokens — use Crypto (SecureEnclave) or Keychain-backed randomness where applicable. CWE-338.",
+    "language": "Swift",
+    "severity": "MEDIUM",
+    "confidence": "LOW",
+    "type": "Regular",
+    "expressions": [
+      "SystemRandomNumberGenerator\\s*\\(\\)"
+    ]
+  }
+]
