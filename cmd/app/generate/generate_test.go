@@ -40,7 +40,7 @@ func TestMain(m *testing.M) {
 func TestGenerate_CreateCobraCmd(t *testing.T) {
 	t.Run("Should create file with default configuration", func(t *testing.T) {
 		configs := config.New()
-		configs.ConfigFilePath = "./tmp/horusec-config1.json"
+		configs.ConfigFilePath = "./tmp/horusx-config1.json"
 		cmd := NewGenerateCommand(configs)
 		stdoutMock := bytes.NewBufferString("")
 		logrus.SetOutput(stdoutMock)
@@ -61,7 +61,7 @@ func TestGenerate_CreateCobraCmd(t *testing.T) {
 	t.Run("Should update file already exists with default configuration", func(t *testing.T) {
 		// Create configuration
 		configs := config.New()
-		configs.ConfigFilePath = "./tmp/horusec-config2.json"
+		configs.ConfigFilePath = "./tmp/horusx-config2.json"
 		cmd := NewGenerateCommand(configs)
 
 		// Create existing file and write empry object

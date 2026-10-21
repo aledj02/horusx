@@ -43,8 +43,8 @@ var (
 	ErrBuildProject = errors.New("project failed to build. Fix the project issues and try again")
 
 	// ErrInvalidSDKOutput occurs when SCS try to use an old version of csharp SDK to analyze a project with the new One
-	ErrInvalidSDKOutput = errors.New("horusec-engine-csharp SDK is outdated, " +
-		"you can build your own and add to horusecCliCustomImages config" +
+	ErrInvalidSDKOutput = errors.New("horusx-engine-csharp SDK is outdated, " +
+		"you can build your own and add to horusxCliCustomImages config" +
 		" or create a new issue on https://github.com/ZupIT/horusec/issues to maintainers update the image")
 )
 

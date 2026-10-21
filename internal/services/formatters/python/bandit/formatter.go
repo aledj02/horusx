@@ -85,7 +85,7 @@ func (f *Formatter) parseOutput(output string) error {
 		return err
 	}
 
-	f.setBanditOutPutInHorusecAnalysis(banditOutput.Results)
+	f.setBanditOutPutInHorusxAnalysis(banditOutput.Results)
 	return nil
 }
 
@@ -94,7 +94,7 @@ func (f *Formatter) parseOutputToBanditOutput(output string) (banditOutput entit
 	return banditOutput, err
 }
 
-func (f *Formatter) setBanditOutPutInHorusecAnalysis(issues []entities.Result) {
+func (f *Formatter) setBanditOutPutInHorusxAnalysis(issues []entities.Result) {
 	totalInformation := 0
 	for index := range issues {
 		if f.notSkipVulnerabilityBecauseIsInformation(issues, index) {

@@ -66,9 +66,9 @@ func (sq *SonarQube) shouldBeGreatherThanZero(v int) int {
 
 func (sq *SonarQube) newIssue(vuln *vulnerability.Vulnerability) *Issue {
 	return &Issue{
-		EngineID: "horusec",
+		EngineID: "horusx",
 		Type:     "VULNERABILITY",
-		Severity: sq.convertHorusecSeverityToSonarQube(vuln.Severity),
+		Severity: sq.convertHorusxSeverityToSonarQube(vuln.Severity),
 		RuleID:   vuln.SecurityTool.ToString(),
 		PrimaryLocation: Location{
 			Message:  vuln.Details,
@@ -77,7 +77,7 @@ func (sq *SonarQube) newIssue(vuln *vulnerability.Vulnerability) *Issue {
 	}
 }
 
-func (sq *SonarQube) convertHorusecSeverityToSonarQube(severity severities.Severity) string {
+func (sq *SonarQube) convertHorusxSeverityToSonarQube(severity severities.Severity) string {
 	return sq.getSonarQubeSeverityMap()[severity]
 }
 

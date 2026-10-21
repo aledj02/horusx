@@ -163,8 +163,8 @@ func TestAnalyzerWithoutMock(t *testing.T) {
 
 		handlerFunc := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			structToValidate := &cli.AnalysisData{}
-			cliVersion := r.Header.Get("X-Horusec-CLI-Version")
-			authorization := r.Header.Get("X-Horusec-Authorization")
+			cliVersion := r.Header.Get("X-Horusx-CLI-Version")
+			authorization := r.Header.Get("X-Horusx-Authorization")
 			byteArray, err := io.ReadAll(r.Body)
 			assert.Nil(t, err)
 			err = json.Unmarshal(byteArray, &structToValidate)
@@ -176,7 +176,7 @@ func TestAnalyzerWithoutMock(t *testing.T) {
 		router := http.NewServeMux()
 		router.HandleFunc("/api/analysis", handlerFunc)
 		svr := httptest.NewServer(router)
-		cfg.HorusecAPIUri = svr.URL
+		cfg.HorusxAPIUri = svr.URL
 		defer svr.Close()
 
 		controller := New(cfg)
@@ -214,9 +214,9 @@ func TestAnalyze(t *testing.T) {
 		printResultMock.On("StartPrintResults").Return(0, nil)
 		printResultMock.On("SetAnalysis")
 
-		horusecAPIMock := testutil.NewHorusecAPIMock()
-		horusecAPIMock.On("SendAnalysis").Return(nil)
-		horusecAPIMock.On("GetAnalysis").Return(&analysis.Analysis{}, nil)
+		horusxAPIMock := testutil.NewHorusxAPIMock()
+		horusxAPIMock.On("SendAnalysis").Return(nil)
+		horusxAPIMock.On("GetAnalysis").Return(&analysis.Analysis{}, nil)
 
 		dockerMocker := testutil.NewDockerClientMock()
 		dockerMocker.On("CreateLanguageAnalysisContainer").Return("", nil)
@@ -233,7 +233,7 @@ func TestAnalyze(t *testing.T) {
 			config:          configs,
 			languageDetect:  languageDetectMock,
 			printController: printResultMock,
-			horusec:         horusecAPIMock,
+			horusx:          horusxAPIMock,
 			runner:          newRunner(configs, new(analysis.Analysis), docker.New(dockerMocker, configs, uuid.New())),
 		}
 
@@ -268,9 +268,9 @@ func TestAnalyze(t *testing.T) {
 		printResultMock.On("StartPrintResults").Return(0, nil)
 		printResultMock.On("SetAnalysis")
 
-		horusecAPIMock := testutil.NewHorusecAPIMock()
-		horusecAPIMock.On("SendAnalysis").Return(nil)
-		horusecAPIMock.On("GetAnalysis").Return(testutil.CreateAnalysisMock(), nil)
+		horusxAPIMock := testutil.NewHorusxAPIMock()
+		horusxAPIMock.On("SendAnalysis").Return(nil)
+		horusxAPIMock.On("GetAnalysis").Return(testutil.CreateAnalysisMock(), nil)
 
 		dockerMocker := testutil.NewDockerClientMock()
 		dockerMocker.On("CreateLanguageAnalysisContainer").Return("", nil)
@@ -287,7 +287,7 @@ func TestAnalyze(t *testing.T) {
 			config:          configs,
 			languageDetect:  languageDetectMock,
 			printController: printResultMock,
-			horusec:         horusecAPIMock,
+			horusx:          horusxAPIMock,
 			runner:          newRunner(configs, new(analysis.Analysis), docker.New(dockerMocker, configs, uuid.New())),
 		}
 
@@ -307,9 +307,9 @@ func TestAnalyze(t *testing.T) {
 		printResultMock.On("StartPrintResults").Return(0, nil)
 		printResultMock.On("SetAnalysis")
 
-		horusecAPIMock := testutil.NewHorusecAPIMock()
-		horusecAPIMock.On("SendAnalysis").Return(nil)
-		horusecAPIMock.On("GetAnalysis").Return(&analysis.Analysis{}, nil)
+		horusxAPIMock := testutil.NewHorusxAPIMock()
+		horusxAPIMock.On("SendAnalysis").Return(nil)
+		horusxAPIMock.On("GetAnalysis").Return(&analysis.Analysis{}, nil)
 
 		dockerMocker := testutil.NewDockerClientMock()
 		dockerMocker.On("CreateLanguageAnalysisContainer").Return("", nil)
@@ -326,7 +326,7 @@ func TestAnalyze(t *testing.T) {
 			config:          configs,
 			languageDetect:  languageDetectMock,
 			printController: printResultMock,
-			horusec:         horusecAPIMock,
+			horusx:          horusxAPIMock,
 			runner:          newRunner(configs, new(analysis.Analysis), docker.New(dockerMocker, configs, uuid.New())),
 		}
 
@@ -343,9 +343,9 @@ func TestAnalyze(t *testing.T) {
 		ld := testutil.NewLanguageDetectMock()
 		ld.On("LanguageDetect").Return([]languages.Language{languages.C}, nil)
 
-		horusecAPI := testutil.NewHorusecAPIMock()
-		horusecAPI.On("SendAnalysis").Return(nil)
-		horusecAPI.On("GetAnalysis").Return(new(analysis.Analysis), nil)
+		horusxAPI := testutil.NewHorusxAPIMock()
+		horusxAPI.On("SendAnalysis").Return(nil)
+		horusxAPI.On("GetAnalysis").Return(new(analysis.Analysis), nil)
 
 		analysiss := new(analysis.Analysis)
 		analysiss.AnalysisVulnerabilities = append(
@@ -364,7 +364,7 @@ func TestAnalyze(t *testing.T) {
 			config:          cfg,
 			languageDetect:  ld,
 			printController: pr,
-			horusec:         horusecAPI,
+			horusx:          horusxAPI,
 			analysis:        analysiss,
 			runner:          newRunner(cfg, analysiss, docker.New(testutil.NewDockerClientMock(), cfg, uuid.New())),
 		}

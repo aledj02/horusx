@@ -24,7 +24,7 @@ import (
 )
 
 // IFormatter is the interface that tools implement to run an
-// analysis and convert its results to Horusec results.
+// analysis and convert its results to Horusx results.
 type IFormatter interface {
 	StartAnalysis(projectSubPath string)
 }
@@ -51,7 +51,7 @@ type IService interface {
 	AddWorkDirInCmd(cmd string, projectSubPath string, tool tools.Tool) string
 
 	// GetConfigProjectPath return the project path of analysis. Note that the project
-	// path returned is the .horusec/ANALYSIS-ID directory created to execute analysis
+	// path returned is the .horusx/ANALYSIS-ID directory created to execute analysis
 	// (It's not the project path informed by user).
 	GetConfigProjectPath() string
 

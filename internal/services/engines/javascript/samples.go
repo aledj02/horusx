@@ -226,11 +226,11 @@ app.get('/products/:id', cors(), function (req, res, next) {
 `
 	SampleSafeHSJAVASCRIPT19 = `
 var corsOptions = {
-  origin: 'http://horusec.io',
+  origin: 'http://horusx.io',
 }
 
 app.get('/products/:id', cors(corsOptions), function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://horusec.io");
+  res.header("Access-Control-Allow-Origin", "http://horusx.io");
   res.json({msg: 'This is CORS-enabled for only domain.'});
 })
 `

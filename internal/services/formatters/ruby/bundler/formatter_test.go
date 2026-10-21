@@ -134,7 +134,7 @@ func TestParseOutput(t *testing.T) {
 
 func newTestConfig(t *testing.T, newAnalysis *analysis.Analysis) *config.Config {
 	cfg := config.New()
-	cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, newAnalysis, testutil.RubyExample1)
+	cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, newAnalysis, testutil.RubyExample1)
 	return cfg
 }
 
@@ -152,7 +152,6 @@ func newTestConfig(t *testing.T, newAnalysis *analysis.Analysis) *config.Config 
 // URL: https://groups.google.com/forum/#!topic/rubyonrails-security/f6ioe4sdpbY
 // Title: Possible Strong Parameters Bypass in ActionPack
 // Solution: upgrade to ~> 5.2.4.3, >= 6.0.3.1
-//
 const output = `
 {
   "version": "0.9.0.1",

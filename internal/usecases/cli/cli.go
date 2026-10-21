@@ -41,7 +41,7 @@ import (
 // nolint
 func ValidateConfig(cfg *config.Config) error {
 	return validation.ValidateStruct(cfg,
-		validation.Field(&cfg.HorusecAPIUri, validation.Required, validation.By(checkIfIsURL(cfg.HorusecAPIUri))),
+		validation.Field(&cfg.HorusxAPIUri, validation.Required, validation.By(checkIfIsURL(cfg.HorusxAPIUri))),
 		validation.Field(&cfg.TimeoutInSecondsRequest, validation.Required, validation.Min(10)),
 		validation.Field(&cfg.TimeoutInSecondsAnalysis, validation.Required, validation.Min(10)),
 		validation.Field(&cfg.MonitorRetryInSeconds, validation.Required, validation.Min(10)),

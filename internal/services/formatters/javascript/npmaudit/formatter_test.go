@@ -130,7 +130,7 @@ func TestNpmAuditParseOutput(t *testing.T) {
 
 func newTestConfig(t *testing.T, analysiss *analysis.Analysis) *config.Config {
 	cfg := config.New()
-	cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, analysiss, testutil.JavaScriptExample1)
+	cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, analysiss, testutil.JavaScriptExample1)
 	return cfg
 }
 

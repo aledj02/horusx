@@ -31,14 +31,14 @@ import (
 )
 
 func TestTrivyParseOutput(t *testing.T) {
-	dirName := filepath.Join(".horusec", "00000000-0000-0000-0000-000000000000")
+	dirName := filepath.Join(".horusx", "00000000-0000-0000-0000-000000000000")
 	err := os.MkdirAll(dirName, 0o777)
 	assert.NoError(t, err)
 	file, err := os.Create(filepath.Join(dirName, "go.sum"))
 	defer file.Close()
 	assert.NoError(t, err)
 	t.Cleanup(func() {
-		err = os.RemoveAll(".horusec")
+		err = os.RemoveAll(".horusx")
 		assert.NoError(t, err)
 	})
 	t.Run("Should add 153 vulnerabilities from FileSystemOutput and ConfigOutput on analysis without errors", func(t *testing.T) {

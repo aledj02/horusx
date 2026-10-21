@@ -1,6 +1,6 @@
 ---
 name: Support request
-about: Support request or question relating to Horusec
+about: Support request or question relating to Horusx
 labels: support
 assignees: ''
 
@@ -20,7 +20,7 @@ assignees: ''
 **Anything else we need to know?**:
 
 **Environment**:
-- Horusec version (use `horusec version`):
+- Horusx version (use `horusx version`):
 - Operating System:
 - Network plugin / Tool and version (if this is a network-related / tool bug):
 - Others:

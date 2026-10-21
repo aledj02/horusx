@@ -85,7 +85,7 @@ func (c *CustomRule) GetExpressions() (expressions []*regexp.Regexp) {
 	for _, expression := range c.Expressions {
 		regex, err := regexp.Compile(expression)
 		if err != nil {
-			logger.LogError(fmt.Sprintf("{HORUSEC_CLI} failed to compile custom rule regex: %s", expression), err)
+			logger.LogError(fmt.Sprintf("{HORUSX_CLI} failed to compile custom rule regex: %s", expression), err)
 		} else {
 			expressions = append(expressions, regex)
 		}

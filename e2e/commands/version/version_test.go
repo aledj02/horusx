@@ -23,7 +23,7 @@ import (
 	"github.com/ZupIT/horusec/internal/utils/testutil"
 )
 
-var _ = Describe("Run horusec CLI with version argument", func() {
+var _ = Describe("Run horusx CLI with version argument", func() {
 	var (
 		outBuffer *gbytes.Buffer
 		session   *gexec.Session
@@ -31,7 +31,7 @@ var _ = Describe("Run horusec CLI with version argument", func() {
 	)
 
 	BeforeEach(func() {
-		cmd := testutil.GinkgoGetHorusecCmd(testutil.CmdVersion)
+		cmd := testutil.GinkgoGetHorusxCmd(testutil.CmdVersion)
 		outBuffer = gbytes.NewBuffer()
 		session, err = gexec.Start(cmd, outBuffer, outBuffer)
 	})

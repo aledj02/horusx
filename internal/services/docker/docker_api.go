@@ -166,9 +166,9 @@ func (d *API) downloadImage(imageWithTagAndRegistry string) error {
 
 func (d *API) setPullOptions() types.ImagePullOptions {
 	authConfig := types.AuthConfig{
-		Username:      env.GetEnvOrDefault("HORUSEC_CLI_REGISTRY_USERNAME", ""),
-		Password:      env.GetEnvOrDefault("HORUSEC_CLI_REGISTRY_PASSWORD", ""),
-		ServerAddress: env.GetEnvOrDefault("HORUSEC_CLI_REGISTRY_ADDRESS", ""),
+		Username:      env.GetEnvOrDefault("HORUSX_CLI_REGISTRY_USERNAME", ""),
+		Password:      env.GetEnvOrDefault("HORUSX_CLI_REGISTRY_PASSWORD", ""),
+		ServerAddress: env.GetEnvOrDefault("HORUSX_CLI_REGISTRY_ADDRESS", ""),
 	}
 
 	if authConfig.Username != "" && authConfig.Password != "" {
@@ -375,9 +375,9 @@ func (d *API) DeleteContainersFromAPI() {
 
 func (d *API) getSourceFolder() (path string) {
 	if d.config.ContainerBindProjectPath != "" {
-		path = filepath.Join(d.config.ContainerBindProjectPath, ".horusec", d.analysisID.String())
+		path = filepath.Join(d.config.ContainerBindProjectPath, ".horusx", d.analysisID.String())
 	} else {
-		path = filepath.Join(d.config.ProjectPath, ".horusec", d.analysisID.String())
+		path = filepath.Join(d.config.ProjectPath, ".horusx", d.analysisID.String())
 	}
 
 	separator := path[1:2]
@@ -398,20 +398,20 @@ func (d *API) listContainersByAnalysisID() ([]types.Container, error) {
 }
 
 func (d *API) getSourceFolderFromWindows(path string) string {
-	// C:/Users/usr/Documents/Horusec/charlescd/.horusec/ID
+	// C:/Users/usr/Documents/Horusx/charlescd/.horusx/ID
 	partitionLower := strings.ToLower(path[0:1])
 	pathSplit := strings.Split(path, ":")
 	pathSplit[0] = partitionLower
 	path = strings.Join(pathSplit, ":")
-	// c:/Users/usr/Documents/Horusec/project/.horusec/ID
+	// c:/Users/usr/Documents/Horusx/project/.horusx/ID
 	path = strings.ReplaceAll(path, ":", "")
-	// c/Users/usr/Documents/Horusec/project/.horusec/ID
+	// c/Users/usr/Documents/Horusx/project/.horusx/ID
 	path = "/" + path
-	// /c/Users/usr/Documents/Horusec/project/.horusec/ID
+	// /c/Users/usr/Documents/Horusx/project/.horusx/ID
 	path = strings.ReplaceAll(path, "\\", "/")
-	// /c/Users/usr/Documents/Horusec/project/.horusec/ID
+	// /c/Users/usr/Documents/Horusx/project/.horusx/ID
 	path = strings.ReplaceAll(path, "/", "//")
-	// //c//Users//usr//Documents//Horusec//project//.horusec//ID
+	// //c//Users//usr//Documents//Horusx//project//.horusx//ID
 	return path
 }
 

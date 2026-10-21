@@ -89,7 +89,7 @@ func (f *Formatter) parseOutput(output, projectSubPath string) error {
 	if err != nil {
 		return err
 	}
-	f.setSafetyOutPutInHorusecAnalysis(safetyOutput.Issues, projectSubPath)
+	f.setSafetyOutPutInHorusxAnalysis(safetyOutput.Issues, projectSubPath)
 	return nil
 }
 
@@ -98,7 +98,7 @@ func (f *Formatter) parseOutputToSafetyOutput(output string) (safetyOutput entit
 	return safetyOutput, err
 }
 
-func (f *Formatter) setSafetyOutPutInHorusecAnalysis(issues []entities.Issue, projectSubPath string) {
+func (f *Formatter) setSafetyOutPutInHorusxAnalysis(issues []entities.Issue, projectSubPath string) {
 	for index := range issues {
 		vuln, err := f.setupVulnerabilitiesSeveritiesSafety(issues, index, projectSubPath)
 		if err != nil {
@@ -128,7 +128,7 @@ func (f *Formatter) setupVulnerabilitiesSeveritiesSafety(
 		issues[index].VulnerableBelow, issues[index].Description,
 	)
 	vuln.Line = dependencyInfo.Line
-	vuln.File = f.removeHorusecFolder(vuln.File)
+	vuln.File = f.removeHorusxFolder(vuln.File)
 	vuln = vulnhash.Bind(vuln)
 	return f.SetCommitAuthor(vuln), nil
 }
@@ -149,6 +149,6 @@ func (f *Formatter) getDefaultVulnerabilitySeverityInSafety(projectSubPath strin
 	return vulnerabilitySeverity, err
 }
 
-func (f *Formatter) removeHorusecFolder(path string) string {
-	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusec", f.GetAnalysisID()), ""))
+func (f *Formatter) removeHorusxFolder(path string) string {
+	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusx", f.GetAnalysisID()), ""))
 }

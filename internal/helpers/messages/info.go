@@ -16,18 +16,18 @@ package messages
 
 // Block of messages usage into log of the level info
 const (
-	MsgInfoConfigAlreadyExist       = `{HORUSEC_CLI} Horusec configuration already exists on path: `
-	MsgInfoConfigFileCreatedSuccess = `{HORUSEC_CLI} Horusec created file of configuration with success on path: `
-	MsgInfoHowToInstallDocker       = `{HORUSEC_CLI} If your docker is not installed check in docs of how to install in:
+	MsgInfoConfigAlreadyExist       = `{HORUSX_CLI} Horusx configuration already exists on path: `
+	MsgInfoConfigFileCreatedSuccess = `{HORUSX_CLI} Horusx created file of configuration with success on path: `
+	MsgInfoHowToInstallDocker       = `{HORUSX_CLI} If your docker is not installed check in docs of how to install in:
 		https://docs.docker.com/get-docker
 	`
-	MsgInfoHowToInstallGit = `{HORUSEC_CLI} If your git is not installed check in docs of how to install in:
+	MsgInfoHowToInstallGit = `{HORUSX_CLI} If your git is not installed check in docs of how to install in:
 		https://git-scm.com/downloads
 	`
-	MsgInfoStartGenerateSonarQubeFile = "{HORUSEC_CLI} Generating SonarQube output..."
-	MsgInfoStartGenerateSARIFFile     = "{HORUSEC_CLI} Generating SARIF output..."
-	MsgInfoStartWriteFile             = "{HORUSEC_CLI} Writing output JSON to file in the path: "
+	MsgInfoStartGenerateSonarQubeFile = "{HORUSX_CLI} Generating SonarQube output..."
+	MsgInfoStartGenerateSARIFFile     = "{HORUSX_CLI} Generating SARIF output..."
+	MsgInfoStartWriteFile             = "{HORUSX_CLI} Writing output JSON to file in the path: "
 	MsgInfoAnalysisLoading            = " Scanning code ..."
-	MsgInfoDockerLowerVersion         = "{HORUSEC_CLI} We recommend version 19.03 or higher of the docker." +
+	MsgInfoDockerLowerVersion         = "{HORUSX_CLI} We recommend version 19.03 or higher of the docker." +
 		" Versions prior to this may have problems during execution"
 )

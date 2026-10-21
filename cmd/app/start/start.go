@@ -46,7 +46,7 @@ type Prompt interface {
 	Ask(label, defaultValue string) (string, error)
 }
 
-// Requirements is the interface that validate Horusec dynamic
+// Requirements is the interface that validate Horusx dynamic
 // requirements to execute analysis
 type Requirements interface {
 	ValidateDocker() error
@@ -79,8 +79,8 @@ func (s *Start) CreateStartCommand() *cobra.Command {
 	startCmd := &cobra.Command{
 		Use:               "start",
 		Short:             "Start analysis",
-		Long:              "Start the Horusec analysis in the current path",
-		Example:           "horusec start",
+		Long:              "Start the Horusx analysis in the current path",
+		Example:           "horusx start",
 		PersistentPreRunE: s.configs.PersistentPreRun,
 		RunE:              s.runE,
 	}
@@ -122,37 +122,37 @@ func (s *Start) CreateStartCommand() *cobra.Command {
 
 	startCmd.PersistentFlags().
 		StringP(
-			"horusec-url", "u",
-			s.configs.HorusecAPIUri,
-			"The Horusec server address to send analysis results",
+			"horusx-url", "u",
+			s.configs.HorusxAPIUri,
+			"The Horusx server address to send analysis results",
 		)
 
 	startCmd.PersistentFlags().
 		Int64P(
 			"request-timeout", "r",
 			s.configs.TimeoutInSecondsRequest,
-			"The timeout threshold for the request to the Horusec server. The minimum time is 10",
+			"The timeout threshold for the request to the Horusx server. The minimum time is 10",
 		)
 
 	startCmd.PersistentFlags().
 		Int64P(
 			"analysis-timeout", "t",
 			s.configs.TimeoutInSecondsAnalysis,
-			"The timeout threshold for the Horusec CLI wait for the analysis to complete. The minimum time is 10",
+			"The timeout threshold for the Horusx CLI wait for the analysis to complete. The minimum time is 10",
 		)
 
 	startCmd.PersistentFlags().
 		StringP(
 			"authorization", "a",
 			s.configs.RepositoryAuthorization,
-			"Authorization token to use on Horusec server. Read more: https://docs.horusec.io/docs/tutorials/how-to-create-an-authorization-token",
+			"Authorization token to use on Horusx server. Read more: https://docs.horusx.io/docs/tutorials/how-to-create-an-authorization-token",
 		)
 
 	startCmd.PersistentFlags().
 		StringToString(
 			"headers",
 			s.configs.Headers,
-			`Custom headers to send on request to Horusec API. Example --headers='{"X-Auth-Service": "value"}'`,
+			`Custom headers to send on request to Horusx API. Example --headers='{"X-Auth-Service": "value"}'`,
 		)
 
 	startCmd.PersistentFlags().
@@ -166,7 +166,7 @@ func (s *Start) CreateStartCommand() *cobra.Command {
 		StringP(
 			"project-path", "p",
 			s.configs.ProjectPath,
-			"Path to run an analysis. If this value is not passed, Horusec will ask if you want to run the analysis in the current directory",
+			"Path to run an analysis. If this value is not passed, Horusx will ask if you want to run the analysis in the current directory",
 		)
 
 	startCmd.PersistentFlags().
@@ -201,7 +201,7 @@ func (s *Start) CreateStartCommand() *cobra.Command {
 		StringP(
 			"repository-name", "n",
 			s.configs.RepositoryName,
-			"Send repository name to Horusec server, by default sends the actual directory name",
+			"Send repository name to Horusx server, by default sends the actual directory name",
 		)
 
 	startCmd.PersistentFlags().
@@ -222,14 +222,14 @@ func (s *Start) CreateStartCommand() *cobra.Command {
 		StringP(
 			"container-bind-project-path", "P",
 			s.configs.ContainerBindProjectPath,
-			"Project path in host to be used on Docker when running Horusec inside a container",
+			"Project path in host to be used on Docker when running Horusx inside a container",
 		)
 
 	startCmd.PersistentFlags().
 		StringP(
 			"custom-rules-path", "c",
 			s.configs.CustomRulesPath,
-			"Path with custom rules that should be used by Horusec engine",
+			"Path with custom rules that should be used by Horusx engine",
 		)
 
 	startCmd.PersistentFlags().
@@ -265,7 +265,7 @@ func (s *Start) CreateStartCommand() *cobra.Command {
 			BoolP(
 				"disable-docker", "D",
 				s.configs.DisableDocker,
-				"Run Horusec without docker. If enabled it will only run the following tools: horusec-csharp, horusec-kotlin, horusec-java, horusec-kubernetes, horusec-leaks, horusec-javascript, horusec-dart, horusec-nginx",
+				"Run Horusx without docker. If enabled it will only run the following tools: horusx-csharp, horusx-kotlin, horusx-java, horusx-kubernetes, horusx-leaks, horusx-javascript, horusx-dart, horusx-nginx",
 			)
 	}
 
@@ -280,7 +280,7 @@ func (s *Start) setDeprecatedFlags(cmd *cobra.Command) *cobra.Command {
 	}
 
 	if err := flags.MarkDeprecated(
-		"monitor-retry-count", "monitor component no longer exists in Horusec. Use only --analysis-timeout.",
+		"monitor-retry-count", "monitor component no longer exists in Horusx. Use only --analysis-timeout.",
 	); err != nil {
 		logger.LogPanic(fmt.Sprintf(messages.PanicMarkDeprecatedFlag, "monitor-retry-count"), err)
 	}

@@ -37,37 +37,37 @@ import (
 	"github.com/ZupIT/horusec/internal/services/formatters"
 	"github.com/ZupIT/horusec/internal/services/formatters/c/flawfinder"
 	dotnetcli "github.com/ZupIT/horusec/internal/services/formatters/csharp/dotnet_cli"
-	"github.com/ZupIT/horusec/internal/services/formatters/csharp/horuseccsharp"
+	"github.com/ZupIT/horusec/internal/services/formatters/csharp/horusxcsharp"
 	"github.com/ZupIT/horusec/internal/services/formatters/csharp/scs"
-	"github.com/ZupIT/horusec/internal/services/formatters/dart/horusecdart"
+	"github.com/ZupIT/horusec/internal/services/formatters/dart/horusxdart"
 	"github.com/ZupIT/horusec/internal/services/formatters/elixir/mixaudit"
 	"github.com/ZupIT/horusec/internal/services/formatters/elixir/sobelow"
 	dependencycheck "github.com/ZupIT/horusec/internal/services/formatters/generic/dependency_check"
 	"github.com/ZupIT/horusec/internal/services/formatters/generic/semgrep"
 	"github.com/ZupIT/horusec/internal/services/formatters/generic/trivy"
 	"github.com/ZupIT/horusec/internal/services/formatters/go/gosec"
-	"github.com/ZupIT/horusec/internal/services/formatters/go/horusecgo"
+	"github.com/ZupIT/horusec/internal/services/formatters/go/horusxgo"
 	"github.com/ZupIT/horusec/internal/services/formatters/go/nancy"
 	"github.com/ZupIT/horusec/internal/services/formatters/hcl/checkov"
 	"github.com/ZupIT/horusec/internal/services/formatters/hcl/tfsec"
-	"github.com/ZupIT/horusec/internal/services/formatters/java/horusecjava"
-	"github.com/ZupIT/horusec/internal/services/formatters/javascript/horusecjavascript"
+	"github.com/ZupIT/horusec/internal/services/formatters/java/horusxjava"
+	"github.com/ZupIT/horusec/internal/services/formatters/javascript/horusxjavascript"
 	"github.com/ZupIT/horusec/internal/services/formatters/javascript/npmaudit"
 	"github.com/ZupIT/horusec/internal/services/formatters/javascript/yarnaudit"
-	"github.com/ZupIT/horusec/internal/services/formatters/kotlin/horuseckotlin"
+	"github.com/ZupIT/horusec/internal/services/formatters/kotlin/horusxkotlin"
 	"github.com/ZupIT/horusec/internal/services/formatters/leaks/gitleaks"
-	"github.com/ZupIT/horusec/internal/services/formatters/leaks/horusecleaks"
-	"github.com/ZupIT/horusec/internal/services/formatters/nginx/horusecnginx"
+	"github.com/ZupIT/horusec/internal/services/formatters/leaks/horusxleaks"
+	"github.com/ZupIT/horusec/internal/services/formatters/nginx/horusxnginx"
 	"github.com/ZupIT/horusec/internal/services/formatters/php/phpcs"
 	"github.com/ZupIT/horusec/internal/services/formatters/python/bandit"
-	"github.com/ZupIT/horusec/internal/services/formatters/python/horusecpython"
+	"github.com/ZupIT/horusec/internal/services/formatters/python/horusxpython"
 	"github.com/ZupIT/horusec/internal/services/formatters/python/safety"
 	"github.com/ZupIT/horusec/internal/services/formatters/ruby/brakeman"
 	"github.com/ZupIT/horusec/internal/services/formatters/ruby/bundler"
-	"github.com/ZupIT/horusec/internal/services/formatters/shell/horusecshell"
+	"github.com/ZupIT/horusec/internal/services/formatters/shell/horusxshell"
 	"github.com/ZupIT/horusec/internal/services/formatters/shell/shellcheck"
-	"github.com/ZupIT/horusec/internal/services/formatters/swift/horusecswift"
-	"github.com/ZupIT/horusec/internal/services/formatters/yaml/horuseckubernetes"
+	"github.com/ZupIT/horusec/internal/services/formatters/swift/horusxswift"
+	"github.com/ZupIT/horusec/internal/services/formatters/yaml/horusxkubernetes"
 )
 
 const spinnerLoadingDelay = 200 * time.Millisecond
@@ -108,7 +108,7 @@ func newRunner(cfg *config.Config, analysiss *analysis.Analysis, dockerAPI *dock
 // nolint:funlen,gocyclo
 func (r *runner) run(langs []languages.Language) []error {
 	r.removeTrashByInterruptProcess()
-	defer r.removeHorusecFolder()
+	defer r.removeHorusxFolder()
 
 	var (
 		wg     sync.WaitGroup
@@ -187,12 +187,12 @@ func (r *runner) detectVulnerabilityFuncs() map[languages.Language]detectVulnera
 }
 
 func (r *runner) detectVulneravilitySwift(_ *sync.WaitGroup, projectSubPath string) error {
-	horusecswift.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxswift.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
 
 func (r *runner) detectVulnerabilityCsharp(wg *sync.WaitGroup, projectSubPath string) error {
-	spawn(wg, horuseccsharp.NewFormatter(r.formatter), projectSubPath)
+	spawn(wg, horusxcsharp.NewFormatter(r.formatter), projectSubPath)
 
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.CSharp)); err != nil {
 		return err
@@ -204,7 +204,7 @@ func (r *runner) detectVulnerabilityCsharp(wg *sync.WaitGroup, projectSubPath st
 }
 
 func (r *runner) detectVulnerabilityLeaks(wg *sync.WaitGroup, projectSubPath string) error {
-	spawn(wg, horusecleaks.NewFormatter(r.formatter), projectSubPath)
+	spawn(wg, horusxleaks.NewFormatter(r.formatter), projectSubPath)
 
 	if r.config.EnableGitHistoryAnalysis {
 		if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Leaks)); err != nil {
@@ -217,7 +217,7 @@ func (r *runner) detectVulnerabilityLeaks(wg *sync.WaitGroup, projectSubPath str
 }
 
 func (r *runner) detectVulnerabilityGo(wg *sync.WaitGroup, projectSubPath string) error {
-	horusecgo.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxgo.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Go)); err != nil {
 		return err
@@ -229,22 +229,22 @@ func (r *runner) detectVulnerabilityGo(wg *sync.WaitGroup, projectSubPath string
 }
 
 func (r *runner) detectVulnerabilityJava(_ *sync.WaitGroup, projectSubPath string) error {
-	horusecjava.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxjava.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
 
 func (r *runner) detectVulnerabilityKotlin(_ *sync.WaitGroup, projectSubPath string) error {
-	horuseckotlin.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxkotlin.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
 
 func (r *runner) detectVulnerabilityNginx(_ *sync.WaitGroup, projectSubPath string) error {
-	horusecnginx.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxnginx.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
 
 func (r *runner) detectVulnerabilityJavascript(wg *sync.WaitGroup, projectSubPath string) error {
-	spawn(wg, horusecjavascript.NewFormatter(r.formatter), projectSubPath)
+	spawn(wg, horusxjavascript.NewFormatter(r.formatter), projectSubPath)
 
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Javascript)); err != nil {
 		return err
@@ -255,7 +255,7 @@ func (r *runner) detectVulnerabilityJavascript(wg *sync.WaitGroup, projectSubPat
 }
 
 func (r *runner) detectVulnerabilityPython(wg *sync.WaitGroup, projectSubPath string) error {
-	horusecpython.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxpython.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Python)); err != nil {
 		return err
@@ -284,7 +284,7 @@ func (r *runner) detectVulnerabilityHCL(wg *sync.WaitGroup, projectSubPath strin
 }
 
 func (r *runner) detectVulnerabilityYaml(_ *sync.WaitGroup, projectSubPath string) error {
-	horuseckubernetes.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxkubernetes.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
 
@@ -316,7 +316,7 @@ func (r *runner) detectVulnerabilityGeneric(wg *sync.WaitGroup, projectSubPath s
 }
 
 func (r *runner) detectVulnerabilityDart(_ *sync.WaitGroup, projectSubPath string) error {
-	horusecdart.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxdart.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 	return nil
 }
 
@@ -330,7 +330,7 @@ func (r *runner) detectVulnerabilityElixir(wg *sync.WaitGroup, projectSubPath st
 }
 
 func (r *runner) detectVulnerabilityShell(_ *sync.WaitGroup, projectSubPath string) error {
-	horusecshell.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+	horusxshell.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
 
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Shell)); err != nil {
 		return err
@@ -355,8 +355,8 @@ func (r *runner) logProjectSubPath(language languages.Language, subPath string) 
 	}
 }
 
-func (r *runner) removeHorusecFolder() {
-	err := os.RemoveAll(filepath.Join(r.config.ProjectPath, ".horusec"))
+func (r *runner) removeHorusxFolder() {
+	err := os.RemoveAll(filepath.Join(r.config.ProjectPath, ".horusx"))
 	logger.LogErrorWithLevel(messages.MsgErrorRemoveAnalysisFolder, err)
 	if !r.config.DisableDocker {
 		r.docker.DeleteContainersFromAPI()
@@ -368,7 +368,7 @@ func (r *runner) removeTrashByInterruptProcess() {
 	signal.Notify(c, os.Interrupt)
 	go func() {
 		for range c {
-			r.removeHorusecFolder()
+			r.removeHorusxFolder()
 			os.Exit(1)
 		}
 	}()

@@ -24,18 +24,18 @@ const CMD = `
 		jq -r '.default | to_entries[] | if (.value.version | length) > 0 then "\(.key)\(.value.version)" else "\(.key)" end' Pipfile.lock >> requirements.txt
 		sort -u -o requirements.txt requirements.txt
 	  fi
-	  find . -maxdepth 3 -name requirements.txt -exec cat {} \; > safety_horusec_analysis_all_requirements-ANALYSISID.txt
-	  if [ -s safety_horusec_analysis_all_requirements-ANALYSISID.txt ]; then
-		cat safety_horusec_analysis_all_requirements-ANALYSISID.txt | grep '=' | grep -v '#' 1> safety_horusec_analysis_requirements_raw-ANALYSISID.txt
-		sed -i -e 's/>=/==/g; s/<=/==/g' safety_horusec_analysis_requirements_raw-ANALYSISID.txt
-		cat safety_horusec_analysis_requirements_raw-ANALYSISID.txt | cut -f1 -d "," > safety_horusec_analysis_requirements-ANALYSISID.txt
-		safety check -r safety_horusec_analysis_requirements-ANALYSISID.txt --json > /tmp/safety_horusec_analysis_output-ANALYSISID.json 2> /tmp/errorRunning-ANALYSISID
-		safety check -r safety_horusec_analysis_requirements_raw-ANALYSISID.txt --json > /dev/null 2> /tmp/warning-ANALYSISID
+	  find . -maxdepth 3 -name requirements.txt -exec cat {} \; > safety_horusx_analysis_all_requirements-ANALYSISID.txt
+	  if [ -s safety_horusx_analysis_all_requirements-ANALYSISID.txt ]; then
+		cat safety_horusx_analysis_all_requirements-ANALYSISID.txt | grep '=' | grep -v '#' 1> safety_horusx_analysis_requirements_raw-ANALYSISID.txt
+		sed -i -e 's/>=/==/g; s/<=/==/g' safety_horusx_analysis_requirements_raw-ANALYSISID.txt
+		cat safety_horusx_analysis_requirements_raw-ANALYSISID.txt | cut -f1 -d "," > safety_horusx_analysis_requirements-ANALYSISID.txt
+		safety check -r safety_horusx_analysis_requirements-ANALYSISID.txt --json > /tmp/safety_horusx_analysis_output-ANALYSISID.json 2> /tmp/errorRunning-ANALYSISID
+		safety check -r safety_horusx_analysis_requirements_raw-ANALYSISID.txt --json > /dev/null 2> /tmp/warning-ANALYSISID
 		if [ -f /tmp/warning-ANALYSISID ]; then
 		  if grep -q "unpinned requirement" "/tmp/warning-ANALYSISID"; then
 			cat /tmp/warning-ANALYSISID
 		  fi
-		  jq -c '{"issues":map({"dependency": .[0], "vulnerable_below": .[1], "installed_version": .[2], "description": .[3], "id": .[4]})}' /tmp/safety_horusec_analysis_output-ANALYSISID.json > /tmp/output-ANALYSISID.json
+		  jq -c '{"issues":map({"dependency": .[0], "vulnerable_below": .[1], "installed_version": .[2], "description": .[3], "id": .[4]})}' /tmp/safety_horusx_analysis_output-ANALYSISID.json > /tmp/output-ANALYSISID.json
 		  cat /tmp/output-ANALYSISID.json
 		else
 		  echo "ERROR_RUNNING_SAFETY"

@@ -101,7 +101,7 @@ func TestStartCFlawfinder(t *testing.T) {
 
 func newTestConfig(t *testing.T, analysiss *analysis.Analysis) *config.Config {
 	cfg := config.New()
-	cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, analysiss, testutil.ElixirExample)
+	cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, analysiss, testutil.ElixirExample)
 	return cfg
 }
 

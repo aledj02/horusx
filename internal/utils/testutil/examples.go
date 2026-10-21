@@ -28,7 +28,7 @@ const (
 )
 
 var (
-	// RootPath represents the root directory of horusec repository.
+	// RootPath represents the root directory of horusx repository.
 	RootPath = findRootDirectory()
 
 	// ExamplesPath represents the entire examples directory.
@@ -122,7 +122,7 @@ var (
 
 func findRootDirectory() string {
 	// Get the current filename of this function and them join
-	// the path to get the root directory of Horusec repository.
+	// the path to get the root directory of Horusx repository.
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		panic("Failed to get runtime caller info")
@@ -131,7 +131,7 @@ func findRootDirectory() string {
 
 	if _, err := os.Stat(dir); err != nil {
 		panic(fmt.Sprintf(
-			"Failed to find horusec root directory: %v\nThe path %s should point to root directory of repository", err, dir,
+			"Failed to find horusx root directory: %v\nThe path %s should point to root directory of repository", err, dir,
 		))
 	}
 

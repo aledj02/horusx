@@ -14,7 +14,7 @@
 
 
 ## **About**
-The **BUILD.md** is a file to check the environment and build specifications of **horusec-cli** project.
+The **BUILD.md** is a file to check the environment and build specifications of **horusx-cli** project.
 
 
 ## **Environment**
@@ -37,7 +37,7 @@ From the root of the project, run the command below to download the dependencies
 go mod download
 ```
 
-The command below build the Horusec cli for development:
+The command below build the Horusx cli for development:
 
 ```bash
 make build-dev
@@ -45,12 +45,12 @@ make build-dev
 After build successful you can execute running:
 
 ```bash
-./horusec
+./horusx
 ```
 Or on Windows:
 
 ```bash
-horusec
+horusx
 ```
 
 ### **Style Guide**
@@ -113,7 +113,7 @@ make coverage
 
 ### **Security**
 
-[**Horusec**](https://horusec.io/site/) uses the latest version to keep our source code safe. You can verify using the command below:
+[**Horusx**](https://horusx.io/site/) uses the latest version to keep our source code safe. You can verify using the command below:
 
 ```bash
 make security
@@ -121,7 +121,7 @@ make security
 
 ## **Production**
 
-Run the commands below in your project's root according to your Operating System to create Horusec's binary:
+Run the commands below in your project's root according to your Operating System to create Horusx's binary:
 
 - **Windows**
 

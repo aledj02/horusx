@@ -8,30 +8,30 @@ Estas reglas se registran vía `--custom-rules-path` (ver [customRule JSON schem
 
 ```bash
 # Punto único (todos los lenguajes)
-horusec analyze \
-  --custom-rules-path ./custom_rules/horusec-custom-rules.json \
+horusx analyze \
+  --custom-rules-path ./custom_rules/horusx-custom-rules.json \
   --path ./myservice
 
 # Punto por lenguaje (elige la lista según código del repo)
-horusec analyze --custom-rules-path ./custom_rules/python.json  # repo Python
-horusec analyze --custom-rules-path ./custom_rules/go.json      # repo Go
-horusec analyze --custom-rules-path ./custom_rules/shell.json   # repo de scripts
-horusec analyze --custom-rules-path ./custom_rules/swift.json   # repo iOS/macOS
+horusx analyze --custom-rules-path ./custom_rules/python.json  # repo Python
+horusx analyze --custom-rules-path ./custom_rules/go.json      # repo Go
+horusx analyze --custom-rules-path ./custom_rules/shell.json   # repo de scripts
+horusx analyze --custom-rules-path ./custom_rules/swift.json   # repo iOS/macOS
 ```
 
 O vía **config**:
 
 ```json
-// horusec-config.json
+// horusx-config.json
 {
-  "custom_rules_path": "./custom_rules/horusec-custom-rules.json"
+  "custom_rules_path": "./custom_rules/horusx-custom-rules.json"
 }
 ```
 
 O vía **env**:
 
 ```
-export HORUSEC_CLI_CUSTOM_RULES_PATH=./custom_rules/horusec-custom-rules.json
+export HORUSX_CLI_CUSTOM_RULES_PATH=./custom_rules/horusx-custom-rules.json
 ```
 
 ## Reglas por lenguaje (50 total)
@@ -89,7 +89,7 @@ Son **regex**, no AST. Algunas reglas pueden matchear en tests, docs, o código 
 - Filtrar por severity antes de fail el CI:
   ```bash
   # solo CRITICAL + HIGH fallan el build
-  horusec analyze --custom-rules-path ... --severity HIGH --severity CRITICAL --failure
+  horusx analyze --custom-rules-path ... --severity HIGH --severity CRITICAL --failure
   ```
 - Ajustar `confidence` a `MEDIUM` si el patrón es ambiguo (el report lo muestra con flag "medium confidence").
 - Para desactivar una regla puntual: moverla a un archivo que no esté en `--path`.
@@ -111,16 +111,16 @@ Son **regex**, no AST. Algunas reglas pueden matchear en tests, docs, o código 
        with open(os.path.join(d, f)) as fh:
            out.extend(json.load(fh))
    out.sort(key=lambda r: {"Python":0,"Go":1,"Shell":2,"Swift":3}[r["language"]])
-   with open(os.path.join(d, "horusec-custom-rules.json"), "w") as fh:
+   with open(os.path.join(d, "horusx-custom-rules.json"), "w") as fh:
        json.dump(out, fh, indent=2)
        fh.write("\n")
    PY
    ```
 4. Smoke-test:
    ```bash
-   horusec analyze --path /tmp/vulnerable --custom-rules-path custom_rules/horusec-custom-rules.json
+   horusx analyze --path /tmp/vulnerable --custom-rules-path custom_rules/horusx-custom-rules.json
    ```
 
 ## Proveniencia
 
-Estas reglas son **ad-hoc del fork privado `horusx/`**, no del upstream. El upstream de `ZupIT/horusec` no las distribuye. Si se adoptan al pipeline central, mantener un índice de CWEs cubiertos (ver `description` de cada regla).
+Estas reglas son **ad-hoc del fork privado `horusx/`**, no del upstream. El upstream de `ZupIT/horusx` no las distribuye. Si se adoptan al pipeline central, mantener un índice de CWEs cubiertos (ver `description` de cada regla).

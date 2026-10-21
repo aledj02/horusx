@@ -36,20 +36,20 @@ func NormalizePathToAssertInJSON(path string) string {
 	return strings.ReplaceAll(path, `\`, `\\\\`)
 }
 
-// CreateHorusecAnalysisDirectory create a .horusec directory to be analyzed using the
+// CreateHorusxAnalysisDirectory create a .horusx directory to be analyzed using the
 // analysis.ID as suffix on path and copy paths the created directory.
 //
-// The value returned will be a project path that contains the .horusec directory inside.
-func CreateHorusecAnalysisDirectory(tb testing.TB, analysiss *analysis.Analysis, paths ...string) string {
+// The value returned will be a project path that contains the .horusx directory inside.
+func CreateHorusxAnalysisDirectory(tb testing.TB, analysiss *analysis.Analysis, paths ...string) string {
 	if analysiss.ID == uuid.Nil {
 		analysiss.ID = uuid.New()
 	}
 	projectPath := tb.TempDir()
 
-	horusecPath := filepath.Join(projectPath, ".horusec", analysiss.ID.String())
+	horusxPath := filepath.Join(projectPath, ".horusx", analysiss.ID.String())
 
 	for _, src := range paths {
-		err := copy.Copy(src, horusecPath, func(src string) bool { return false })
+		err := copy.Copy(src, horusxPath, func(src string) bool { return false })
 		require.NoError(tb, err, "Exepected no error to copy files from %s to %s", src, projectPath)
 	}
 

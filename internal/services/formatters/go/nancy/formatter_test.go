@@ -39,7 +39,7 @@ func TestParseOutput(t *testing.T) {
 		analysis := new(analysis.Analysis)
 
 		cfg := config.New()
-		cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, analysis, testutil.GoExample1)
+		cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, analysis, testutil.GoExample1)
 
 		dockerAPIControllerMock := testutil.NewDockerMock()
 		dockerAPIControllerMock.On("SetAnalysisID")

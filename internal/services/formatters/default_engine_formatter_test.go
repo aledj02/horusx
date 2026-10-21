@@ -22,18 +22,18 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/ZupIT/horusec/internal/services/formatters"
-	"github.com/ZupIT/horusec/internal/services/formatters/csharp/horuseccsharp"
-	"github.com/ZupIT/horusec/internal/services/formatters/dart/horusecdart"
-	"github.com/ZupIT/horusec/internal/services/formatters/go/horusecgo"
-	"github.com/ZupIT/horusec/internal/services/formatters/java/horusecjava"
-	"github.com/ZupIT/horusec/internal/services/formatters/javascript/horusecjavascript"
-	"github.com/ZupIT/horusec/internal/services/formatters/kotlin/horuseckotlin"
-	"github.com/ZupIT/horusec/internal/services/formatters/leaks/horusecleaks"
-	"github.com/ZupIT/horusec/internal/services/formatters/nginx/horusecnginx"
-	"github.com/ZupIT/horusec/internal/services/formatters/python/horusecpython"
-	"github.com/ZupIT/horusec/internal/services/formatters/shell/horusecshell"
-	"github.com/ZupIT/horusec/internal/services/formatters/swift/horusecswift"
-	"github.com/ZupIT/horusec/internal/services/formatters/yaml/horuseckubernetes"
+	"github.com/ZupIT/horusec/internal/services/formatters/csharp/horusxcsharp"
+	"github.com/ZupIT/horusec/internal/services/formatters/dart/horusxdart"
+	"github.com/ZupIT/horusec/internal/services/formatters/go/horusxgo"
+	"github.com/ZupIT/horusec/internal/services/formatters/java/horusxjava"
+	"github.com/ZupIT/horusec/internal/services/formatters/javascript/horusxjavascript"
+	"github.com/ZupIT/horusec/internal/services/formatters/kotlin/horusxkotlin"
+	"github.com/ZupIT/horusec/internal/services/formatters/leaks/horusxleaks"
+	"github.com/ZupIT/horusec/internal/services/formatters/nginx/horusxnginx"
+	"github.com/ZupIT/horusec/internal/services/formatters/python/horusxpython"
+	"github.com/ZupIT/horusec/internal/services/formatters/shell/horusxshell"
+	"github.com/ZupIT/horusec/internal/services/formatters/swift/horusxswift"
+	"github.com/ZupIT/horusec/internal/services/formatters/yaml/horusxkubernetes"
 	"github.com/ZupIT/horusec/internal/utils/testutil"
 )
 
@@ -44,51 +44,51 @@ func TestStartAnalysis(t *testing.T) {
 	}{
 		{
 			engine:    "Csharp",
-			formatter: horuseccsharp.NewFormatter,
+			formatter: horusxcsharp.NewFormatter,
 		},
 		{
 			engine:    "Dart",
-			formatter: horusecdart.NewFormatter,
+			formatter: horusxdart.NewFormatter,
 		},
 		{
 			engine:    "Java",
-			formatter: horusecjava.NewFormatter,
+			formatter: horusxjava.NewFormatter,
 		},
 		{
 			engine:    "Javascript",
-			formatter: horusecjavascript.NewFormatter,
+			formatter: horusxjavascript.NewFormatter,
 		},
 		{
 			engine:    "Kotlin",
-			formatter: horuseckotlin.NewFormatter,
+			formatter: horusxkotlin.NewFormatter,
 		},
 		{
 			engine:    "Leaks",
-			formatter: horusecleaks.NewFormatter,
+			formatter: horusxleaks.NewFormatter,
 		},
 		{
 			engine:    "Nginx",
-			formatter: horusecnginx.NewFormatter,
+			formatter: horusxnginx.NewFormatter,
 		},
 		{
 			engine:    "Kubernetes",
-			formatter: horuseckubernetes.NewFormatter,
+			formatter: horusxkubernetes.NewFormatter,
 		},
 		{
 			engine:    "Python",
-			formatter: horusecpython.NewFormatter,
+			formatter: horusxpython.NewFormatter,
 		},
 		{
 			engine:    "Go",
-			formatter: horusecgo.NewFormatter,
+			formatter: horusxgo.NewFormatter,
 		},
 		{
 			engine:    "Shell",
-			formatter: horusecshell.NewFormatter,
+			formatter: horusxshell.NewFormatter,
 		},
 		{
 			engine:    "Swift",
-			formatter: horusecswift.NewFormatter,
+			formatter: horusxswift.NewFormatter,
 		},
 	}
 

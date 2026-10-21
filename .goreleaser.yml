@@ -5,16 +5,16 @@
 #   goreleaser build --snapshot --clean   # dev, no publica
 #   goreleaser release --clean            # genera tag y publica en GH
 version: 2
-project_name: horusec
+project_name: horusx
 
 before:
   hooks:
     - go mod tidy
 
 builds:
-  - id: horusec
+  - id: horusx
     main: ./cmd/app
-    binary: horusec
+    binary: horusx
     env:
       - CGO_ENABLED=0
     goos:
@@ -35,7 +35,7 @@ builds:
       - -X github.com/ZupIT/horusec/cmd/app/version.Date={{.Date}}
 
 archives:
-  - id: horusec
+  - id: horusx
     formats: [ tar.gz ]
     name_template: >-
       {{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}

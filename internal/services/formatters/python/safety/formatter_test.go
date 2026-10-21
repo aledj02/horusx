@@ -22,7 +22,7 @@ import (
 	"time"
 
 	entitiesAnalysis "github.com/ZupIT/horusec-devkit/pkg/entities/analysis"
-	enumHorusec "github.com/ZupIT/horusec-devkit/pkg/enums/analysis"
+	enumHorusx "github.com/ZupIT/horusec-devkit/pkg/enums/analysis"
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	"github.com/google/uuid"
@@ -41,7 +41,7 @@ func getAnalysis() *entitiesAnalysis.Analysis {
 		ID:                      uuid.New(),
 		RepositoryID:            uuid.New(),
 		WorkspaceID:             uuid.New(),
-		Status:                  enumHorusec.Running,
+		Status:                  enumHorusx.Running,
 		Errors:                  "",
 		CreatedAt:               time.Now(),
 		AnalysisVulnerabilities: []entitiesAnalysis.AnalysisVulnerabilities{},
@@ -83,7 +83,7 @@ func TestFormatter_StartSafety(t *testing.T) {
 		config := cliConfig.New()
 		config.ProjectPath = t.TempDir()
 		srcProject := testutil.PythonExample
-		dstProject := filepath.Join(config.ProjectPath, ".horusec", analysis.ID.String())
+		dstProject := filepath.Join(config.ProjectPath, ".horusx", analysis.ID.String())
 		assert.NoError(t, copy.Copy(srcProject, dstProject, func(src string) bool {
 			return false
 		}))

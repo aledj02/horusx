@@ -27,7 +27,7 @@ import (
 	"github.com/ZupIT/horusec/internal/utils/testutil"
 )
 
-var _ = Describe("Run horusec CLI with generate argument", func() {
+var _ = Describe("Run horusx CLI with generate argument", func() {
 	var (
 		outBuffer      = gbytes.NewBuffer()
 		errBuffer      = gbytes.NewBuffer()
@@ -38,7 +38,7 @@ var _ = Describe("Run horusec CLI with generate argument", func() {
 	)
 
 	BeforeSuite(func() {
-		configFileName := "horusec-config-generate-test.json"
+		configFileName := "horusx-config-generate-test.json"
 		configFilePath = testutil.NormalizePathToAssert(filepath.Join(os.TempDir(), configFileName))
 	})
 
@@ -46,7 +46,7 @@ var _ = Describe("Run horusec CLI with generate argument", func() {
 		flags = map[string]string{
 			testutil.GlobalFlagConfigFilePath: configFilePath,
 		}
-		cmd := testutil.GinkgoGetHorusecCmdWithFlags(testutil.CmdGenerate, flags)
+		cmd := testutil.GinkgoGetHorusxCmdWithFlags(testutil.CmdGenerate, flags)
 		session, err = gexec.Start(cmd, outBuffer, errBuffer)
 	})
 
@@ -55,7 +55,7 @@ var _ = Describe("Run horusec CLI with generate argument", func() {
 		_ = errBuffer.Clear()
 	})
 
-	When("the horusec-config.json still doesn't exists", func() {
+	When("the horusx-config.json still doesn't exists", func() {
 		BeforeEach(func() {
 			_ = os.Remove(configFilePath)
 		})
@@ -66,19 +66,19 @@ var _ = Describe("Run horusec CLI with generate argument", func() {
 		})
 
 		It("show success message and correct path of config file", func() {
-			Eventually(outBuffer).Should(gbytes.Say(`Horusec created file of configuration with success on path:`))
+			Eventually(outBuffer).Should(gbytes.Say(`Horusx created file of configuration with success on path:`))
 			Eventually(outBuffer).Should(gbytes.Say(fmt.Sprintf("[%s]", configFilePath)))
 		})
 	})
 
-	When("the horusec-config.json already exists", func() {
+	When("the horusx-config.json already exists", func() {
 		It("execute command without error", func() {
 			Expect(err).ShouldNot(HaveOccurred())
 			Eventually(session).Should(gexec.Exit(0))
 		})
 
 		It("show message already exists", func() {
-			Eventually(outBuffer).Should(gbytes.Say(`Horusec configuration already exists on path:`))
+			Eventually(outBuffer).Should(gbytes.Say(`Horusx configuration already exists on path:`))
 			Eventually(outBuffer).Should(gbytes.Say(fmt.Sprintf("[%s]", configFilePath)))
 		})
 	})

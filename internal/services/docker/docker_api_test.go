@@ -40,9 +40,9 @@ const (
 	Image = "horuszup/gitleaks:latest"
 	Cmd   = `
 		mkdir -p ~/.ssh &&
-		echo '%GIT_PRIVATE_SSH_KEY%' > ~/.ssh/horusec_id_rsa &&
-		chmod 600 ~/.ssh/horusec_id_rsa &&
-		echo "IdentityFile ~/.ssh/horusec_id_rsa" >> /etc/ssh/ssh_config &&
+		echo '%GIT_PRIVATE_SSH_KEY%' > ~/.ssh/horusx_id_rsa &&
+		chmod 600 ~/.ssh/horusx_id_rsa &&
+		echo "IdentityFile ~/.ssh/horusx_id_rsa" >> /etc/ssh/ssh_config &&
 		echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config &&
 		git clone -b %GIT_BRANCH% --single-branch %GIT_REPO% code --quiet 2> /tmp/errorGitCloneGitleaks
 		if [ $? -eq 0 ]; then
@@ -132,8 +132,8 @@ func TestDockerAPI_CreateLanguageAnalysisContainer(t *testing.T) {
 	})
 
 	t.Run("Should return error when create container", func(t *testing.T) {
-		_ = os.Setenv("HORUSEC_DOCKER_API_IMAGE_CHECK", "false")
-		_ = os.Setenv("HORUSEC_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
+		_ = os.Setenv("HORUSX_DOCKER_API_IMAGE_CHECK", "false")
+		_ = os.Setenv("HORUSX_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
 
 		dockerAPIClient := testutil.NewDockerClientMock()
 		dockerAPIClient.On("ImageList").Return([]types.ImageSummary{{ID: uuid.New().String()}}, nil)
@@ -152,8 +152,8 @@ func TestDockerAPI_CreateLanguageAnalysisContainer(t *testing.T) {
 	})
 
 	t.Run("Should return error when start container", func(t *testing.T) {
-		_ = os.Setenv("HORUSEC_DOCKER_API_IMAGE_CHECK", "false")
-		_ = os.Setenv("HORUSEC_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
+		_ = os.Setenv("HORUSX_DOCKER_API_IMAGE_CHECK", "false")
+		_ = os.Setenv("HORUSX_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
 
 		dockerAPIClient := testutil.NewDockerClientMock()
 		dockerAPIClient.On("ImageList").Return([]types.ImageSummary{{ID: uuid.New().String()}}, nil)
@@ -173,8 +173,8 @@ func TestDockerAPI_CreateLanguageAnalysisContainer(t *testing.T) {
 	})
 
 	t.Run("Should return error when wait container", func(t *testing.T) {
-		_ = os.Setenv("HORUSEC_DOCKER_API_IMAGE_CHECK", "false")
-		_ = os.Setenv("HORUSEC_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
+		_ = os.Setenv("HORUSX_DOCKER_API_IMAGE_CHECK", "false")
+		_ = os.Setenv("HORUSX_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
 
 		dockerAPIClient := testutil.NewDockerClientMock()
 		dockerAPIClient.On("ImageList").Return([]types.ImageSummary{{ID: uuid.New().String()}}, nil)
@@ -201,8 +201,8 @@ func TestDockerAPI_CreateLanguageAnalysisContainer(t *testing.T) {
 	})
 
 	t.Run("Should return error when read container logs", func(t *testing.T) {
-		_ = os.Setenv("HORUSEC_DOCKER_API_IMAGE_CHECK", "false")
-		_ = os.Setenv("HORUSEC_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
+		_ = os.Setenv("HORUSX_DOCKER_API_IMAGE_CHECK", "false")
+		_ = os.Setenv("HORUSX_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
 
 		dockerAPIClient := testutil.NewDockerClientMock()
 		dockerAPIClient.On("ImageList").Return([]types.ImageSummary{{ID: uuid.New().String()}}, nil)
@@ -226,8 +226,8 @@ func TestDockerAPI_CreateLanguageAnalysisContainer(t *testing.T) {
 	})
 
 	t.Run("Should return analysis with success", func(t *testing.T) {
-		_ = os.Setenv("HORUSEC_DOCKER_API_IMAGE_CHECK", "false")
-		_ = os.Setenv("HORUSEC_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
+		_ = os.Setenv("HORUSX_DOCKER_API_IMAGE_CHECK", "false")
+		_ = os.Setenv("HORUSX_DOCKER_API_RETRY_TIME_SLEEP_SECONDS", "1")
 
 		dockerAPIClient := testutil.NewDockerClientMock()
 		dockerAPIClient.On("ImageList").Return([]types.ImageSummary{{ID: uuid.New().String()}}, nil)
@@ -312,7 +312,7 @@ func TestDeleteContainersFromAPI(t *testing.T) {
 		dockerAPIClient := testutil.NewDockerClientMock()
 		dockerAPIClient.On("ContainerList").Return([]types.Container{}, errors.New("test"))
 		config := &cliConfig.Config{}
-		config.ProjectPath = "C:/Users/usr/Documents/Horusec/project"
+		config.ProjectPath = "C:/Users/usr/Documents/Horusx/project"
 
 		api := &API{
 			ctx:                    context.Background(),
@@ -323,6 +323,6 @@ func TestDeleteContainersFromAPI(t *testing.T) {
 		}
 
 		response := api.getSourceFolder()
-		assert.Equal(t, "//c//Users//usr//Documents//Horusec//project//.horusec//"+api.analysisID.String(), response)
+		assert.Equal(t, "//c//Users//usr//Documents//Horusx//project//.horusx//"+api.analysisID.String(), response)
 	})
 }

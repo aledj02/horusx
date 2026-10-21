@@ -25,15 +25,15 @@ import (
 	"github.com/onsi/ginkgo"
 )
 
-func GinkgoGetHorusecCmd(horusecCmd string) *exec.Cmd {
-	bin := ginkgoBuildHorusecBinary()
-	args := setLogLevelArgsToHorusecCmd(horusecCmd)
+func GinkgoGetHorusxCmd(horusxCmd string) *exec.Cmd {
+	bin := ginkgoBuildHorusxBinary()
+	args := setLogLevelArgsToHorusxCmd(horusxCmd)
 	return exec.Command(bin, args...)
 }
 
-func GinkgoGetHorusecCmdWithFlags(cmdArg string, flags map[string]string) *exec.Cmd {
-	bin := ginkgoBuildHorusecBinary()
-	args := setLogLevelArgsToHorusecCmd(cmdArg)
+func GinkgoGetHorusxCmdWithFlags(cmdArg string, flags map[string]string) *exec.Cmd {
+	bin := ginkgoBuildHorusxBinary()
+	args := setLogLevelArgsToHorusxCmd(cmdArg)
 	for flag, value := range flags {
 		args = append(args, fmt.Sprintf("%s=%s", flag, value))
 	}
@@ -42,7 +42,7 @@ func GinkgoGetHorusecCmdWithFlags(cmdArg string, flags map[string]string) *exec.
 	return cmd
 }
 
-func ginkgoBuildHorusecBinary(customArgs ...string) string {
+func ginkgoBuildHorusxBinary(customArgs ...string) string {
 	binary := filepath.Join(os.TempDir(), getBinaryNameBySystem())
 	args := []string{
 		"build",
@@ -53,17 +53,17 @@ func ginkgoBuildHorusecBinary(customArgs ...string) string {
 	cmd := exec.Command("go", args...)
 	err := cmd.Run()
 	if err != nil {
-		ginkgo.Fail(fmt.Sprintf("Error on build Horusec binary for e2e test %v", err))
+		ginkgo.Fail(fmt.Sprintf("Error on build Horusx binary for e2e test %v", err))
 	}
 	return binary
 }
 
-func setLogLevelArgsToHorusecCmd(horusecCmd ...string) []string {
-	return append(horusecCmd, fmt.Sprintf("%s=%s", GlobalFlagLogLevel, enums.DebugLevel.String()))
+func setLogLevelArgsToHorusxCmd(horusxCmd ...string) []string {
+	return append(horusxCmd, fmt.Sprintf("%s=%s", GlobalFlagLogLevel, enums.DebugLevel.String()))
 }
 
 func getBinaryNameBySystem() string {
-	binaryName := "horusec-e2e"
+	binaryName := "horusx-e2e"
 	if runtime.GOOS == "windows" {
 		binaryName = fmt.Sprintf("%s.exe", binaryName)
 	}

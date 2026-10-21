@@ -61,7 +61,7 @@ func TestParseFindingsToVulnerabilities(t *testing.T) {
 			Confidence:  rule.Confidence,
 			Description: rule.Description,
 			SourceLocation: engine.Location{
-				Filename: filepath.Join(cfg.ProjectPath, ".horusec", analysis.ID.String(), "Test.java"),
+				Filename: filepath.Join(cfg.ProjectPath, ".horusx", analysis.ID.String(), "Test.java"),
 				Line:     10,
 				Column:   20,
 			},
@@ -108,7 +108,7 @@ func TestSetAnalysisError(t *testing.T) {
 	svc.SetAnalysisError(errors.New("some error"), tools.HorusecEngine, "testing", "")
 	svc.SetAnalysisError(errors.New("other error"), tools.HorusecEngine, "testing 2", "")
 
-	expectedErrors := "{HORUSEC_CLI} Error while running tool HorusecEngine: some error;{HORUSEC_CLI} Error while running tool HorusecEngine: other error"
+	expectedErrors := "{HORUSX_CLI} Error while running tool HorusecEngine: some error;{HORUSX_CLI} Error while running tool HorusecEngine: other error"
 
 	assert.Equal(t, expectedErrors, analysis.Errors)
 }
@@ -178,7 +178,7 @@ func TestGetAnalysisIDErrorMessage(t *testing.T) {
 		result := monitorController.GetAnalysisIDErrorMessage(tools.Bandit, "test")
 
 		assert.NotEmpty(t, result)
-		assert.Equal(t, "{HORUSEC_CLI} Error to execute tool Bandit | analysisID -> 00000000-0000-0000-0000-000000000000 | output -> test", result)
+		assert.Equal(t, "{HORUSX_CLI} Error to execute tool Bandit | analysisID -> 00000000-0000-0000-0000-000000000000 | output -> test", result)
 	})
 }
 
@@ -195,7 +195,7 @@ func TestGetConfigProjectPath(t *testing.T) {
 		result := svc.GetConfigProjectPath()
 
 		assert.NotEmpty(t, result)
-		assert.Equal(t, filepath.Join("test", ".horusec", "00000000-0000-0000-0000-000000000000"), result)
+		assert.Equal(t, filepath.Join("test", ".horusx", "00000000-0000-0000-0000-000000000000"), result)
 	})
 }
 
@@ -233,7 +233,7 @@ func TestLogDebugWithReplace(t *testing.T) {
 		assert.NotPanics(t, func() {
 			monitorController.LogDebugWithReplace(messages.MsgDebugToolStartAnalysis, tools.NpmAudit, languages.Javascript)
 		})
-		assert.Contains(t, stdOutMock.String(), `level=debug msg="{HORUSEC_CLI} Running NpmAudit - JavaScript in analysisID: 00000000-0000-0000-0000-000000000000`)
+		assert.Contains(t, stdOutMock.String(), `level=debug msg="{HORUSX_CLI} Running NpmAudit - JavaScript in analysisID: 00000000-0000-0000-0000-000000000000`)
 	})
 }
 
@@ -255,7 +255,7 @@ func TestLogAnalysisError(t *testing.T) {
 			monitorController.SetAnalysisError(errors.New("test"), tools.GoSec, "container err", "")
 			monitorController.SetAnalysisError(errors.New("test2"), tools.GitLeaks, "container err", "")
 		})
-		assert.Contains(t, stdOutMock.String(), `{HORUSEC_CLI} Error to execute tool GoSec | analysisID -> 00000000-0000-0000-0000-000000000000 | output -> container err`)
+		assert.Contains(t, stdOutMock.String(), `{HORUSX_CLI} Error to execute tool GoSec | analysisID -> 00000000-0000-0000-0000-000000000000 | output -> container err`)
 	})
 	t.Run("should not panic when logging error and exists projectSubPath", func(t *testing.T) {
 		monitorController := NewFormatterService(&analysis.Analysis{}, testutil.NewDockerMock(), &config.Config{})
@@ -266,7 +266,7 @@ func TestLogAnalysisError(t *testing.T) {
 			monitorController.SetAnalysisError(errors.New("test"), tools.GoSec, "container err", "/tmp")
 			monitorController.SetAnalysisError(errors.New("test2"), tools.GitLeaks, "container err", "/tmp")
 		})
-		assert.Contains(t, stdOutMock.String(), `{HORUSEC_CLI} Error to execute tool GoSec | analysisID -> 00000000-0000-0000-0000-000000000000 | output -> container err | ProjectSubPath -> /tmp - test"`)
+		assert.Contains(t, stdOutMock.String(), `{HORUSX_CLI} Error to execute tool GoSec | analysisID -> 00000000-0000-0000-0000-000000000000 | output -> container err | ProjectSubPath -> /tmp - test"`)
 	})
 }
 
@@ -430,7 +430,7 @@ func TestGetFilepathFromFilename(t *testing.T) {
 			},
 		}
 		monitorController := NewFormatterService(&analysis.Analysis{}, testutil.NewDockerMock(), cfg)
-		dirName := filepath.Join(cfg.ProjectPath, ".horusec", monitorController.GetAnalysisID())
+		dirName := filepath.Join(cfg.ProjectPath, ".horusx", monitorController.GetAnalysisID())
 		relativeFilePath := filepath.Join("examples", "go", "example1")
 		filename := "server.go"
 
@@ -475,7 +475,7 @@ func TestGetConfigCMDByFileExtension(t *testing.T) {
 
 		monitorController := NewFormatterService(&analysis.Analysis{}, testutil.NewDockerMock(), cfg)
 
-		dirName := filepath.Join(cfg.ProjectPath, ".horusec", monitorController.GetAnalysisID())
+		dirName := filepath.Join(cfg.ProjectPath, ".horusx", monitorController.GetAnalysisID())
 		relativeFilePath := filepath.Join("examples", "go", "example1")
 		filename := "package-lock.json"
 

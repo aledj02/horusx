@@ -31,5 +31,5 @@ RUN pip install --no-cache-dir \
       && safety --version
 
 # shell helper que sube el upstream (no modifica el parser)
-COPY ./internal/services/formatters/python/deployments/horusec-file-ignore.sh /usr/local/bin/horusec-file-ignore.sh
-RUN chmod +x /usr/local/bin/horusec-file-ignore.sh
+COPY ./internal/services/formatters/python/deployments/horusx-file-ignore.sh /usr/local/bin/horusx-file-ignore.sh
+RUN chmod +x /usr/local/bin/horusx-file-ignore.sh

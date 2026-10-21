@@ -42,36 +42,36 @@ import (
 )
 
 const (
-	EnvHorusecAPIUri                   = "HORUSEC_CLI_HORUSEC_API_URI"
-	EnvTimeoutInSecondsRequest         = "HORUSEC_CLI_TIMEOUT_IN_SECONDS_REQUEST"
-	EnvTimeoutInSecondsAnalysis        = "HORUSEC_CLI_TIMEOUT_IN_SECONDS_ANALYSIS"
-	EnvMonitorRetryInSeconds           = "HORUSEC_CLI_MONITOR_RETRY_IN_SECONDS"
-	EnvRepositoryAuthorization         = "HORUSEC_CLI_REPOSITORY_AUTHORIZATION"
-	EnvPrintOutputType                 = "HORUSEC_CLI_PRINT_OUTPUT_TYPE"
-	EnvJSONOutputFilePath              = "HORUSEC_CLI_JSON_OUTPUT_FILEPATH"
-	EnvSeveritiesToIgnore              = "HORUSEC_CLI_SEVERITIES_TO_IGNORE"
-	EnvFilesOrPathsToIgnore            = "HORUSEC_CLI_FILES_OR_PATHS_TO_IGNORE"
-	EnvReturnErrorIfFoundVulnerability = "HORUSEC_CLI_RETURN_ERROR_IF_FOUND_VULNERABILITY"
-	EnvProjectPath                     = "HORUSEC_CLI_PROJECT_PATH"
-	EnvWorkDir                         = "HORUSEC_CLI_WORK_DIR"
-	EnvEnableGitHistoryAnalysis        = "HORUSEC_CLI_ENABLE_GIT_HISTORY_ANALYSIS"
-	EnvCertInsecureSkipVerify          = "HORUSEC_CLI_CERT_INSECURE_SKIP_VERIFY"
-	EnvCertPath                        = "HORUSEC_CLI_CERT_PATH"
-	EnvEnableCommitAuthor              = "HORUSEC_CLI_ENABLE_COMMIT_AUTHOR"
-	EnvRepositoryName                  = "HORUSEC_CLI_REPOSITORY_NAME"
-	EnvFalsePositiveHashes             = "HORUSEC_CLI_FALSE_POSITIVE_HASHES"
-	EnvRiskAcceptHashes                = "HORUSEC_CLI_RISK_ACCEPT_HASHES"
-	EnvToolsConfig                     = "HORUSEC_CLI_TOOLS_CONFIG"
-	EnvHeaders                         = "HORUSEC_CLI_HEADERS"
-	EnvContainerBindProjectPath        = "HORUSEC_CLI_CONTAINER_BIND_PROJECT_PATH"
-	EnvDisableDocker                   = "HORUSEC_CLI_DISABLE_DOCKER"
-	EnvCustomRulesPath                 = "HORUSEC_CLI_CUSTOM_RULES_PATH"
-	EnvEnableInformationSeverity       = "HORUSEC_CLI_ENABLE_INFORMATION_SEVERITY"
-	EnvCustomImages                    = "HORUSEC_CLI_CUSTOM_IMAGES"
-	EnvShowVulnerabilitiesTypes        = "HORUSEC_CLI_SHOW_VULNERABILITIES_TYPES"
-	EnvLogFilePath                     = "HORUSEC_CLI_LOG_FILE_PATH"
-	EnvEnableOwaspDependencyCheck      = "HORUSEC_CLI_ENABLE_OWASP_DEPENDENCY_CHECK"
-	EnvEnableShellCheck                = "HORUSEC_CLI_ENABLE_SHELLCHECK"
+	EnvHorusxAPIUri                    = "HORUSX_CLI_HORUSX_API_URI"
+	EnvTimeoutInSecondsRequest         = "HORUSX_CLI_TIMEOUT_IN_SECONDS_REQUEST"
+	EnvTimeoutInSecondsAnalysis        = "HORUSX_CLI_TIMEOUT_IN_SECONDS_ANALYSIS"
+	EnvMonitorRetryInSeconds           = "HORUSX_CLI_MONITOR_RETRY_IN_SECONDS"
+	EnvRepositoryAuthorization         = "HORUSX_CLI_REPOSITORY_AUTHORIZATION"
+	EnvPrintOutputType                 = "HORUSX_CLI_PRINT_OUTPUT_TYPE"
+	EnvJSONOutputFilePath              = "HORUSX_CLI_JSON_OUTPUT_FILEPATH"
+	EnvSeveritiesToIgnore              = "HORUSX_CLI_SEVERITIES_TO_IGNORE"
+	EnvFilesOrPathsToIgnore            = "HORUSX_CLI_FILES_OR_PATHS_TO_IGNORE"
+	EnvReturnErrorIfFoundVulnerability = "HORUSX_CLI_RETURN_ERROR_IF_FOUND_VULNERABILITY"
+	EnvProjectPath                     = "HORUSX_CLI_PROJECT_PATH"
+	EnvWorkDir                         = "HORUSX_CLI_WORK_DIR"
+	EnvEnableGitHistoryAnalysis        = "HORUSX_CLI_ENABLE_GIT_HISTORY_ANALYSIS"
+	EnvCertInsecureSkipVerify          = "HORUSX_CLI_CERT_INSECURE_SKIP_VERIFY"
+	EnvCertPath                        = "HORUSX_CLI_CERT_PATH"
+	EnvEnableCommitAuthor              = "HORUSX_CLI_ENABLE_COMMIT_AUTHOR"
+	EnvRepositoryName                  = "HORUSX_CLI_REPOSITORY_NAME"
+	EnvFalsePositiveHashes             = "HORUSX_CLI_FALSE_POSITIVE_HASHES"
+	EnvRiskAcceptHashes                = "HORUSX_CLI_RISK_ACCEPT_HASHES"
+	EnvToolsConfig                     = "HORUSX_CLI_TOOLS_CONFIG"
+	EnvHeaders                         = "HORUSX_CLI_HEADERS"
+	EnvContainerBindProjectPath        = "HORUSX_CLI_CONTAINER_BIND_PROJECT_PATH"
+	EnvDisableDocker                   = "HORUSX_CLI_DISABLE_DOCKER"
+	EnvCustomRulesPath                 = "HORUSX_CLI_CUSTOM_RULES_PATH"
+	EnvEnableInformationSeverity       = "HORUSX_CLI_ENABLE_INFORMATION_SEVERITY"
+	EnvCustomImages                    = "HORUSX_CLI_CUSTOM_IMAGES"
+	EnvShowVulnerabilitiesTypes        = "HORUSX_CLI_SHOW_VULNERABILITIES_TYPES"
+	EnvLogFilePath                     = "HORUSX_CLI_LOG_FILE_PATH"
+	EnvEnableOwaspDependencyCheck      = "HORUSX_CLI_ENABLE_OWASP_DEPENDENCY_CHECK"
+	EnvEnableShellCheck                = "HORUSX_CLI_ENABLE_SHELLCHECK"
 )
 
 type GlobalOptions struct {
@@ -87,7 +87,7 @@ type GlobalOptions struct {
 }
 
 type StartOptions struct {
-	HorusecAPIUri                   string                    `json:"horusec_api_uri"`
+	HorusxAPIUri                    string                    `json:"horusx_api_uri"`
 	RepositoryAuthorization         string                    `json:"repository_authorization"`
 	CertPath                        string                    `json:"cert_path"`
 	RepositoryName                  string                    `json:"repository_name"`
@@ -136,15 +136,15 @@ func New() *Config {
 	return &Config{
 		Version: version.Version,
 		GlobalOptions: GlobalOptions{
-			ConfigFilePath: filepath.Join(wd, "horusec-config.json"),
+			ConfigFilePath: filepath.Join(wd, "horusx-config.json"),
 			LogLevel:       logrus.InfoLevel.String(),
 			LogFilePath: filepath.Join(
-				os.TempDir(), fmt.Sprintf("horusec-%s.log", time.Now().Format("2006-01-02-15-04-05")),
+				os.TempDir(), fmt.Sprintf("horusx-%s.log", time.Now().Format("2006-01-02-15-04-05")),
 			),
 			IsTimeout: false,
 		},
 		StartOptions: StartOptions{
-			HorusecAPIUri:                   "http://0.0.0.0:8000",
+			HorusxAPIUri:                    "http://0.0.0.0:8000",
 			TimeoutInSecondsRequest:         300,
 			TimeoutInSecondsAnalysis:        600,
 			MonitorRetryInSeconds:           15,
@@ -194,7 +194,7 @@ func (c *Config) LoadStartFlags(cmd *cobra.Command) *Config {
 	c.JSONOutputFilePath = c.extractFlagValueString(cmd, "json-output-file", c.JSONOutputFilePath)
 	c.SeveritiesToIgnore = c.extractFlagValueStringSlice(cmd, "ignore-severity", c.SeveritiesToIgnore)
 	c.FilesOrPathsToIgnore = c.extractFlagValueStringSlice(cmd, "ignore", c.FilesOrPathsToIgnore)
-	c.HorusecAPIUri = c.extractFlagValueString(cmd, "horusec-url", c.HorusecAPIUri)
+	c.HorusxAPIUri = c.extractFlagValueString(cmd, "horusx-url", c.HorusxAPIUri)
 	c.TimeoutInSecondsRequest = c.extractFlagValueInt64(cmd, "request-timeout", c.TimeoutInSecondsRequest)
 	c.TimeoutInSecondsAnalysis = c.extractFlagValueInt64(cmd, "analysis-timeout", c.TimeoutInSecondsAnalysis)
 	c.RepositoryAuthorization = c.extractFlagValueString(cmd, "authorization", c.RepositoryAuthorization)
@@ -233,8 +233,8 @@ func (c *Config) LoadFromConfigFile() *Config {
 	if !c.setViperConfigsAndReturnIfExistFile() {
 		return c
 	}
-	c.HorusecAPIUri = valueordefault.GetStringValueOrDefault(
-		viper.GetString(c.toLowerCamel(EnvHorusecAPIUri)), c.HorusecAPIUri,
+	c.HorusxAPIUri = valueordefault.GetStringValueOrDefault(
+		viper.GetString(c.toLowerCamel(EnvHorusxAPIUri)), c.HorusxAPIUri,
 	)
 	c.TimeoutInSecondsRequest = valueordefault.GetInt64ValueOrDefault(
 		viper.GetInt64(c.toLowerCamel(EnvTimeoutInSecondsRequest)), c.TimeoutInSecondsRequest,
@@ -325,7 +325,7 @@ func (c *Config) LoadFromConfigFile() *Config {
 //
 //nolint:lll,funlen
 func (c *Config) LoadFromEnvironmentVariables() *Config {
-	c.HorusecAPIUri = env.GetEnvOrDefault(EnvHorusecAPIUri, c.HorusecAPIUri)
+	c.HorusxAPIUri = env.GetEnvOrDefault(EnvHorusxAPIUri, c.HorusxAPIUri)
 	c.TimeoutInSecondsRequest = env.GetEnvOrDefaultInt64(EnvTimeoutInSecondsRequest, c.TimeoutInSecondsRequest)
 	c.TimeoutInSecondsAnalysis = env.GetEnvOrDefaultInt64(EnvTimeoutInSecondsAnalysis, c.TimeoutInSecondsAnalysis)
 	c.MonitorRetryInSeconds = env.GetEnvOrDefaultInt64(EnvMonitorRetryInSeconds, c.MonitorRetryInSeconds)
@@ -429,7 +429,7 @@ func (c *Config) Bytes() []byte {
 // nolint:funlen // is necessary to return completely map
 func (c *Config) ToMapLowerCase() map[string]interface{} {
 	return map[string]interface{}{
-		c.toLowerCamel(EnvHorusecAPIUri):                   c.HorusecAPIUri,
+		c.toLowerCamel(EnvHorusxAPIUri):                    c.HorusxAPIUri,
 		c.toLowerCamel(EnvTimeoutInSecondsRequest):         c.TimeoutInSecondsRequest,
 		c.toLowerCamel(EnvTimeoutInSecondsAnalysis):        c.TimeoutInSecondsAnalysis,
 		c.toLowerCamel(EnvMonitorRetryInSeconds):           c.MonitorRetryInSeconds,

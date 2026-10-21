@@ -68,7 +68,7 @@ func (ld *LanguageDetect) Detect(directory string) ([]languages.Language, error)
 		}
 	}
 
-	if errCopy := ld.copyProjectToHorusecFolder(directory); errCopy != nil {
+	if errCopy := ld.copyProjectToHorusxFolder(directory); errCopy != nil {
 		return nil, errCopy
 	}
 
@@ -193,17 +193,17 @@ func (ld *LanguageDetect) checkExtensionToIgnore(path string) bool {
 	return false
 }
 
-func (ld *LanguageDetect) copyProjectToHorusecFolder(directory string) error {
-	folderDstName := filepath.Join(directory, ".horusec", ld.analysisID.String())
+func (ld *LanguageDetect) copyProjectToHorusxFolder(directory string) error {
+	folderDstName := filepath.Join(directory, ".horusx", ld.analysisID.String())
 	if err := copy.Copy(directory, folderDstName, ld.isPathToIgnore); err != nil {
-		logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusecAnalysis, err)
+		logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusxAnalysis, err)
 		return err
 	}
 
 	fmt.Print("\n")
 	logger.LogWarnWithLevel(fmt.Sprintf(messages.MsgWarnMonitorTimeoutIn, ld.config.TimeoutInSecondsAnalysis))
 	fmt.Print("\n")
-	logger.LogWarnWithLevel(messages.MsgWarnDontRemoveHorusecFolder, folderDstName)
+	logger.LogWarnWithLevel(messages.MsgWarnDontRemoveHorusxFolder, folderDstName)
 	fmt.Print("\n")
 
 	return ld.copyGitFolderWhenIsSubmodule(directory, folderDstName)
@@ -240,14 +240,15 @@ func (ld *LanguageDetect) isBatFileOrShellFile(lang string) bool {
 // copyGitFolderWhenIsSubmodule check if the analysis is running with GitHistory enabled,
 // If so, we also check whether the .git is a submodule or not,
 // so we can find where the original git folder is
-// and replace it inside .horusec to run the gitleaks tool without any problems.
+// and replace it inside .horusx to run the gitleaks tool without any problems.
+//
 //nolint:funlen
 func (ld *LanguageDetect) copyGitFolderWhenIsSubmodule(directory, folderDstName string) error {
 	if ld.config.EnableGitHistoryAnalysis {
 		isGitSubmodule, originalFolderPath := ld.returnGitFolderOriginalIfIsSubmodule(filepath.Join(directory, ".git"))
 		if isGitSubmodule {
 			logger.LogErrorWithLevel(
-				messages.MsgErrorCopyProjectToHorusecAnalysis,
+				messages.MsgErrorCopyProjectToHorusxAnalysis,
 				os.RemoveAll(filepath.Join(folderDstName, ".git")),
 			)
 
@@ -257,7 +258,7 @@ func (ld *LanguageDetect) copyGitFolderWhenIsSubmodule(directory, folderDstName 
 				func(src string) bool { return false },
 			)
 			if err != nil {
-				logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusecAnalysis, err)
+				logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusxAnalysis, err)
 				return err
 			}
 		}
@@ -269,7 +270,7 @@ func (ld *LanguageDetect) copyGitFolderWhenIsSubmodule(directory, folderDstName 
 func (ld *LanguageDetect) returnGitFolderOriginalIfIsSubmodule(directory string) (bool, string) {
 	fileInfo, err := os.Stat(directory)
 	if err != nil {
-		logger.LogError(messages.MsgErrorCopyProjectToHorusecAnalysis, err)
+		logger.LogError(messages.MsgErrorCopyProjectToHorusxAnalysis, err)
 		return false, ""
 	}
 	if fileInfo.IsDir() {
@@ -277,7 +278,7 @@ func (ld *LanguageDetect) returnGitFolderOriginalIfIsSubmodule(directory string)
 	}
 	fileContentBytes, err := os.ReadFile(directory)
 	if err != nil {
-		logger.LogError(messages.MsgErrorCopyProjectToHorusecAnalysis, err)
+		logger.LogError(messages.MsgErrorCopyProjectToHorusxAnalysis, err)
 		return false, ""
 	}
 	return ld.validateSubModuleContent(fileContentBytes)
@@ -289,7 +290,7 @@ func (ld *LanguageDetect) validateSubModuleContent(fileContentBytes []byte) (boo
 		fileContent = string(fileContentBytes)
 	}
 	if !strings.HasPrefix(fileContent, prefixGitSubModule) {
-		logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusecAnalysis,
+		logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusxAnalysis,
 			errors.New("file content wrong: "+fileContent))
 		return false, ""
 	}

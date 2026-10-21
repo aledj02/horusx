@@ -136,7 +136,7 @@ func (f *Formatter) newVulnerability(vulnData *nancyVulnerability, vulnerable *n
 		Confidence:   confidence.High,
 		Code:         dependencyInfo.Code,
 		Line:         dependencyInfo.Line,
-		File:         f.removeHorusecFolder(dependencyInfo.Path),
+		File:         f.removeHorusxFolder(dependencyInfo.Path),
 	}
 	return f.SetCommitAuthor(vulnHash.Bind(vuln)), nil
 }
@@ -154,6 +154,6 @@ func (f *Formatter) getDockerConfig(projectSubPath string) *docker.AnalysisData 
 	return analysisData.SetImage(f.GetCustomImageByLanguage(languages.Go), images.Go)
 }
 
-func (f *Formatter) removeHorusecFolder(path string) string {
-	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusec", f.GetAnalysisID()), ""))
+func (f *Formatter) removeHorusxFolder(path string) string {
+	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusx", f.GetAnalysisID()), ""))
 }

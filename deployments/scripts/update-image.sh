@@ -21,7 +21,7 @@ ACTUAL_RELEASE=""
 
 installSemver () {
     mkdir -p ./bin
-    curl -fsSL -o ./bin/install-semver.sh https://raw.githubusercontent.com/ZupIT/horusec-devkit/main/scripts/install-semver.sh
+    curl -fsSL -o ./bin/install-semver.sh https://raw.githubusercontent.com/ZupIT/horusx-devkit/main/scripts/install-semver.sh
     chmod +x ./bin/install-semver.sh
     ./bin/install-semver.sh
     if ! semver &> /dev/null
@@ -64,7 +64,7 @@ generateBinaries () {
 
     if [[ -z "$ACTUAL_RELEASE" ]]
     then
-        echo "Current version not found of the horusec-cli please install and try again"
+        echo "Current version not found of the horusx-cli please install and try again"
         echo "To install semver use:"
         echo "$ make install-semver"
         echo "$ semver --help"
@@ -75,63 +75,63 @@ generateBinaries () {
 
     ACTUAL_RELEASE_FORMATTED=$(tr '.' '-' <<<"$ACTUAL_RELEASE")
 
-    mkdir -p "./bin/horusec/$ACTUAL_RELEASE_FORMATTED"
+    mkdir -p "./bin/horusx/$ACTUAL_RELEASE_FORMATTED"
 
     # Build for linux x86
-    if ! env CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -a -installsuffix cgo -o "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x86" ./cmd/app/main.go;
+    if ! env CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -a -installsuffix cgo -o "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x86" ./cmd/app/main.go;
     then
         echo "Error when generate Build for linux_x86"
     else
-        echo "1/5 Binary generated with success in ./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x86"
+        echo "1/5 Binary generated with success in ./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x86"
     fi
 
     # Build for linux x64
-    if ! env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x64" ./cmd/app/main.go;
+    if ! env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x64" ./cmd/app/main.go;
     then
         echo "Error when generate Build for linux_x64"
     else
-        echo "2/5 Binary generated with success in ./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x64"
+        echo "2/5 Binary generated with success in ./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x64"
     fi
 
     # Build for Windows x86
-    if ! env GOOS=windows GOARCH=386 go build -o "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_win_x86.exe" ./cmd/app/main.go;
+    if ! env GOOS=windows GOARCH=386 go build -o "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_win_x86.exe" ./cmd/app/main.go;
     then
         echo "Error when generate Build for win_x86"
     else
-        echo "3/5 Binary generated with success in ./bin/horusec/$ACTUAL_RELEASE_FORMATTED/win_x86.exe"
+        echo "3/5 Binary generated with success in ./bin/horusx/$ACTUAL_RELEASE_FORMATTED/win_x86.exe"
     fi
 
     # Build for Windows x64
-    if ! env GOOS=windows GOARCH=amd64 go build -o "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_win_x64.exe" ./cmd/app/main.go;
+    if ! env GOOS=windows GOARCH=amd64 go build -o "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_win_x64.exe" ./cmd/app/main.go;
     then
         echo "Error when generate Build for win_x64"
     else
-        echo "4/5 Binary generated with success in ./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_win_x64.exe"
+        echo "4/5 Binary generated with success in ./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_win_x64.exe"
     fi
 
     # Build for Mac x64
-    if ! env GOOS=darwin GOARCH=amd64 go build -o "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_mac_x64" ./cmd/app/main.go;
+    if ! env GOOS=darwin GOARCH=amd64 go build -o "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_mac_x64" ./cmd/app/main.go;
     then
         echo "Error when generate Build for mac_x64"
     else
-        echo "5/5 Binary generated with success in ./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_mac_x64"
+        echo "5/5 Binary generated with success in ./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_mac_x64"
     fi
 
-    chmod +x "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x64"
-    cp "./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x64" "$GOPATH/bin/horusec"
-    echo "Binary in ./bin/horusec/$ACTUAL_RELEASE_FORMATTED/horusec_linux_x64 was copied to $GOPATH/bin/horusec with success!"
-    echo "Please run \"horusec version\" to check installation"
+    chmod +x "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x64"
+    cp "./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x64" "$GOPATH/bin/horusx"
+    echo "Binary in ./bin/horusx/$ACTUAL_RELEASE_FORMATTED/horusx_linux_x64 was copied to $GOPATH/bin/horusx with success!"
+    echo "Please run \"horusx version\" to check installation"
 
     sed -i -e "s/$ACTUAL_RELEASE/{{VERSION_NOT_FOUND}}/g" "./config/config.go"
 
-    docker build -t "horuszup/horusec-cli:$ACTUAL_RELEASE" -f deployments/Dockerfile .
-    docker push "horuszup/horusec-cli:$ACTUAL_RELEASE"
+    docker build -t "horuszup/horusx-cli:$ACTUAL_RELEASE" -f deployments/Dockerfile .
+    docker push "horuszup/horusx-cli:$ACTUAL_RELEASE"
 
     if [[ "$IS_TO_UPDATE_LATEST" == "true" ]]
     then
         echo "$ACTUAL_RELEASE_FORMATTED" > ./deployments/version-cli-latest.txt
-        docker build -t "horuszup/horusec-cli:latest" -f deployments/Dockerfile .
-        docker push "horuszup/horusec-cli:latest"
+        docker build -t "horuszup/horusx-cli:latest" -f deployments/Dockerfile .
+        docker push "horuszup/horusx-cli:latest"
     fi
 
     echo "$ACTUAL_RELEASE_FORMATTED" >> ./deployments/all-version-cli.txt
@@ -155,7 +155,7 @@ rollback_version_command () {
 }
 
 rollback_binaries () {
-    rm -rf "./bin/horusec/$ACTUAL_RELEASE_FORMATTED"
+    rm -rf "./bin/horusx/$ACTUAL_RELEASE_FORMATTED"
 }
 
 trap rollback_version_command SIGINT

@@ -17,13 +17,13 @@ package json
 import (
 	"testing"
 
-	horusecEntities "github.com/ZupIT/horusec-devkit/pkg/entities/analysis"
+	horusxEntities "github.com/ZupIT/horusec-devkit/pkg/entities/analysis"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestConvertInterfaceToMapString(t *testing.T) {
 	t.Run("should success parse interface to map string", func(t *testing.T) {
-		analysis := horusecEntities.Analysis{}
+		analysis := horusxEntities.Analysis{}
 
 		result, err := ConvertInterfaceToMapString(analysis)
 		assert.NoError(t, err)

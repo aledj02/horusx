@@ -121,7 +121,7 @@ func TestGetCommitAuthor(t *testing.T) {
 }
 
 func TestRepositoryIsShallow(t *testing.T) {
-	shallowRepository := filepath.Join(os.TempDir(), "horusec-shallow")
+	shallowRepository := filepath.Join(os.TempDir(), "horusx-shallow")
 	_, err := exec.Command(
 		"git",
 		"clone",

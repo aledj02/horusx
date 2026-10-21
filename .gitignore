@@ -10,9 +10,9 @@ bin
 deployments/certs
 ./images
 *.srl
-.horusec/
-horusec-analysis-*.json
-cmd/horusec/start/examples/
+.horusx/
+horusx-analysis-*.json
+cmd/horusx/start/examples/
 vendor
 obj/
 /dist.DS_Store

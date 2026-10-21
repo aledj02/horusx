@@ -20,7 +20,7 @@ import (
 
 	"github.com/ZupIT/horusec-devkit/pkg/entities/analysis"
 	"github.com/ZupIT/horusec-devkit/pkg/entities/vulnerability"
-	enumHorusec "github.com/ZupIT/horusec-devkit/pkg/enums/analysis"
+	enumHorusx "github.com/ZupIT/horusec-devkit/pkg/enums/analysis"
 	"github.com/ZupIT/horusec-devkit/pkg/enums/severities"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -31,7 +31,7 @@ func TestConvertVulnerabilityDataToSonarQube(t *testing.T) {
 		entity := &analysis.Analysis{
 			ID:        uuid.New(),
 			CreatedAt: time.Now(),
-			Status:    enumHorusec.Running,
+			Status:    enumHorusx.Running,
 			AnalysisVulnerabilities: []analysis.AnalysisVulnerabilities{
 				{
 					Vulnerability: vulnerability.Vulnerability{
@@ -52,7 +52,7 @@ func TestConvertVulnerabilityDataToSonarQube(t *testing.T) {
 		analysis := &analysis.Analysis{
 			ID:        uuid.New(),
 			CreatedAt: time.Now(),
-			Status:    enumHorusec.Running,
+			Status:    enumHorusx.Running,
 		}
 
 		service := NewSonarQube(analysis)

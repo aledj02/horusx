@@ -142,7 +142,7 @@ func TestParseBrakemanOutput(t *testing.T) {
 
 func newTestConfig(t *testing.T, analysis *analysis.Analysis) *config.Config {
 	cfg := config.New()
-	cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, analysis, testutil.RubyExample)
+	cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, analysis, testutil.RubyExample)
 	return cfg
 }
 

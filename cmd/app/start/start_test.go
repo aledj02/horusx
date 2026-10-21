@@ -373,7 +373,7 @@ func TestStartCommand_ExecuteUnitTests(t *testing.T) {
 		},
 		{
 			name: "Should execute command exec without error sending to web application (-u,-a)",
-			args: []string{testutil.StartFlagProjectPath, testutil.RootPath, testutil.StartFlagHorusecURL, "https://google.com", testutil.StartFlagAuthorization, "76034e43-bdb8-48d9-a0ad-fc674f0354bb"},
+			args: []string{testutil.StartFlagProjectPath, testutil.RootPath, testutil.StartFlagHorusxURL, "https://google.com", testutil.StartFlagAuthorization, "76034e43-bdb8-48d9-a0ad-fc674f0354bb"},
 			err:  false,
 			onFn: func(prompt *testutil.PromptMock, requirements *testutil.RequirementsMock, analyzer *testutil.AnalyzerMock) {
 				analyzer.On("Analyze").Return(0, nil)
@@ -382,7 +382,7 @@ func TestStartCommand_ExecuteUnitTests(t *testing.T) {
 			},
 			assertFn: func(t *testing.T, prompt *testutil.PromptMock, requirements *testutil.RequirementsMock, analyzer *testutil.AnalyzerMock, cfg *config.Config) {
 				t.Run("Should execute command exec without error sending to web application (-u,-a)", func(t *testing.T) {
-					assert.Equal(t, "https://google.com", cfg.HorusecAPIUri)
+					assert.Equal(t, "https://google.com", cfg.HorusxAPIUri)
 					assert.Equal(t, "76034e43-bdb8-48d9-a0ad-fc674f0354bb", cfg.RepositoryAuthorization)
 
 					prompt.AssertNotCalled(t, "Ask")
@@ -393,7 +393,7 @@ func TestStartCommand_ExecuteUnitTests(t *testing.T) {
 		},
 		{
 			name: "Should execute command exec with error sending to a invalid url web application (-u,-a)",
-			args: []string{testutil.StartFlagProjectPath, testutil.RootPath, testutil.StartFlagHorusecURL, "*vsaf&&", testutil.StartFlagAuthorization, "76034e43-bdb8-48d9-a0ad-fc674f0354bb"},
+			args: []string{testutil.StartFlagProjectPath, testutil.RootPath, testutil.StartFlagHorusxURL, "*vsaf&&", testutil.StartFlagAuthorization, "76034e43-bdb8-48d9-a0ad-fc674f0354bb"},
 			err:  true,
 			onFn: func(prompt *testutil.PromptMock, requirements *testutil.RequirementsMock, analyzer *testutil.AnalyzerMock) {
 				analyzer.On("Analyze").Return(0, nil)
@@ -401,7 +401,7 @@ func TestStartCommand_ExecuteUnitTests(t *testing.T) {
 				requirements.On("ValidateDocker").Return(nil)
 			},
 			assertFn: func(t *testing.T, prompt *testutil.PromptMock, requirements *testutil.RequirementsMock, analyzer *testutil.AnalyzerMock, cfg *config.Config) {
-				assert.Equal(t, "*vsaf&&", cfg.HorusecAPIUri)
+				assert.Equal(t, "*vsaf&&", cfg.HorusxAPIUri)
 				assert.Equal(t, "76034e43-bdb8-48d9-a0ad-fc674f0354bb", cfg.RepositoryAuthorization)
 
 				prompt.AssertNotCalled(t, "Ask")
@@ -634,14 +634,14 @@ func TestStartCommand_ExecuteIntegrationTest(t *testing.T) {
 		output := <-outC
 
 		assert.NotEmpty(t, output)
-		assert.Contains(t, output, "{HORUSEC_CLI} PLEASE DON'T REMOVE ")
+		assert.Contains(t, output, "{HORUSX_CLI} PLEASE DON'T REMOVE ")
 		assert.Contains(t, output, "FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: ")
-		assert.Contains(t, output, "Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings.")
-		assert.Contains(t, output, "{HORUSEC_CLI} Writing output JSON to file in the path:")
+		assert.Contains(t, output, "Horusx will return a timeout after 600 seconds. This time can be customized in the cli settings.")
+		assert.Contains(t, output, "{HORUSX_CLI} Writing output JSON to file in the path:")
 		assert.Contains(t, output, outputPathJSON)
-		assert.Contains(t, output, "{HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} No authorization token was found, your code it is not going to be sent to horusx. Please enter a token with the -a flag to configure and save your analysis")
 		assert.Contains(t, output, "YOUR ANALYSIS HAD FINISHED WITHOUT ANY VULNERABILITY!")
-		assert.Contains(t, output, "{HORUSEC_CLI} Horusec not show info vulnerabilities in this analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} Horusx not show info vulnerabilities in this analysis")
 
 		bytesFile, err := os.ReadFile(outputPathJSON)
 		assert.NoError(t, err)
@@ -687,12 +687,12 @@ func TestStartCommand_ExecuteIntegrationTest(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotEmpty(t, output)
-		assert.Contains(t, output, "{HORUSEC_CLI} PLEASE DON'T REMOVE ")
+		assert.Contains(t, output, "{HORUSX_CLI} PLEASE DON'T REMOVE ")
 		assert.Contains(t, output, "FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: ")
-		assert.Contains(t, output, "Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings.")
-		assert.Contains(t, output, "{HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis")
+		assert.Contains(t, output, "Horusx will return a timeout after 600 seconds. This time can be customized in the cli settings.")
+		assert.Contains(t, output, "{HORUSX_CLI} No authorization token was found, your code it is not going to be sent to horusx. Please enter a token with the -a flag to configure and save your analysis")
 		assert.Contains(t, output, "YOUR ANALYSIS HAD FINISHED WITHOUT ANY VULNERABILITY!")
-		assert.NotContains(t, output, "{HORUSEC_CLI} Horusec not show info vulnerabilities in this analysis")
+		assert.NotContains(t, output, "{HORUSX_CLI} Horusx not show info vulnerabilities in this analysis")
 
 		promptMock.AssertNotCalled(t, "Ask")
 	})
@@ -733,10 +733,10 @@ func TestStartCommand_ExecuteIntegrationTest(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotEmpty(t, output)
-		assert.Contains(t, output, "{HORUSEC_CLI} PLEASE DON'T REMOVE ")
+		assert.Contains(t, output, "{HORUSX_CLI} PLEASE DON'T REMOVE ")
 		assert.Contains(t, output, "FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: ")
-		assert.Contains(t, output, "Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings.")
-		assert.NotContains(t, output, "{HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis")
+		assert.Contains(t, output, "Horusx will return a timeout after 600 seconds. This time can be customized in the cli settings.")
+		assert.NotContains(t, output, "{HORUSX_CLI} No authorization token was found, your code it is not going to be sent to horusx. Please enter a token with the -a flag to configure and save your analysis")
 		assert.Contains(t, output, "YOUR ANALYSIS HAD FINISHED WITHOUT ANY VULNERABILITY!")
 
 		promptMock.AssertNotCalled(t, "Ask")
@@ -779,14 +779,14 @@ func TestStartCommand_ExecuteIntegrationTest(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotEmpty(t, output)
-		assert.Contains(t, output, "{HORUSEC_CLI} PLEASE DON'T REMOVE ")
+		assert.Contains(t, output, "{HORUSX_CLI} PLEASE DON'T REMOVE ")
 		assert.Contains(t, output, "FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: ")
-		assert.Contains(t, output, "Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings.")
-		assert.Contains(t, output, "{HORUSEC_CLI} Writing output JSON to file in the path:")
+		assert.Contains(t, output, "Horusx will return a timeout after 600 seconds. This time can be customized in the cli settings.")
+		assert.Contains(t, output, "{HORUSX_CLI} Writing output JSON to file in the path:")
 		assert.Contains(t, output, "cmd/app/start/tmp-sonarqube.json")
-		assert.Contains(t, output, "{HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} No authorization token was found, your code it is not going to be sent to horusx. Please enter a token with the -a flag to configure and save your analysis")
 		assert.Contains(t, output, "YOUR ANALYSIS HAD FINISHED WITHOUT ANY VULNERABILITY!")
-		assert.Contains(t, output, "{HORUSEC_CLI} Horusec not show info vulnerabilities in this analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} Horusx not show info vulnerabilities in this analysis")
 
 		bytesFile, err := os.ReadFile("./tmp-sonarqube.json")
 		assert.NoError(t, err)
@@ -839,14 +839,14 @@ func TestStartCommand_ExecuteIntegrationTest(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotEmpty(t, output)
-		assert.Contains(t, output, "{HORUSEC_CLI} PLEASE DON'T REMOVE ")
+		assert.Contains(t, output, "{HORUSX_CLI} PLEASE DON'T REMOVE ")
 		assert.Contains(t, output, "FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: ")
-		assert.Contains(t, output, "Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings.")
+		assert.Contains(t, output, "Horusx will return a timeout after 600 seconds. This time can be customized in the cli settings.")
 		assert.Contains(t, output, "Total of Vulnerability MEDIUM is: 5")
 		assert.Contains(t, output, "Total of Vulnerability HIGH is: 11")
-		assert.Contains(t, output, "{HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis")
-		assert.Contains(t, output, "{HORUSEC_CLI} 16 VULNERABILITIES WERE FOUND IN YOUR CODE SENT TO HORUSEC, TO SEE MORE DETAILS USE THE LOG LEVEL AS DEBUG AND TRY AGAIN")
-		assert.Contains(t, output, "{HORUSEC_CLI} Horusec not show info vulnerabilities in this analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} No authorization token was found, your code it is not going to be sent to horusx. Please enter a token with the -a flag to configure and save your analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} 16 VULNERABILITIES WERE FOUND IN YOUR CODE SENT TO HORUSX, TO SEE MORE DETAILS USE THE LOG LEVEL AS DEBUG AND TRY AGAIN")
+		assert.Contains(t, output, "{HORUSX_CLI} Horusx not show info vulnerabilities in this analysis")
 		promptMock.AssertNotCalled(t, "Ask")
 		assert.NoError(t, os.RemoveAll(dstProject))
 	})
@@ -892,12 +892,12 @@ func TestStartCommand_ExecuteIntegrationTest(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotEmpty(t, output)
 
-		assert.Contains(t, output, "{HORUSEC_CLI} PLEASE DON'T REMOVE ")
+		assert.Contains(t, output, "{HORUSX_CLI} PLEASE DON'T REMOVE ")
 		assert.Contains(t, output, "FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: ")
-		assert.Contains(t, output, "Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings.")
-		assert.Contains(t, output, "{HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis")
-		assert.Contains(t, output, "{HORUSEC_CLI} 25 VULNERABILITIES WERE FOUND IN YOUR CODE SENT TO HORUSEC, TO SEE MORE DETAILS USE THE LOG LEVEL AS DEBUG AND TRY AGAIN")
-		assert.Contains(t, output, "{HORUSEC_CLI} Horusec not show info vulnerabilities in this analysis")
+		assert.Contains(t, output, "Horusx will return a timeout after 600 seconds. This time can be customized in the cli settings.")
+		assert.Contains(t, output, "{HORUSX_CLI} No authorization token was found, your code it is not going to be sent to horusx. Please enter a token with the -a flag to configure and save your analysis")
+		assert.Contains(t, output, "{HORUSX_CLI} 25 VULNERABILITIES WERE FOUND IN YOUR CODE SENT TO HORUSX, TO SEE MORE DETAILS USE THE LOG LEVEL AS DEBUG AND TRY AGAIN")
+		assert.Contains(t, output, "{HORUSX_CLI} Horusx not show info vulnerabilities in this analysis")
 		assert.Contains(t, output, "")
 		promptMock.AssertNotCalled(t, "Ask")
 		assert.NoError(t, os.RemoveAll(dstProject))

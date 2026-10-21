@@ -84,7 +84,7 @@ func (s *Service) GetAnalysisIDErrorMessage(tool tools.Tool, output string) stri
 }
 
 func (s *Service) GetConfigProjectPath() string {
-	return filepath.Join(s.config.ProjectPath, ".horusec", s.analysis.ID.String())
+	return filepath.Join(s.config.ProjectPath, ".horusx", s.analysis.ID.String())
 }
 
 func (s *Service) AddWorkDirInCmd(cmd, projectSubPath string, tool tools.Tool) string {
@@ -128,7 +128,7 @@ func (s *Service) addAnalysisError(tool tools.Tool, err error) {
 		if len(s.analysis.Errors) > 0 {
 			fmt.Fprintf(buf, ";")
 		}
-		fmt.Fprintf(buf, "{HORUSEC_CLI} Error while running tool %s: %v", tool, err)
+		fmt.Fprintf(buf, "{HORUSX_CLI} Error while running tool %s: %v", tool, err)
 		s.analysis.Errors += buf.String()
 	}
 }
@@ -229,7 +229,7 @@ func (s *Service) newVulnerabilityFromFinding(finding *engine.Finding, tool tool
 		Line:         strconv.Itoa(finding.SourceLocation.Line),
 		Column:       strconv.Itoa(finding.SourceLocation.Column),
 		Confidence:   confidence.Confidence(finding.Confidence),
-		File:         s.removeHorusecFolder(finding.SourceLocation.Filename),
+		File:         s.removeHorusxFolder(finding.SourceLocation.Filename),
 		Code:         s.GetCodeWithMaxCharacters(finding.CodeSample, finding.SourceLocation.Column),
 		Details:      fmt.Sprintf("%s\n%s", finding.Name, finding.Description),
 		SecurityTool: tool,
@@ -238,7 +238,7 @@ func (s *Service) newVulnerabilityFromFinding(finding *engine.Finding, tool tool
 	}
 }
 
-func (s *Service) removeHorusecFolder(path string) string {
+func (s *Service) removeHorusxFolder(path string) string {
 	rel, err := filepath.Rel(s.GetConfigProjectPath(), path)
 	if err != nil {
 		logger.LogError(messages.MsgErrorGetRelativePathFromFile, err, map[string]interface{}{

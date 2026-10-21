@@ -16,11 +16,11 @@ package messages
 
 // Block of messages usage into log of the level panic
 const (
-	MsgPanicDockerRequirementsToRunHorusec = "{HORUSEC_CLI} Missing required DOCKER in min. version 19.03 to start"
-	MsgPanicGitRequirementsToRunHorusec    = "{HORUSEC_CLI} Missing required GIT in min. version 2.01 to start"
-	MsgPanicGetFlagValue                   = "{HORUSEC_CLI} Error on getting flag value, check and try again: "
-	MsgPanicNotConnectDocker               = "{HORUSEC_CLI} Error when try connect in docker."
-	MsgPanicGetConfigFilePath              = "{HORUSEC-CLI} Error on get config file path."
-	PanicMarkHiddenFlag                    = "{HORUSEC-CLI} Internal error occurred to hidden %s flag: "
-	PanicMarkDeprecatedFlag                = "{HORUSEC-CLI} Internal error occurred to mark %s flag as deprecated: "
+	MsgPanicDockerRequirementsToRunHorusx = "{HORUSX_CLI} Missing required DOCKER in min. version 19.03 to start"
+	MsgPanicGitRequirementsToRunHorusx    = "{HORUSX_CLI} Missing required GIT in min. version 2.01 to start"
+	MsgPanicGetFlagValue                  = "{HORUSX_CLI} Error on getting flag value, check and try again: "
+	MsgPanicNotConnectDocker              = "{HORUSX_CLI} Error when try connect in docker."
+	MsgPanicGetConfigFilePath             = "{HORUSX-CLI} Error on get config file path."
+	PanicMarkHiddenFlag                   = "{HORUSX-CLI} Internal error occurred to hidden %s flag: "
+	PanicMarkDeprecatedFlag               = "{HORUSX-CLI} Internal error occurred to mark %s flag as deprecated: "
 )

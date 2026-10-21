@@ -152,7 +152,7 @@ func TestParseOutput(t *testing.T) {
 
 func newTestConfig(t *testing.T, analysiss *analysis.Analysis) *config.Config {
 	cfg := config.New()
-	cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, analysiss, testutil.CsharpExample1)
+	cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, analysiss, testutil.CsharpExample1)
 	return cfg
 }
 

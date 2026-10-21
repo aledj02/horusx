@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-project_name: horusec
+project_name: horusx
 
 builds:
-  - id: horusec
+  - id: horusx
     env: [ CGO_ENABLED=0 ]
     main: ./cmd/app/main.go
     ldflags:
@@ -31,8 +31,8 @@ builds:
       - amd64
       - arm64
       - "386"
-    binary: horusec_{{ replace (replace .Os "windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
-  - id: horusec-standalone
+    binary: horusx_{{ replace (replace .Os "windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
+  - id: horusx-standalone
     env: [ CGO_ENABLED=0 ]
     main: ./cmd/app/main.go
     ldflags:
@@ -49,7 +49,7 @@ builds:
       - amd64
       - arm64
       - "386"
-    binary: horusec_{{ replace (replace .Os "windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}_stand_alone
+    binary: horusx_{{ replace (replace .Os "windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}_stand_alone
 changelog:
   skip: false
   use: github
@@ -75,15 +75,15 @@ changelog:
 snapshot:
   name_template: '{{ incpatch .Tag }}'
 archives:
-  - id: horusec
+  - id: horusx
     builds:
-      - horusec
-    name_template: horusec_{{ replace (replace .Os "Windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
+      - horusx
+    name_template: horusx_{{ replace (replace .Os "Windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
     format: binary
-  - id: horusec-standalone
+  - id: horusx-standalone
     builds:
-      - horusec-standalone
-    name_template: horusec_{{ replace (replace .Os "Windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}_stand_alone
+      - horusx-standalone
+    name_template: horusx_{{ replace (replace .Os "Windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}_stand_alone
     format: binary
 checksum:
   name_template: 'checksums.txt'
@@ -93,20 +93,20 @@ release:
   mode: append
   footer: |
     ## Docker images
-    - `docker pull horuszup/horusec-cli:{{ .Tag }}`
+    - `docker pull horuszup/horusx-cli:{{ .Tag }}`
 
     **Full Changelog**: https://github.com/ZupIT/horusec/compare/{{ .PreviousTag }}...{{ .Tag }}
   extra_files:
     - glob: deployments/cosign.pub
 nfpms:
-  - id: horusec
-    package_name: horusec
-    file_name_template: horusec_{{ replace (replace .Os "Windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
+  - id: horusx
+    package_name: horusx
+    file_name_template: horusx_{{ replace (replace .Os "Windows" "win") "darwin" "mac" }}_{{ replace .Arch "386" "x86" }}
     builds:
-      - horusec
-    homepage: https://horusec.io/
-    maintainer: ZupIT <horusec@zup.com.br>
-    description: Horusec is an open source tool that improves identification of vulnerabilities in your project with just one command.
+      - horusx
+    homepage: https://horusx.io/
+    maintainer: ZupIT <horusx@zup.com.br>
+    description: Horusx is an open source tool that improves identification of vulnerabilities in your project with just one command.
     license: Apache 2.0
     formats:
       - deb
@@ -128,7 +128,7 @@ docker_signs:
     stdin: '{{ .Env.COSIGN_PWD }}'
 dockers:
   - image_templates:
-      - 'horuszup/horusec-cli:{{ .Tag }}-amd64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-amd64'
     skip_push: "false"
     goos: linux
     goarch: amd64
@@ -144,7 +144,7 @@ dockers:
     push_flags:
       - --tls-verify=false
   - image_templates:
-      - 'horuszup/horusec-cli:{{ .Tag }}-arm64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-arm64'
     skip_push: "false"
     goos: linux
     goarch: arm64
@@ -161,22 +161,22 @@ dockers:
       - --tls-verify=false
 docker_manifests:
 
-  - name_template: 'horuszup/horusec-cli:{{ .Tag }}'
+  - name_template: 'horuszup/horusx-cli:{{ .Tag }}'
     image_templates:
-      - 'horuszup/horusec-cli:{{ .Tag }}-amd64'
-      - 'horuszup/horusec-cli:{{ .Tag }}-arm64'
-  - name_template: 'horuszup/horusec-cli:latest'
+      - 'horuszup/horusx-cli:{{ .Tag }}-amd64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-arm64'
+  - name_template: 'horuszup/horusx-cli:latest'
     image_templates:
-      - 'horuszup/horusec-cli:{{ .Tag }}-amd64'
-      - 'horuszup/horusec-cli:{{ .Tag }}-arm64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-amd64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-arm64'
     skip_push: auto
-  - name_template: 'horuszup/horusec-cli:v{{ .Major }}'
+  - name_template: 'horuszup/horusx-cli:v{{ .Major }}'
     image_templates:
-      - 'horuszup/horusec-cli:{{ .Tag }}-amd64'
-      - 'horuszup/horusec-cli:{{ .Tag }}-arm64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-amd64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-arm64'
     skip_push: auto
-  - name_template: 'horuszup/horusec-cli:v{{ .Major }}.{{ .Minor }}'
+  - name_template: 'horuszup/horusx-cli:v{{ .Major }}.{{ .Minor }}'
     image_templates:
-      - 'horuszup/horusec-cli:{{ .Tag }}-amd64'
-      - 'horuszup/horusec-cli:{{ .Tag }}-arm64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-amd64'
+      - 'horuszup/horusx-cli:{{ .Tag }}-arm64'
     skip_push: auto

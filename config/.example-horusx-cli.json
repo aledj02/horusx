@@ -1,0 +1,49 @@
+{
+  "horusxCliHorusxApiUri": "http://new-viper.horusx.com",
+  "horusxCliTimeoutInSecondsRequest": 20,
+  "horusxCliTimeoutInSecondsAnalysis": 100,
+  "horusxCliMonitorRetryInSeconds": 10,
+  "horusxCliRepositoryAuthorization": "8beffdca-636e-4d73-a22f-b0f7c3cff1c4",
+  "horusxCliPrintOutputType": "json",
+  "horusxCliJsonOutputFilepath": "./output.json",
+  "horusxCliSeveritiesToIgnore": "INFO",
+  "horusxCliFilesOrPathsToIgnore": "./assets",
+  "horusxCliReturnErrorIfFoundVulnerability": true,
+  "horusxCliEnableCommitAuthor": true,
+  "horusxCliProjectPath": "./",
+  "horusxCliFilterPath": "./tmp",
+  "horusxCliEnableGitHistoryAnalysis": true,
+  "horusxCliCertInsecureSkipVerify": true,
+  "horusxCliEnableInformationSeverity": true,
+  "horusxCliWorkDir": {},
+  "horusxCliRepositoryName": "horus",
+  "horusxCliDisableDocker": true,
+  "horusxCLiEnableOwaspDependencyCheck": true,
+  "horusxCLiEnableShellcheck": true,
+  "horusxCliCustomRulesPath": "test",
+  "horusxCliFalsePositiveHashes": [
+    "hash1",
+    "hash2"
+  ],
+  "horusxCliRiskAcceptHashes": [
+    "hash3",
+    "hash4"
+  ],
+  "horusxCliShowVulnerabilitiesTypes": [
+    "Vulnerability",
+    "False Positive"
+  ],
+  "horusxCliContainerBindProjectPath": "test",
+  "horusxCliHeaders": {
+    "X-Headers": "some-other-value"
+  },
+  "horusxCliToolsConfig": {
+    "GoSec": {
+      "isToIgnore": true,
+      "imagePath": "docker.io/company/gosec:latest"
+    }
+  },
+  "horusxCliCustomImages": {
+    "go": "docker.io/company/go:latest"
+  }
+}

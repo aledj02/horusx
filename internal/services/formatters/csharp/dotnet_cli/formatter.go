@@ -173,7 +173,7 @@ func (f *Formatter) newVulnerability(dependency *dotnetDependency,
 		RuleID:       vulnhash.HashRuleID(dependency.getDescription()),
 		Details:      dependency.getDescription(),
 		Code:         dependencyInfo.Code,
-		File:         f.removeHorusecFolder(relFilePath),
+		File:         f.removeHorusxFolder(relFilePath),
 		Line:         dependencyInfo.Line,
 		Severity:     dependency.getSeverity(),
 	}
@@ -200,8 +200,8 @@ func (f *Formatter) isInvalidOutput(output string) bool {
 		strings.Contains(output, "Resolved") && strings.Contains(output, "Severity"))
 }
 
-func (f *Formatter) removeHorusecFolder(path string) string {
-	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusec", f.GetAnalysisID()), ""))
+func (f *Formatter) removeHorusxFolder(path string) string {
+	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusx", f.GetAnalysisID()), ""))
 }
 
 // getDeprecatedHashes necessary due a change that from now the hash is generated from a relative path, not an absolute
@@ -209,7 +209,7 @@ func (f *Formatter) removeHorusecFolder(path string) string {
 // TODO: This will be removed after the release v2.10.0 be released
 // nolint:gocritic // it has to be without pointer
 func (f *Formatter) getDeprecatedHashes(absFilePath string, vuln vulnerability.Vulnerability) []string {
-	vuln.File = f.removeHorusecFolder(absFilePath)
+	vuln.File = f.removeHorusxFolder(absFilePath)
 
 	return vulnhash.Bind(&vuln).DeprecatedHashes
 }

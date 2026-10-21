@@ -1,8 +1,8 @@
-# Plan de Modernización — Horusec Fork Interno (`horusx`)
+# Plan de Modernización — Horusx Fork Interno (`horusx`)
 
 > **Estado**: Draft para revisión
 > **Fecha**: 2026-10-20
-> **Upstream**: [ZupIT/horusec](https://github.com/ZupIT/horusec) (última release estable: v2.9.0-beta.3, ago/2023)
+> **Upstream**: [ZupIT/horusx](https://github.com/ZupIT/horusec) (última release estable: v2.9.0-beta.3, ago/2023)
 > **Fork**: privado, prefix de images `horusx/*`
 > **Objetivo**: SAST CLI interno para JS, TS, Java, Go, Python, SH, Kotlin, Swift — con reglas actualizadas a 2026
 
@@ -13,8 +13,8 @@
 | 0 Fork + tag | ✅ | `v2.10.0-fork.0` en `873d4104`, branch `main` |
 | 1 Deps Go | ✅ | `go.mod`: `go 1.24`, `docker v24.0.9+incompatible`; `go build ./...` verde |
 | 2 Custom rules map | ✅ | `internal/services/custom_rules/{custom_rule.go,service.go}` soporta `Go`, `Python`, `Shell`, `Swift`; tests `ok` |
-| 3 Reglas JSON | ✅ | `custom_rules/{python,go,shell,swift}.json` = 50 reglas, RE2-validado; `horusec-custom-rules.json` combinado; `custom_rules/README.md` |
-| 4 Wiring P/Go/Shell | ✅ | Nuevos: `engines/{python,go,shell}/rule_manager.go` + `formatters/{python/horusecpython,go/horusecgo,shell/horusecshell}/formatter.go` + `runner.go` los llama en `detectVulnerability{Python,Go,Shell}` ANTES de los Docker tools |
+| 3 Reglas JSON | ✅ | `custom_rules/{python,go,shell,swift}.json` = 50 reglas, RE2-validado; `horusx-custom-rules.json` combinado; `custom_rules/README.md` |
+| 4 Wiring P/Go/Shell | ✅ | Nuevos: `engines/{python,go,shell}/rule_manager.go` + `formatters/{python/horusxpython,go/horusxgo,shell/horusxshell}/formatter.go` + `runner.go` los llama en `detectVulnerability{Python,Go,Shell}` ANTES de los Docker tools |
 | 5 Docker rebuild | ⏸ | Pausado (requiere `horusx/*` en Docker Hub, out-of-scope sin credentials) |
 | 6 Testing local | ✅ | E2E: `vuln.py/vuln.go/vuln.sh/App.swift` → disparan `HS-PYTHON-100`, `HS-GO-106`, `HS-SWIFT-101`, `HS-SHELL-100`, `B301`, `B403`, `G104`, `HS-LEAKS-25` — status `success`, 9 vulns; `go test` en `custom_rules` + `analyzer` → `ok`; los fails en `formatters/ruby/bundler` son pre-existentes (submodules `examples/*` no inicializados) |
 | 6.1 Rule-manager tests | ✅ | `engines/{python,go,shell}/rule_manager_test.go` — `NewRules()` empty + extensions correct; `go test` → `ok` |
@@ -27,7 +27,7 @@
 
 | # | Decisión |
 |---|---|
-| D1 | Estrategia regexps: **LIGERA** (custom-rules JSON + built-ins; NO forkear `horusec-engine`) |
+| D1 | Estrategia regexps: **LIGERA** (custom-rules JSON + built-ins; NO forkear `horusx-engine`) |
 | D2 | Python/Go/Shell: **rebuild de Docker images** con herramientas actualizadas (Fase 5) |
 | D3 | Fork: **privado** |
 | D4 | Images: **multi-arch** (amd64 + arm64) |
@@ -45,8 +45,8 @@
 |---|---|---|
 | Go | 1.17 | **1.24** |
 | docker/docker | 20.10.9 | **24.0.9+incompatible** (ver D11) |
-| horusec-engine | v1.0.1 | latest |
-| horusec-devkit | v1.0.24 | latest |
+| horusx-engine | v1.0.1 | latest |
+| horusx-devkit | v1.0.24 | latest |
 | bandit (Python) | 1.7.4 | **1.9.4** |
 | safety (Python) | 1.10.3 | **3.8.1** |
 | gosec (Go) | 2.11.0 | **v2.29.0** |
@@ -60,7 +60,7 @@
 
 | Lenguaje | Reglas built-in (repo) | Image Docker | Custom JSON |
 |---|:---:|:---:|:---:|
-| JS | 55 | `horuszup/horusec-js:v1.2.0` (jq + npm/yarn audit) | ✅ |
+| JS | 55 | `horuszup/horusx-js:v1.2.0` (jq + npm/yarn audit) | ✅ |
 | TS | 55 (comparte engine JS, `.js/.ts/.jsx/.tsx`) | ídem | ✅ (via JS) |
 | Java | 152 | — | ✅ |
 | Kotlin | 40 (hereda JVM) | — | ✅ |
@@ -77,7 +77,7 @@ Built-in total hoy: **~403 reglas** (Java 152, C# 74, JS 55, JVM 40, Leaks 28, S
 ## FASES
 
 ### Fase 0 — Fork + baseline tag
-- [ ] 0.1 Fork privado de `ZupIT/horusec`
+- [ ] 0.1 Fork privado de `ZupIT/horusx`
 - [ ] 0.2 Tag `v2.9.1-fork.0` en HEAD pre-cambios (baseline reproducible)
 - [ ] 0.3 Crear `CHANGELOG-FORK.md` (log de auditoría de cambios)
 - **Verificar**: `git log -1`, `git tag -l`
@@ -91,7 +91,7 @@ Built-in total hoy: **~403 reglas** (Java 152, C# 74, JS 55, JVM 40, Leaks 28, S
 - [ ] 1.5 `go build ./...` — resolver breaking changes (docker SDK 27 movió `types.Container*`)
 - [ ] 1.6 `go test ./...` — todo verde
 - [ ] 1.7 `make lint` / `golangci-lint run`
-- [ ] 1.8 Build binario: `goreleaser build --snapshot` (o `go build -o horusec .`)
+- [ ] 1.8 Build binario: `goreleaser build --snapshot` (o `go build -o horusx .`)
 - **Riesgo**: breaking API en docker SDK y devkit. Mitigar con `go build` iterativo + bisect.
 - **Estimado**: 1-2 días
 
@@ -196,7 +196,7 @@ Seed por lenguaje (equipo puede extender):
 - [ ] 3.2 `rules/go.json`
 - [ ] 3.3 `rules/shell.json`
 - [ ] 3.4 `rules/swift.json`
-- [ ] 3.5 Smoke test: `horusec start --custom-rules-path rules/ -p examples/`
+- [ ] 3.5 Smoke test: `horusx start --custom-rules-path rules/ -p examples/`
 - **Estimado**: 2-3 días (seed en 1d, refinamiento del equipo en 1-2d)
 
 ### Fase 4 — Refresh de reglas Swift built-in
@@ -214,7 +214,7 @@ Seed por lenguaje (equipo puede extender):
   FROM python:3.12.7-alpine3.20
   RUN apk add --no-cache jq
   RUN pip install --no-cache-dir safety==3.8.1 bandit==1.9.4
-  COPY ./internal/services/formatters/python/deployments/horusec-file-ignore.sh /usr/local/bin/horusec-file-ignore.sh
+  COPY ./internal/services/formatters/python/deployments/horusx-file-ignore.sh /usr/local/bin/horusx-file-ignore.sh
   ```
 - [ ] 5.2 **Go** — `internal/services/formatters/go/deployments/Dockerfile`:
   ```dockerfile
@@ -241,23 +241,23 @@ Seed por lenguaje (equipo puede extender):
   ```bash
   docker buildx create --name horusx-builder --use
   docker buildx build --platform linux/amd64,linux/arm64 \
-    -t horusx/horusec-python:v1.0.1-fork.1 \
-    -t horusx/horusec-python:latest \
+    -t horusx/horusx-python:v1.0.1-fork.1 \
+    -t horusx/horusx-python:latest \
     -f internal/services/formatters/python/deployments/Dockerfile . --push
   ```
   (repetir para go, shell, js)
 - [ ] 5.6 Push a Docker Hub `horusx` (login: `docker login`)
 - [ ] 5.7 **Actualizar `internal/enums/images/images.go`**:
   ```go
-  Python     = "horusx/horusec-python:v1.0.1-fork.1"
-  Go         = "horusx/horusec-go:v1.0.2-fork.1"
-  Shell      = "horusx/horusec-shell:v1.0.2-fork.1"
-  Javascript = "horusx/horusec-js:v1.3.0-fork.1"
+  Python     = "horusx/horusx-python:v1.0.1-fork.1"
+  Go         = "horusx/horusx-go:v1.0.2-fork.1"
+  Shell      = "horusx/horusx-shell:v1.0.2-fork.1"
+  Javascript = "horusx/horusx-js:v1.3.0-fork.1"
   ```
   (números de version se eligen para no colisionar con tags upstream `v1.0.1`)
 - [ ] 5.8 **Verificar compatibilidad de parsers Go** con JSON de herramientas nuevas:
   ```bash
-  docker run --rm horusx/horusec-python:v1.0.1-fork.1 bandit -r /sample -f json
+  docker run --rm horusx/horusx-python:v1.0.1-fork.1 bandit -r /sample -f json
   # comparar schema contra formatters/python/bandit/*.go y safety/*.go
   ```
   - bandit 1.9.4: schema estable (changes: `test_id` rename en algunas reglas)
@@ -286,7 +286,7 @@ Seed por lenguaje (equipo puede extender):
 - **Estimado**: 1-2 días
 
 ### Fase 7 — Distribución (fork **privado**)
-- [ ] 7.1 `goreleaser build --snapshot` → artefacto `dist/horusec_darwin_arm64`, `dist/horusec_linux_amd64`, `dist/horusec_linux_arm64`
+- [ ] 7.1 `goreleaser build --snapshot` → artefacto `dist/horusx_darwin_arm64`, `dist/horusx_linux_amd64`, `dist/horusx_linux_arm64`
 - [ ] 7.2 **Fork privado en GitHub**: publicar binario como GitHub Release Asset (sin cosign)
 - [ ] 7.3 Docker images ya están en Docker Hub público `horusx/*` (Fase 5)
 - [ ] 7.4 `rules/` folder: ship como artefacto (JSON, no binario) → README-FORK
@@ -338,15 +338,15 @@ Seed por lenguaje (equipo puede extender):
 
 ```bash
 # Build
-go build -o bin/horusec .
+go build -o bin/horusx .
 
 # Unit
 go test ./...
 
 # E2E por lenguaje (ejemplo Python)
-docker pull horusx/horusec-python:v1.0.1-fork.1
-bin/horusec start -p examples/example-python -t python --custom-rules-path rules/
+docker pull horusx/horusx-python:v1.0.1-fork.1
+bin/horusx start -p examples/example-python -t python --custom-rules-path rules/
 
 # Expected: findings de bandit 1.9.4 (no 1.7.4) + reglas HSX-PY-*
-grep -E "HSX-PY|bandit" examples/example-python/.horusec.json
+grep -E "HSX-PY|bandit" examples/example-python/.horusx.json
 ```

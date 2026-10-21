@@ -422,7 +422,7 @@ SecurityTool: HorusecEngine
 Confidence: HIGH
 File: cert.pem
 Code: -----BEGIN CERTIFICATE-----
-Details: Found SSH and/or x.509 Cerficates HorusecLeaks
+Details: Found SSH and/or x.509 Cerficates HorusxLeaks
 Type: Vulnerability
 ReferenceHash: 03405f909c9ed621e2bccd9e50d237dbe9374e4c67f89c1018d70fa9a4912d71
 
@@ -450,7 +450,7 @@ SecurityTool: HorusecEngine
 Confidence: HIGH
 File: cert.pem
 Code: -----BEGIN CERTIFICATE-----
-Details: Found SSH and/or x.509 Cerficates HorusecJava
+Details: Found SSH and/or x.509 Cerficates HorusxJava
 Type: Vulnerability
 ReferenceHash: 03405f909c9ed621e2bccd9e50d237dbe9374e4c67f89c1018d70fa9a4912d71
 
@@ -464,7 +464,7 @@ SecurityTool: HorusecEngine
 Confidence: HIGH
 File: cert.pem
 Code: -----BEGIN CERTIFICATE-----
-Details: Found SSH and/or x.509 Cerficates HorusecKotlin
+Details: Found SSH and/or x.509 Cerficates HorusxKotlin
 Type: Vulnerability
 ReferenceHash: 03405f909c9ed621e2bccd9e50d237dbe9374e4c67f89c1018d70fa9a4912d71
 
@@ -484,7 +484,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "GoSec",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -499,7 +499,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "SecurityCodeScan",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MAJOR",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -514,7 +514,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "Brakeman",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "CRITICAL",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -529,7 +529,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "NpmAudit",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -544,7 +544,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "YarnAudit",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -559,7 +559,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "Bandit",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -574,7 +574,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "Safety",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -589,11 +589,11 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "HorusecEngine",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "CRITICAL",
       "effortMinutes": 0,
       "primaryLocation": {
-        "message": "Found SSH and/or x.509 Cerficates HorusecLeaks",
+        "message": "Found SSH and/or x.509 Cerficates HorusxLeaks",
         "filePath": "cert.pem",
         "textRange": {
           "startLine": 1,
@@ -604,7 +604,7 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "GitLeaks",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "CRITICAL",
       "effortMinutes": 0,
       "primaryLocation": {
@@ -619,11 +619,11 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "HorusecEngine",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
-        "message": "Found SSH and/or x.509 Cerficates HorusecJava",
+        "message": "Found SSH and/or x.509 Cerficates HorusxJava",
         "filePath": "cert.pem",
         "textRange": {
           "startLine": 1,
@@ -634,11 +634,11 @@ Total of Vulnerability LOW is: 7
     {
       "type": "VULNERABILITY",
       "ruleId": "HorusecEngine",
-      "engineId": "horusec",
+      "engineId": "horusx",
       "severity": "MINOR",
       "effortMinutes": 0,
       "primaryLocation": {
-        "message": "Found SSH and/or x.509 Cerficates HorusecKotlin",
+        "message": "Found SSH and/or x.509 Cerficates HorusxKotlin",
         "filePath": "cert.pem",
         "textRange": {
           "startLine": 1,

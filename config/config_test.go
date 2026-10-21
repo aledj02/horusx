@@ -45,12 +45,12 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestNewHorusecConfig(t *testing.T) {
-	t.Run("Should return horusec config with your default values", func(t *testing.T) {
+func TestNewHorusxConfig(t *testing.T) {
+	t.Run("Should return horusx config with your default values", func(t *testing.T) {
 		currentPath, _ := os.Getwd()
 		configs := config.New()
 		assert.Equal(t, "{{VERSION_NOT_FOUND}}", configs.Version)
-		assert.Equal(t, "http://0.0.0.0:8000", configs.HorusecAPIUri)
+		assert.Equal(t, "http://0.0.0.0:8000", configs.HorusxAPIUri)
 		assert.Equal(t, int64(300), configs.TimeoutInSecondsRequest)
 		assert.Equal(t, int64(600), configs.TimeoutInSecondsAnalysis)
 		assert.Equal(t, int64(15), configs.MonitorRetryInSeconds)
@@ -81,16 +81,16 @@ func TestNewHorusecConfig(t *testing.T) {
 		assert.Equal(t, false, configs.EnableOwaspDependencyCheck)
 		assert.Equal(t, false, configs.EnableShellCheck)
 	})
-	t.Run("Should return horusec config using new config file", func(t *testing.T) {
+	t.Run("Should return horusx config using new config file", func(t *testing.T) {
 		viper.Reset()
 		currentPath, err := os.Getwd()
-		configFilePath := path.Join(currentPath, ".example-horusec-cli.json")
+		configFilePath := path.Join(currentPath, ".example-horusx-cli.json")
 		assert.NoError(t, err)
 		configs := config.New()
 		configs.ConfigFilePath = configFilePath
 		configs.LoadFromConfigFile()
 		assert.Equal(t, configFilePath, configs.ConfigFilePath)
-		assert.Equal(t, "http://new-viper.horusec.com", configs.HorusecAPIUri)
+		assert.Equal(t, "http://new-viper.horusx.com", configs.HorusxAPIUri)
 		assert.Equal(t, int64(20), configs.TimeoutInSecondsRequest)
 		assert.Equal(t, int64(100), configs.TimeoutInSecondsAnalysis)
 		assert.Equal(t, int64(10), configs.MonitorRetryInSeconds)
@@ -122,17 +122,17 @@ func TestNewHorusecConfig(t *testing.T) {
 		}, configs.ToolsConfig[tools.GoSec])
 		assert.Equal(t, "docker.io/company/go:latest", configs.CustomImages[languages.Go])
 	})
-	t.Run("Should return horusec config using config file and override by environment", func(t *testing.T) {
+	t.Run("Should return horusx config using config file and override by environment", func(t *testing.T) {
 		viper.Reset()
 		authorization := uuid.New().String()
 		currentPath, err := os.Getwd()
-		configFilePath := path.Join(currentPath + "/.example-horusec-cli.json")
+		configFilePath := path.Join(currentPath + "/.example-horusx-cli.json")
 		assert.NoError(t, err)
 		configs := config.New()
 		configs.ConfigFilePath = configFilePath
 		configs.LoadFromConfigFile()
 		assert.Equal(t, configFilePath, configs.ConfigFilePath)
-		assert.Equal(t, "http://new-viper.horusec.com", configs.HorusecAPIUri)
+		assert.Equal(t, "http://new-viper.horusx.com", configs.HorusxAPIUri)
 		assert.Equal(t, int64(20), configs.TimeoutInSecondsRequest)
 		assert.Equal(t, int64(100), configs.TimeoutInSecondsAnalysis)
 		assert.Equal(t, int64(10), configs.MonitorRetryInSeconds)
@@ -162,7 +162,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		}, configs.ToolsConfig[tools.GoSec])
 		assert.Equal(t, "docker.io/company/go:latest", configs.CustomImages[languages.Go])
 
-		assert.NoError(t, os.Setenv(config.EnvHorusecAPIUri, "http://horusec.com"))
+		assert.NoError(t, os.Setenv(config.EnvHorusxAPIUri, "http://horusx.com"))
 		assert.NoError(t, os.Setenv(config.EnvTimeoutInSecondsRequest, "99"))
 		assert.NoError(t, os.Setenv(config.EnvTimeoutInSecondsAnalysis, "999"))
 		assert.NoError(t, os.Setenv(config.EnvMonitorRetryInSeconds, "20"))
@@ -172,7 +172,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		assert.NoError(t, os.Setenv(config.EnvSeveritiesToIgnore, "INFO"))
 		assert.NoError(t, os.Setenv(config.EnvFilesOrPathsToIgnore, "**/*_test.go, **/*_mock.go"))
 		assert.NoError(t, os.Setenv(config.EnvReturnErrorIfFoundVulnerability, "false"))
-		assert.NoError(t, os.Setenv(config.EnvProjectPath, "./horusec-manager"))
+		assert.NoError(t, os.Setenv(config.EnvProjectPath, "./horusx-manager"))
 		assert.NoError(t, os.Setenv(config.EnvEnableGitHistoryAnalysis, "false"))
 		assert.NoError(t, os.Setenv(config.EnvCertInsecureSkipVerify, "false"))
 		assert.NoError(t, os.Setenv(config.EnvCertPath, "./"))
@@ -193,7 +193,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		configs.LoadFromEnvironmentVariables()
 
 		assert.Equal(t, configFilePath, configs.ConfigFilePath)
-		assert.Equal(t, "http://horusec.com", configs.HorusecAPIUri)
+		assert.Equal(t, "http://horusx.com", configs.HorusxAPIUri)
 		assert.Equal(t, int64(99), configs.TimeoutInSecondsRequest)
 		assert.Equal(t, int64(999), configs.TimeoutInSecondsAnalysis)
 		assert.Equal(t, int64(20), configs.MonitorRetryInSeconds)
@@ -203,7 +203,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		assert.Equal(t, []string{"INFO"}, configs.SeveritiesToIgnore)
 		assert.Equal(t, []string{"**/*_test.go", "**/*_mock.go"}, configs.FilesOrPathsToIgnore)
 		assert.Equal(t, false, configs.ReturnErrorIfFoundVulnerability)
-		assert.Equal(t, "./horusec-manager", configs.ProjectPath)
+		assert.Equal(t, "./horusx-manager", configs.ProjectPath)
 		assert.Equal(t, workdir.Default(), configs.WorkDir)
 		assert.Equal(t, false, configs.EnableGitHistoryAnalysis)
 		assert.Equal(t, false, configs.CertInsecureSkipVerify)
@@ -225,17 +225,17 @@ func TestNewHorusecConfig(t *testing.T) {
 			configs.ShowVulnerabilitiesTypes,
 		)
 	})
-	t.Run("Should return horusec config using config file and override by environment and override by flags", func(t *testing.T) {
+	t.Run("Should return horusx config using config file and override by environment and override by flags", func(t *testing.T) {
 		viper.Reset()
 		authorization := uuid.New().String()
 		currentPath, err := os.Getwd()
-		configFilePath := path.Join(currentPath, ".example-horusec-cli.json")
+		configFilePath := path.Join(currentPath, ".example-horusx-cli.json")
 		assert.NoError(t, err)
 		configs := config.New()
 		configs.ConfigFilePath = configFilePath
 		configs.LoadFromConfigFile()
 		assert.Equal(t, configFilePath, configs.ConfigFilePath)
-		assert.Equal(t, "http://new-viper.horusec.com", configs.HorusecAPIUri)
+		assert.Equal(t, "http://new-viper.horusx.com", configs.HorusxAPIUri)
 		assert.Equal(t, int64(20), configs.TimeoutInSecondsRequest)
 		assert.Equal(t, int64(100), configs.TimeoutInSecondsAnalysis)
 		assert.Equal(t, int64(10), configs.MonitorRetryInSeconds)
@@ -274,7 +274,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		assert.NoError(t, os.Setenv(config.EnvSeveritiesToIgnore, "INFO"))
 		assert.NoError(t, os.Setenv(config.EnvFilesOrPathsToIgnore, "**/*_test.go, **/*_mock.go"))
 		assert.NoError(t, os.Setenv(config.EnvReturnErrorIfFoundVulnerability, "false"))
-		assert.NoError(t, os.Setenv(config.EnvProjectPath, "./horusec-manager"))
+		assert.NoError(t, os.Setenv(config.EnvProjectPath, "./horusx-manager"))
 		assert.NoError(t, os.Setenv(config.EnvEnableGitHistoryAnalysis, "false"))
 		assert.NoError(t, os.Setenv(config.EnvCertInsecureSkipVerify, "false"))
 		assert.NoError(t, os.Setenv(config.EnvEnableCommitAuthor, "false"))
@@ -300,7 +300,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		assert.Equal(t, []string{"INFO"}, configs.SeveritiesToIgnore)
 		assert.Equal(t, []string{"**/*_test.go", "**/*_mock.go"}, configs.FilesOrPathsToIgnore)
 		assert.Equal(t, false, configs.ReturnErrorIfFoundVulnerability)
-		assert.Equal(t, "./horusec-manager", configs.ProjectPath)
+		assert.Equal(t, "./horusx-manager", configs.ProjectPath)
 		assert.Equal(t, workdir.Default(), configs.WorkDir)
 		assert.Equal(t, false, configs.EnableGitHistoryAnalysis)
 		assert.Equal(t, false, configs.CertInsecureSkipVerify)
@@ -345,7 +345,7 @@ func TestNewHorusecConfig(t *testing.T) {
 			"--enable-owasp-dependency-check", "true",
 			"--enable-shellcheck", "true",
 			"--headers", "X-Auth-Service=my-value",
-			"--horusec-url", "http://horusec-url-test.com",
+			"--horusx-url", "http://horusx-url-test.com",
 			"--ignore", "ignore-test-1,ignore-test-2",
 			"--insecure-skip-verify", "true",
 			"--json-output-file", "./tmp/json-output-file-test.json",
@@ -374,7 +374,7 @@ func TestNewHorusecConfig(t *testing.T) {
 		assert.Equal(t, true, configs.EnableOwaspDependencyCheck)
 		assert.Equal(t, true, configs.EnableShellCheck)
 		assert.Equal(t, map[string]string{"X-Auth-Service": "my-value"}, configs.Headers)
-		assert.Equal(t, "http://horusec-url-test.com", configs.HorusecAPIUri)
+		assert.Equal(t, "http://horusx-url-test.com", configs.HorusxAPIUri)
 		assert.Equal(t, []string{"ignore-test-1", "ignore-test-2"}, configs.FilesOrPathsToIgnore)
 		assert.Equal(t, true, configs.CertInsecureSkipVerify)
 		assert.Equal(t, filepath.Join(wd, "tmp", "json-output-file-test.json"), configs.JSONOutputFilePath)
@@ -414,7 +414,7 @@ func TestConfig_Bytes(t *testing.T) {
 		repositoryAuthorization := uuid.New().String()
 		wd, err := os.Getwd()
 		assert.Nil(t, err)
-		assert.NoError(t, os.Setenv(config.EnvHorusecAPIUri, "api-uri"))
+		assert.NoError(t, os.Setenv(config.EnvHorusxAPIUri, "api-uri"))
 		assert.NoError(t, os.Setenv(config.EnvCertPath, "cert-path"))
 		assert.NoError(t, os.Setenv(config.EnvTimeoutInSecondsRequest, "99"))
 		assert.NoError(t, os.Setenv(config.EnvTimeoutInSecondsAnalysis, "999"))
@@ -425,7 +425,7 @@ func TestConfig_Bytes(t *testing.T) {
 		assert.NoError(t, os.Setenv(config.EnvSeveritiesToIgnore, "INFO"))
 		assert.NoError(t, os.Setenv(config.EnvFilesOrPathsToIgnore, "**/*_test.go, **/*_mock.go"))
 		assert.NoError(t, os.Setenv(config.EnvReturnErrorIfFoundVulnerability, "false"))
-		assert.NoError(t, os.Setenv(config.EnvProjectPath, "./horusec-manager"))
+		assert.NoError(t, os.Setenv(config.EnvProjectPath, "./horusx-manager"))
 		assert.NoError(t, os.Setenv(config.EnvEnableGitHistoryAnalysis, "false"))
 		assert.NoError(t, os.Setenv(config.EnvCertInsecureSkipVerify, "false"))
 		assert.NoError(t, os.Setenv(config.EnvEnableCommitAuthor, "false"))
@@ -446,15 +446,15 @@ func TestConfig_Bytes(t *testing.T) {
 		expectedOutput := `{
   "is_timeout": false,
   "log_level": "info",
-  "config_file_path": "` + filepath.Join(wd, "horusec-config.json") + `",
+  "config_file_path": "` + filepath.Join(wd, "horusx-config.json") + `",
   "log_file_path": "batata",
-  "horusec_api_uri": "api-uri",
+  "horusx_api_uri": "api-uri",
   "repository_authorization": "` + repositoryAuthorization + `",
   "cert_path": "cert-path",
   "repository_name": "my-project",
   "print_output_type": "sonarqube",
   "json_output_file_path": "` + filepath.Join(os.TempDir(), "output-sonarqube.json") + `",
-  "project_path": "./horusec-manager",
+  "project_path": "./horusx-manager",
   "custom_rules_path": "test",
   "container_bind_project_path": "./my-path",
   "timeout_in_seconds_request": 99,
@@ -603,7 +603,7 @@ func TestConfig_Bytes(t *testing.T) {
   "log_level": "",
   "config_file_path": "",
   "log_file_path": "",
-  "horusec_api_uri": "",
+  "horusx_api_uri": "",
   "repository_authorization": "",
   "cert_path": "",
   "repository_name": "",

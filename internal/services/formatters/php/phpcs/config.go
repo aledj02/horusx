@@ -14,7 +14,7 @@
 
 package phpcs
 
-//nolint
+// nolint
 const CMD = `
 		{{WORK_DIR}}
 		phpcs --report=json --standard=/vendor/pheromone/phpcs-security-audit/example_drupal7_ruleset.xml . > /tmp/result-ANALYSISID.json

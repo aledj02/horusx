@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Package customrules_test holds end-to-end tests that load the real
-// custom-rules JSON files from custom_rules/ and run the horusec-engine text
+// custom-rules JSON files from custom_rules/ and run the horusx-engine text
 // scanner against the vulnerable fixtures in examples/.
 //
 // These tests are NOT Docker-dependent and exercise the full path:
@@ -35,7 +35,7 @@ import (
 	customrules "github.com/ZupIT/horusec/internal/services/custom_rules"
 )
 
-// rootPath goes three levels up from this test package to the horusec repo root.
+// rootPath goes three levels up from this test package to the horusx repo root.
 const rootPath = "../../../"
 
 type e2eCase struct {

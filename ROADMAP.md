@@ -1,6 +1,6 @@
-# Horusec Public Roadmap
+# Horusx Public Roadmap
 
-Our planning focused on the Open Source product and considered a twelve-month vision, presenting the next steps that we have thought about and contributed to the evolution of Horusec. We value quality and transparency during our process, and this will be the primary place to follow Horusec roadmap latest updates. We will keep you informed and adjust our roadmap according to the team's capacity and priorities to maintain quality. On this page, you will follow and be part of Horusec's growth in these areas: **Engineering and product management**. Besides, we have a space for new ideas, **so find out with us**.
+Our planning focused on the Open Source product and considered a twelve-month vision, presenting the next steps that we have thought about and contributed to the evolution of Horusx. We value quality and transparency during our process, and this will be the primary place to follow Horusx roadmap latest updates. We will keep you informed and adjust our roadmap according to the team's capacity and priorities to maintain quality. On this page, you will follow and be part of Horusx's growth in these areas: **Engineering and product management**. Besides, we have a space for new ideas, **so find out with us**.
 
 ## Open source software engineering
 
@@ -22,8 +22,8 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 - Export of analysis in formats: JSON, Sonarqube, text
 - Local vulnerability treatment between: false positive, risk accepted
 - Automatic generation of configuration file
-- HTTPS Support for Integration with Horusec-API
-- Dynamic Headers Support for Horusec-API Integration
+- HTTPS Support for Integration with Horusx-API
+- Dynamic Headers Support for Horusx-API Integration
 - Show commit authors
 - Possibility to ignore files and folders dynamically
 - Possibility of ignoring vulnerability by the severity level
@@ -36,14 +36,14 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 
 <details><summary><a href="https://github.com/ZupIT/horusec-platform" alt="license">Web Platform</a></summary><br>
 
-- Facilitated installation via horusec-operator
+- Facilitated installation via horusx-operator
 - Installation via Charts Kubbernetes
 - Installation via docker image
 - Vulnerabilities Management (Basic): Identify, change the severity, change the type of vulnerability found between vulnerability, false positive, accepted and corrected risk.
 - MultiTenancy
 - Vulnerability Dashboard in Workspace or Repository Vision
 - Possibility to download Dashboard data for files in PDF, XLS, XML, CSV, PNG, JSON
-- Customizable authentication type (LDAP, KEYCLOAK, HORUSEC)
+- Customizable authentication type (LDAP, KEYCLOAK, HORUSX)
 - Simplified navigation by the type of vision (Workspace or repository)
 - Vulnerabilities Chart By: Repository, Language, Person Development, Criticity
 - Time line of vulnerabilities occurrences
@@ -51,7 +51,7 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 - Access Invitation to Repositories, Workspaces, Vulnerability Management between (Administrator, Supervisor, User)
 - E-mail Shooting and Receiving Invitations for Workspaces
 - Webhook Shooting Integration to send analysis to third-party APIs.
-- Web Accessibility (A11Y) in Horusec-Manager
+- Web Accessibility (A11Y) in Horusx-Manager
 - A18N Between (Portuguese, English, Spanish)
 
 </details>
@@ -82,7 +82,7 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 - Decrease the amount of false positives.
 - Tab Completion in CLI
 - Improve observability in the project.
-- Improve Horusec Logs for example: "Remove Left Time", "Remove Unnecessary Warning", "Swap Timeout Log for Progress Bar", "Option for --Quiet no logs"
+- Improve Horusx Logs for example: "Remove Left Time", "Remove Unnecessary Warning", "Swap Timeout Log for Progress Bar", "Option for --Quiet no logs"
 
 </details>
 
@@ -96,7 +96,7 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 - Exporting vulnerability reports
 - Decrease the amount of false positives.
 - Improve observability in the project.
-- Migrate data from other platforms (Fortify, Sonarqube, Defectdojo) to automatically include in Horusec-Manager
+- Migrate data from other platforms (Fortify, Sonarqube, Defectdojo) to automatically include in Horusx-Manager
 - Decrease the amount of false positives.
 - Repositories, Favorites and other features for facilitating experience on the platform
 
@@ -136,15 +136,15 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 - A simple model to include new market tools without needing to move in source code
 - Automatic corrections based on recommendations
 - READ (Read Eval Print Loop) to create rules and already test results
-- Introduce Horusec in Stores, such as Ubuntu Store, Apt-Get, AUR, Windows ...
+- Introduce Horusx in Stores, such as Ubuntu Store, Apt-Get, AUR, Windows ...
 - Semantic analysis that enables users to write their own rules
-- Create a UI To use Horusec in Windows (something like Next, Next, Install, runs the folder and view the analysis through a Windows installation interface, Ubuntu, Mac)
+- Create a UI To use Horusx in Windows (something like Next, Next, Install, runs the folder and view the analysis through a Windows installation interface, Ubuntu, Mac)
 
 </details>
 
 <details><summary><a href="https://github.com/ZupIT/horusec-platform" alt="license">Web Platform</a></summary><br>
 
-- Dashboard following previous behaviors to predict new types of incidents and anticipate our action with Horusec using IA
+- Dashboard following previous behaviors to predict new types of incidents and anticipate our action with Horusx using IA
 - Grouper of the most common security problems in my application
 - Vulnerability Management with Automated Security Complete Reports
 
@@ -156,13 +156,13 @@ Our planning focused on the Open Source product and considered a twelve-month vi
 
 </details>
 
-<details><summary><a href="https://github.com/ZupIT/horusec-playground" alt="license">Horusec Playground</a></summary><br>
+<details><summary><a href="https://github.com/ZupIT/horusec-playground" alt="license">Horusx Playground</a></summary><br>
 
-- Include a format that the user can test the horusec on a site without having to download
+- Include a format that the user can test the horusx on a site without having to download
 
 </details>
 
 
 ## Discover with us
 
-We dedicate this part to get your vision and innovative ideas to create better Horusec features and to improve your developer experience.  Let us know if these new ideas make sense and be part of this discovery! 
+We dedicate this part to get your vision and innovative ideas to create better Horusx features and to improve your developer experience.  Let us know if these new ideas make sense and be part of this discovery! 

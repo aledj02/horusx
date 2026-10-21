@@ -36,27 +36,27 @@ import (
 )
 
 const (
-	isWindows         = runtime.GOOS == "windows"
-	isDarwin          = runtime.GOOS == "darwin"
-	horusecConfigName = "horusec-config.json"
+	isWindows        = runtime.GOOS == "windows"
+	isDarwin         = runtime.GOOS == "darwin"
+	horusxConfigName = "horusx-config.json"
 )
 
-var _ = Describe("Run a complete horusec analysis when build tools locally", func() {
-	tmpDir := CreateHorusecConfigAndReturnTMPDirectory()
+var _ = Describe("Run a complete horusx analysis when build tools locally", func() {
+	tmpDir := CreateHorusxConfigAndReturnTMPDirectory()
 
 	Describe("Running e2e tests when build tools locally", func() {
 		allTestsCases := analysis.NewTestCase()
 
 		for idx, testCase := range allTestsCases {
 			if !isDarwin {
-				horusecConfigFilePathBuildLocally := filepath.Join(tmpDir, horusecConfigName)
-				RunTestCase(testCase, horusecConfigFilePathBuildLocally, "(build locally)", idx, len(allTestsCases))
+				horusxConfigFilePathBuildLocally := filepath.Join(tmpDir, horusxConfigName)
+				RunTestCase(testCase, horusxConfigFilePathBuildLocally, "(build locally)", idx, len(allTestsCases))
 
 				time.Sleep(2 * time.Second)
 			}
 
-			horusecConfigFilePathDownloadFromDockerHub := filepath.Join(allTestsCases[idx].Command.Flags[testutil.StartFlagProjectPath], horusecConfigName)
-			RunTestCase(testCase, horusecConfigFilePathDownloadFromDockerHub, "(download from dockerhub)", idx, len(allTestsCases))
+			horusxConfigFilePathDownloadFromDockerHub := filepath.Join(allTestsCases[idx].Command.Flags[testutil.StartFlagProjectPath], horusxConfigName)
+			RunTestCase(testCase, horusxConfigFilePathDownloadFromDockerHub, "(download from dockerhub)", idx, len(allTestsCases))
 
 			time.Sleep(2 * time.Second)
 		}
@@ -69,8 +69,8 @@ var _ = Describe("Run a complete horusec analysis when build tools locally", fun
 	})
 })
 
-func RunTestCase(testCase *analysis.TestCase, horusecConfigFilePath, runType string, idx, lenTestCase int) {
-	testCase.Command.Flags[testutil.GlobalFlagConfigFilePath] = horusecConfigFilePath
+func RunTestCase(testCase *analysis.TestCase, horusxConfigFilePath, runType string, idx, lenTestCase int) {
+	testCase.Command.Flags[testutil.GlobalFlagConfigFilePath] = horusxConfigFilePath
 	if isWindows && testCase.RequiredDocker {
 		logger.LogInfo("Tool ignored because is required docker: ", runType, testCase.Tool, fmt.Sprintf("[%v/%v]", idx+1, lenTestCase))
 		return
@@ -109,20 +109,20 @@ func RunTestCase(testCase *analysis.TestCase, horusecConfigFilePath, runType str
 	})
 }
 
-func CreateHorusecConfigAndReturnTMPDirectory() string {
-	tmpDir := filepath.Join(os.TempDir(), "horusec-analysis-e2e-"+uuid.NewString())
-	horusecConfigPath := filepath.Join(tmpDir, horusecConfigName)
+func CreateHorusxConfigAndReturnTMPDirectory() string {
+	tmpDir := filepath.Join(os.TempDir(), "horusx-analysis-e2e-"+uuid.NewString())
+	horusxConfigPath := filepath.Join(tmpDir, horusxConfigName)
 
 	if err := os.MkdirAll(tmpDir, os.ModePerm); err != nil {
 		Fail(fmt.Sprintf("Error on create tmp folder: %v", err))
 	}
 
-	horusecConfigFile, err := os.Create(horusecConfigPath)
+	horusxConfigFile, err := os.Create(horusxConfigPath)
 	if err != nil {
 		Fail(fmt.Sprintf("Error on create config file for scan on e2e test %v", err))
 	}
 
-	horusecConfig := config.New()
+	horusxConfig := config.New()
 
 	newCustomImages := customimages.Default()
 	for k := range newCustomImages {
@@ -133,13 +133,13 @@ func CreateHorusecConfigAndReturnTMPDirectory() string {
 		}
 	}
 
-	horusecConfig.CustomImages = newCustomImages
-	horusecConfigBytes, err := json.MarshalIndent(horusecConfig.ToMapLowerCase(), "", "  ")
+	horusxConfig.CustomImages = newCustomImages
+	horusxConfigBytes, err := json.MarshalIndent(horusxConfig.ToMapLowerCase(), "", "  ")
 	if err != nil {
-		Fail(fmt.Sprintf("Error on marshall horusec-config.json %v", err))
+		Fail(fmt.Sprintf("Error on marshall horusx-config.json %v", err))
 	}
 
-	_, err = horusecConfigFile.Write(horusecConfigBytes)
+	_, err = horusxConfigFile.Write(horusxConfigBytes)
 	if err != nil {
 		Fail(fmt.Sprintf("Error on write config file for scan on e2e test %v", err))
 	}

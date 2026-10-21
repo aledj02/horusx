@@ -124,7 +124,7 @@ func (f *Formatter) newVulnerability(result *Result, securityToolVersion,
 		return nil, err
 	}
 	vuln.Line = dependencyInfo.Line
-	vuln.File = f.removeHorusecFolder(dependencyInfo.Path)
+	vuln.File = f.removeHorusxFolder(dependencyInfo.Path)
 	vuln.Code = dependencyInfo.Code
 	return f.SetCommitAuthor(vulnhash.Bind(vuln)), nil
 }
@@ -144,8 +144,8 @@ func (f *Formatter) validateOutput(output string) error {
 	return nil
 }
 
-func (f *Formatter) removeHorusecFolder(path string) string {
-	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusec", f.GetAnalysisID()), ""))
+func (f *Formatter) removeHorusxFolder(path string) string {
+	return filepath.Clean(strings.ReplaceAll(path, filepath.Join(".horusx", f.GetAnalysisID()), ""))
 }
 
 func (f *Formatter) getVulnBase(result *Result, securityToolVersion string) *vulnerability.Vulnerability {

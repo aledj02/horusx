@@ -1,6 +1,6 @@
 # Horizon fork changelog (`horusx`)
 
-> **Fork de**: [ZupIT/horusec](https://github.com/ZupIT/horusec) — commit `873d4104` (v2.9.0-beta.3 upstream era la referencia de baseline)
+> **Fork de**: [ZupIT/horusx](https://github.com/ZupIT/horusec) — commit `873d4104` (v2.9.0-beta.3 upstream era la referencia de baseline)
 > **Tag baseline**: `v2.10.0-fork.0` (equivalente al último upstream)
 > **Convención de versión desde F5**: SemVer estándar (`v2.10.1`, `v2.11.0`, …), **sin el sufijo `-fork.N`** (decision 2026-10-21).
 > **Objetivo**: fork interno, SAST modernizado para **JS, TS, Java, Go, Python, Shell, Kotlin, Swift** — con custom rules RE2-validadas y Docker images frescas (cuando se aplique Fase 5).
@@ -36,15 +36,15 @@
     - `internal/services/engines/go/rule_manager.go` — extensions `.go`
     - `internal/services/engines/shell/rule_manager.go` — extensions `.sh`, `.bash`, `.zsh`, `.ksh`, `.ksh93`
   - 3 nuevos formatters (wrapper `NewDefaultFormatter` por lenguaje):
-    - `internal/services/formatters/python/horusecpython/formatter.go`
-    - `internal/services/formatters/go/horusecgo/formatter.go`
-    - `internal/services/formatters/shell/horusecshell/formatter.go`
+    - `internal/services/formatters/python/horusxpython/formatter.go`
+    - `internal/services/formatters/go/horusxgo/formatter.go`
+    - `internal/services/formatters/shell/horusxshell/formatter.go`
   - `custom_rules/` — carpeta con el catálogo:
     - `python.json` — 16 reglas (`HS-PYTHON-100` … `115`)
     - `go.json` — 11 reglas (`HS-GO-100` … `110`)
     - `shell.json` — 12 reglas (`HS-SHELL-100` … `111`)
     - `swift.json` — 11 reglas (`HS-SWIFT-100` … `110`) — complemente de los 24 built-in de Swift
-    - `horusec-custom-rules.json` — combinado de los 4 (50 reglas total)
+    - `horusx-custom-rules.json` — combinado de los 4 (50 reglas total)
     - `README.md` — schema + uso + cómo generar el combinado
 - `internal/controllers/analyzer/runner.go` — `detectVulnerability{Python,Go,Shell}` **ahora ejecutan el formatter custom-rules ANTES de los Docker tools** (bandit/safety/gosec/nancy/shellcheck). Así el scanner LIGERO sigue funcionando aunque Docker falle (Fase 5 aún pendiente).
 - **Tests** — 6 nuevos archivos:
@@ -86,13 +86,13 @@
 - `go test ./internal/services/custom_rules/...` → ok (incluye E2E de 4 reglas).
 - `go test ./internal/controllers/analyzer/...` → ok.
 - `go test ./config/...` → ok.
-- **Fails pre-existentes (no son regresiones)** — formatters que cargan fixtures `examples/<lang>/example*` desde el git submodule `horusec-examples-vulnerabilities` (no inicializado en el fork): `csharp/dotnet_cli`, `elixir/{mixaudit,sobelow}`, `generic/trivy`, `go/nancy`, `javascript/{npmaudit,yarnaudit}`, `python/safety`, `ruby/{brakeman,bundler}`. Ninguno de esos files aparece en `git status --short` de este fork.
+- **Fails pre-existentes (no son regresiones)** — formatters que cargan fixtures `examples/<lang>/example*` desde el git submodule `horusx-examples-vulnerabilities` (no inicializado en el fork): `csharp/dotnet_cli`, `elixir/{mixaudit,sobelow}`, `generic/trivy`, `go/nancy`, `javascript/{npmaudit,yarnaudit}`, `python/safety`, `ruby/{brakeman,bundler}`. Ninguno de esos files aparece en `git status --short` de este fork.
 
 ### E2E (manual, sin binario)
 ```bash
-/tmp/horusec start \
+/tmp/horusx start \
   -p /Users/naranjax/nx/hx-test \
-  --custom-rules-path /Users/naranjax/nx/horusec/custom_rules/horusec-custom-rules.json \
+  --custom-rules-path /Users/naranjax/nx/horusx/custom_rules/horusx-custom-rules.json \
   --output-format json --json-output-file /tmp/hx-out.json
 ```
 Resultados (`analysisVulnerabilities[].vulnerabilities.rule_id`):
@@ -146,7 +146,7 @@ Todo cambio relevante quedó registrado como:
 ### Decisiones (resumen — ver `migration-plan.md` §Decisiones firmadas)
 | # | Decisión |
 |---|---|
-| D1 | **LIGERO**: custom-rules JSON + built-ins vacíos; no forkear `horusec-engine` |
+| D1 | **LIGERO**: custom-rules JSON + built-ins vacíos; no forkear `horusx-engine` |
 | D2 | Python/Go/Shell: rebuild de Docker images (Fase 5) |
 | D3 | Fork: privado |
 | D4 | Images: multi-arch (amd64 + arm64) |

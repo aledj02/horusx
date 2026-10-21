@@ -84,12 +84,12 @@ jobs:
           push: true
           context: .
           file: ./deployments/Dockerfile
-          tags: horuszup/horusec-cli:alpha
+          tags: horuszup/horusx-cli:alpha
           platforms: linux/amd64,linux/arm64
 
       - name: Sign image
         run: |
-          cosign sign -key $COSIGN_KEY_LOCATION horuszup/horusec-cli:alpha
+          cosign sign -key $COSIGN_KEY_LOCATION horuszup/horusx-cli:alpha
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PWD }}
 
@@ -133,43 +133,43 @@ jobs:
 
             ## Docker images
 
-            - `docker pull horuszup/horusec-cli:alpha`
+            - `docker pull horuszup/horusx-cli:alpha`
           files: |
             ./dist/checksums.txt
             ./dist/checksums.txt.sig
             ./deployments/cosign.pub
-            ./dist/horusec_linux_amd64/horusec_linux_amd64
-            ./dist/horusec_linux_amd64/horusec_linux_amd64.sig
-            ./dist/horusec_linux_386/horusec_linux_x86
-            ./dist/horusec_linux_386/horusec_linux_x86.sig
-            ./dist/horusec_darwin_amd64/horusec_mac_amd64
-            ./dist/horusec_darwin_amd64/horusec_mac_amd64.sig
-            ./dist/horusec_windows_amd64/horusec_win_amd64.exe
-            ./dist/horusec_windows_amd64/horusec_win_amd64.exe.sig
-            ./dist/horusec_windows_386/horusec_win_x86.exe
-            ./dist/horusec_windows_386/horusec_win_x86.exe.sig
-            ./dist/horusec_linux_arm64/horusec_linux_arm64
-            ./dist/horusec_linux_arm64/horusec_linux_arm64.sig
-            ./dist/horusec_windows_arm64/horusec_win_arm64.exe
-            ./dist/horusec_windows_arm64/horusec_win_arm64.exe.sig
-            ./dist/horusec_darwin_arm64/horusec_mac_arm64
-            ./dist/horusec_darwin_arm64/horusec_mac_arm64.sig
-            ./dist/horusec-standalone_linux_amd64/horusec_linux_amd64_stand_alone
-            ./dist/horusec-standalone_linux_amd64/horusec_linux_amd64_stand_alone.sig
-            ./dist/horusec-standalone_linux_386/horusec_linux_x86_stand_alone
-            ./dist/horusec-standalone_linux_386/horusec_linux_x86_stand_alone.sig
-            ./dist/horusec-standalone_darwin_amd64/horusec_mac_amd64_stand_alone
-            ./dist/horusec-standalone_darwin_amd64/horusec_mac_amd64_stand_alone.sig
-            ./dist/horusec-standalone_windows_amd64/horusec_win_amd64_stand_alone.exe
-            ./dist/horusec-standalone_windows_amd64/horusec_win_amd64_stand_alone.exe.sig
-            ./dist/horusec-standalone_windows_386/horusec_win_x86_stand_alone.exe
-            ./dist/horusec-standalone_windows_386/horusec_win_x86_stand_alone.exe.sig
-            ./dist/horusec-standalone_linux_arm64/horusec_linux_arm64_stand_alone
-            ./dist/horusec-standalone_linux_arm64/horusec_linux_arm64_stand_alone.sig
-            ./dist/horusec-standalone_windows_arm64/horusec_win_arm64_stand_alone.exe
-            ./dist/horusec-standalone_windows_arm64/horusec_win_arm64_stand_alone.exe.sig
-            ./dist/horusec-standalone_darwin_arm64/horusec_mac_arm64_stand_alone
-            ./dist/horusec-standalone_darwin_arm64/horusec_mac_arm64_stand_alone.sig
+            ./dist/horusx_linux_amd64/horusx_linux_amd64
+            ./dist/horusx_linux_amd64/horusx_linux_amd64.sig
+            ./dist/horusx_linux_386/horusx_linux_x86
+            ./dist/horusx_linux_386/horusx_linux_x86.sig
+            ./dist/horusx_darwin_amd64/horusx_mac_amd64
+            ./dist/horusx_darwin_amd64/horusx_mac_amd64.sig
+            ./dist/horusx_windows_amd64/horusx_win_amd64.exe
+            ./dist/horusx_windows_amd64/horusx_win_amd64.exe.sig
+            ./dist/horusx_windows_386/horusx_win_x86.exe
+            ./dist/horusx_windows_386/horusx_win_x86.exe.sig
+            ./dist/horusx_linux_arm64/horusx_linux_arm64
+            ./dist/horusx_linux_arm64/horusx_linux_arm64.sig
+            ./dist/horusx_windows_arm64/horusx_win_arm64.exe
+            ./dist/horusx_windows_arm64/horusx_win_arm64.exe.sig
+            ./dist/horusx_darwin_arm64/horusx_mac_arm64
+            ./dist/horusx_darwin_arm64/horusx_mac_arm64.sig
+            ./dist/horusx-standalone_linux_amd64/horusx_linux_amd64_stand_alone
+            ./dist/horusx-standalone_linux_amd64/horusx_linux_amd64_stand_alone.sig
+            ./dist/horusx-standalone_linux_386/horusx_linux_x86_stand_alone
+            ./dist/horusx-standalone_linux_386/horusx_linux_x86_stand_alone.sig
+            ./dist/horusx-standalone_darwin_amd64/horusx_mac_amd64_stand_alone
+            ./dist/horusx-standalone_darwin_amd64/horusx_mac_amd64_stand_alone.sig
+            ./dist/horusx-standalone_windows_amd64/horusx_win_amd64_stand_alone.exe
+            ./dist/horusx-standalone_windows_amd64/horusx_win_amd64_stand_alone.exe.sig
+            ./dist/horusx-standalone_windows_386/horusx_win_x86_stand_alone.exe
+            ./dist/horusx-standalone_windows_386/horusx_win_x86_stand_alone.exe.sig
+            ./dist/horusx-standalone_linux_arm64/horusx_linux_arm64_stand_alone
+            ./dist/horusx-standalone_linux_arm64/horusx_linux_arm64_stand_alone.sig
+            ./dist/horusx-standalone_windows_arm64/horusx_win_arm64_stand_alone.exe
+            ./dist/horusx-standalone_windows_arm64/horusx_win_arm64_stand_alone.exe.sig
+            ./dist/horusx-standalone_darwin_arm64/horusx_mac_arm64_stand_alone
+            ./dist/horusx-standalone_darwin_arm64/horusx_mac_arm64_stand_alone.sig
 
       - name: Push updates
         run: mage -v gitPushAlpha

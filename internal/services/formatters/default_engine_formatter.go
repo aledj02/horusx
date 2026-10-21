@@ -31,7 +31,7 @@ type RuleManager interface {
 	GetAllExtensions() []string
 }
 
-// DefaultFormatter is a formatter that can be used with horusec engines implementation
+// DefaultFormatter is a formatter that can be used with horusx engines implementation
 type DefaultFormatter struct {
 	svc      IService
 	manager  RuleManager

@@ -35,7 +35,7 @@ import (
 	"github.com/ZupIT/horusec/internal/helpers/messages"
 	"github.com/ZupIT/horusec/internal/services/docker"
 	"github.com/ZupIT/horusec/internal/services/docker/client"
-	horusec_api "github.com/ZupIT/horusec/internal/services/horusec_api"
+	horusx_api "github.com/ZupIT/horusec/internal/services/horusx_api"
 )
 
 // LanguageDetect is the interface that detect all languages in some directory.
@@ -51,8 +51,8 @@ type PrintResults interface {
 	SetAnalysis(analysis *analysis.Analysis)
 }
 
-// HorusecService is the interface that interacts with Horusec API
-type HorusecService interface {
+// HorusxService is the interface that interacts with Horusx API
+type HorusxService interface {
 	SendAnalysis(*analysis.Analysis) error
 	GetAnalysis(uuid.UUID) (*analysis.Analysis, error)
 }
@@ -62,8 +62,9 @@ const detailsHeaderText = "* Possible vulnerability detected: "
 // Analyzer is responsible to orchestrate the pipeline of an analysis.
 //
 // Basically, an analysis has the following steps:
-// 	1 - Detect all languages on project path.
-// 	2 - Execute all tools to all languages founded.
+//
+//	1 - Detect all languages on project path.
+//	2 - Execute all tools to all languages founded.
 //	3 - Send analysis to Horusuec Manager if access token is set.
 //	4 - Print analysis results.
 type Analyzer struct {
@@ -71,7 +72,7 @@ type Analyzer struct {
 	config          *config.Config
 	languageDetect  LanguageDetect
 	printController PrintResults
-	horusec         HorusecService
+	horusx          HorusxService
 	runner          *runner
 }
 
@@ -88,7 +89,7 @@ func New(cfg *config.Config) *Analyzer {
 		config:          cfg,
 		languageDetect:  languagedetect.NewLanguageDetect(cfg, analysiss.ID),
 		printController: printresults.NewPrintResults(analysiss, cfg),
-		horusec:         horusec_api.NewHorusecAPIService(cfg),
+		horusx:          horusx_api.NewHorusxAPIService(cfg),
 		runner:          newRunner(cfg, analysiss, dockerAPI),
 	}
 }
@@ -113,7 +114,7 @@ func (a *Analyzer) Analyze() (int, error) {
 	}
 
 	if err = a.sendAnalysis(); err != nil {
-		logger.LogStringAsError(fmt.Sprintf("[HORUSEC] %s", err.Error()))
+		logger.LogStringAsError(fmt.Sprintf("[HORUSX] %s", err.Error()))
 	}
 
 	return a.startPrintResults()
@@ -127,10 +128,10 @@ func (a *Analyzer) startPrintResults() (int, error) {
 
 func (a *Analyzer) sendAnalysis() error {
 	a.formatAnalysisToSendToAPI()
-	if err := a.horusec.SendAnalysis(a.analysis); err != nil {
+	if err := a.horusx.SendAnalysis(a.analysis); err != nil {
 		return err
 	}
-	analysisSaved, err := a.horusec.GetAnalysis(a.analysis.ID)
+	analysisSaved, err := a.horusx.GetAnalysis(a.analysis.ID)
 	if err != nil {
 		return err
 	}

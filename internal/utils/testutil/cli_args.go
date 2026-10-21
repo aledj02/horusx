@@ -43,7 +43,7 @@ const (
 	StartFlagEnableShellcheck           = "--enable-shellcheck"
 	StartFlagFalsePositive              = "--false-positive"
 	StartFlagHeaders                    = "--headers"
-	StartFlagHorusecURL                 = "--horusec-url"
+	StartFlagHorusxURL                  = "--horusx-url"
 	StartFlagIgnore                     = "--ignore"
 	StartFlagIgnoreSeverity             = "--ignore-severity"
 	StartFlagInformationSeverity        = "--information-severity"
@@ -65,7 +65,7 @@ func GetAllStartFlags() []string {
 		StartFlagContainerBindProjectPath, StartFlagCustomRulesPath, StartFlagDisableDocker,
 		StartFlagEnableCommitAuthor, StartFlagEnableGitHistory, StartFlagEnableOwaspDependencyCheck,
 		StartFlagEnableShellcheck, StartFlagFalsePositive, StartFlagHeaders,
-		StartFlagHorusecURL, StartFlagIgnore, StartFlagIgnoreSeverity,
+		StartFlagHorusxURL, StartFlagIgnore, StartFlagIgnoreSeverity,
 		StartFlagInformationSeverity, StartFlagInsecureSkipVerify, StartFlagJSONOutputFilePath,
 		StartFlagMonitorRetryCount, StartFlagOutputFormat, StartFlagProjectPath,
 		StartFlagRepositoryName, StartFlagRequestTimeout, StartFlagReturnError,

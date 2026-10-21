@@ -38,7 +38,7 @@ import (
 	"github.com/ZupIT/horusec/internal/utils/file"
 )
 
-var ErrOutputJSON = errors.New("{HORUSEC_CLI} error creating and/or writing to the specified file")
+var ErrOutputJSON = errors.New("{HORUSX_CLI} error creating and/or writing to the specified file")
 
 type SarifConverter interface {
 	ConvertVulnerabilityToSarif() sarif.Report

@@ -15,5 +15,5 @@
 package messages
 
 const (
-	MsgPrintFinishAnalysisWithStatus = `HORUSEC ENDED THE ANALYSIS WITH STATUS OF %q AND WITH THE FOLLOWING RESULTS:`
+	MsgPrintFinishAnalysisWithStatus = `HORUSX ENDED THE ANALYSIS WITH STATUS OF %q AND WITH THE FOLLOWING RESULTS:`
 )

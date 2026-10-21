@@ -40,7 +40,7 @@ func TestParseOutput(t *testing.T) {
 		newAnalysis := new(analysis.Analysis)
 
 		cfg := config.New()
-		cfg.ProjectPath = testutil.CreateHorusecAnalysisDirectory(t, newAnalysis, testutil.CsharpExample1)
+		cfg.ProjectPath = testutil.CreateHorusxAnalysisDirectory(t, newAnalysis, testutil.CsharpExample1)
 
 		service := formatters.NewFormatterService(newAnalysis, dockerAPIControllerMock, cfg)
 		formatter := NewFormatter(service)

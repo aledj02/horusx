@@ -86,9 +86,9 @@ func TestLanguageDetectIgnoreFilesGithubFolder(t *testing.T) {
 	langs, err := ld.Detect(cfg.ProjectPath)
 	assert.Contains(t, langs, languages.Yaml)
 	assert.NoError(t, err)
-	assert.DirExists(t, filepath.Join(cfg.ProjectPath, ".horusec", analysisID.String(), ".git"))
-	assert.DirExists(t, filepath.Join(cfg.ProjectPath, ".horusec", analysisID.String(), ".github"))
-	assert.FileExists(t, filepath.Join(cfg.ProjectPath, ".horusec", analysisID.String(), ".github", "workflows", "license.yaml"))
+	assert.DirExists(t, filepath.Join(cfg.ProjectPath, ".horusx", analysisID.String(), ".git"))
+	assert.DirExists(t, filepath.Join(cfg.ProjectPath, ".horusx", analysisID.String(), ".github"))
+	assert.FileExists(t, filepath.Join(cfg.ProjectPath, ".horusx", analysisID.String(), ".github", "workflows", "license.yaml"))
 }
 
 func assertTestLanguageDetectIgnoreFiles(t *testing.T, cfg *config.Config) {
@@ -102,7 +102,7 @@ func assertTestLanguageDetectIgnoreFiles(t *testing.T, cfg *config.Config) {
 
 	assert.Equal(t, []languages.Language{languages.Leaks, languages.Generic, languages.Go}, langs)
 
-	analysisPath := filepath.Join(cfg.ProjectPath, ".horusec", analysisID.String())
+	analysisPath := filepath.Join(cfg.ProjectPath, ".horusx", analysisID.String())
 	assert.NoDirExists(t, filepath.Join(analysisPath, "api", "routes"))
 	assert.NoFileExists(t, filepath.Join(analysisPath, "go.mod"))
 	assert.NoFileExists(t, filepath.Join(analysisPath, "go.sum"))
@@ -114,10 +114,10 @@ func assertTestLanguageDetectIgnoreFiles(t *testing.T, cfg *config.Config) {
 func TestLanguageDetect(t *testing.T) {
 	logger.LogSetOutput(io.Discard)
 	t.Cleanup(func() {
-		err := os.RemoveAll(filepath.Join(testutil.ExamplesPath, ".horusec"))
+		err := os.RemoveAll(filepath.Join(testutil.ExamplesPath, ".horusx"))
 		assert.NoError(t, err)
 		for _, path := range testutil.GetAllExamples1Dir() {
-			err = os.RemoveAll(filepath.Join(path, ".horusec"))
+			err = os.RemoveAll(filepath.Join(path, ".horusx"))
 			assert.NoError(t, err)
 		}
 	})
@@ -135,7 +135,7 @@ func TestLanguageDetect(t *testing.T) {
 		dstPath := filepath.Join(tmpPath, uuid.New().String())
 		srcPath := filepath.Join(testutil.RootPath, "assets")
 		t.Cleanup(func() {
-			assert.NoError(t, os.RemoveAll(filepath.Join(srcPath, ".horusec")))
+			assert.NoError(t, os.RemoveAll(filepath.Join(srcPath, ".horusx")))
 		})
 
 		err := copy.Copy(srcPath, dstPath, func(src string) bool { return false })
@@ -385,7 +385,7 @@ func TestLanguageDetect(t *testing.T) {
 			assert.Contains(t, stdOutMock.String(), strings.ReplaceAll(log, `\`, `\\`))
 		}
 	})
-	t.Run("Should read git submodule path and copy to .horusec folder git submodule correctly", func(t *testing.T) {
+	t.Run("Should read git submodule path and copy to .horusx folder git submodule correctly", func(t *testing.T) {
 		analysisID := uuid.New()
 		configs := config.New()
 		configs.EnableGitHistoryAnalysis = true
@@ -395,7 +395,7 @@ func TestLanguageDetect(t *testing.T) {
 
 		assert.NoError(t, err)
 
-		projectClonedPath := filepath.Join(testutil.ExamplesPath, ".horusec", analysisID.String())
+		projectClonedPath := filepath.Join(testutil.ExamplesPath, ".horusx", analysisID.String())
 		fileInfo, err := os.Stat(filepath.Join(projectClonedPath, ".git"))
 		assert.NoError(t, err)
 

@@ -120,7 +120,7 @@ func (s *Sarif) newTool(vulnerabilityy *vulnerability.Vulnerability) ScanTool {
 	return ScanTool{
 		Driver: ScanToolDriver{
 			Name:               vulnerabilityy.SecurityTool.ToString(),
-			MoreInformationURI: "https://docs.horusec.io/docs/cli/analysis-tools/overview/",
+			MoreInformationURI: "https://docs.horusx.io/docs/cli/analysis-tools/overview/",
 			Version:            s.getVersionWithoutPrefix(),
 		},
 	}
@@ -135,7 +135,7 @@ func (s *Sarif) newRule(vulnerabilityy *vulnerability.Vulnerability) Rule {
 		FullDescription: TextDisplayComponent{
 			Text: vulnerabilityy.Details,
 		},
-		HelpURI: "https://docs.horusec.io/docs/cli/analysis-tools/overview/",
+		HelpURI: "https://docs.horusx.io/docs/cli/analysis-tools/overview/",
 		Name:    strings.Split(vulnerabilityy.Details, "\n")[0],
 	}
 }
@@ -153,7 +153,7 @@ func (s *Sarif) newResult(vulnerabilityy *vulnerability.Vulnerability) Result {
 		Message: TextDisplayComponent{
 			Text: vulnerabilityy.Details,
 		},
-		Level:     ResultLevel(s.convertHorusecSeverityToSarif(vulnerabilityy.Severity)),
+		Level:     ResultLevel(s.convertHorusxSeverityToSarif(vulnerabilityy.Severity)),
 		Locations: []Location{s.createLocation(vulnerabilityy)},
 		RuleID:    vulnerabilityy.RuleID,
 	}
@@ -176,7 +176,7 @@ func (s *Sarif) createLocation(vulnerabilityy *vulnerability.Vulnerability) Loca
 	}
 }
 
-func (s *Sarif) convertHorusecSeverityToSarif(severity severities.Severity) string {
+func (s *Sarif) convertHorusxSeverityToSarif(severity severities.Severity) string {
 	return s.getSarifSeverityMap()[severity]
 }
 

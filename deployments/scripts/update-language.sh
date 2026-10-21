@@ -13,13 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The purpose of this script is to simplify the way of generating a tag for horusec-kotlin service in dockerhub.
+# The purpose of this script is to simplify the way of generating a tag for horusx-kotlin service in dockerhub.
 #  Example:
-#   * ./horusec-kotlin/deployments/scripts/update-image.sh horusec-kotlin alpha false
-#   * ./horusec-kotlin/deployments/scripts/update-image.sh horusec-java rc false
-#   * ./horusec-kotlin/deployments/scripts/update-image.sh horusec-kotlin release true
-#   * ./horusec-kotlin/deployments/scripts/update-image.sh horusec-java minor true
-#   * ./horusec-kotlin/deployments/scripts/update-image.sh horusec-kotlin major true
+#   * ./horusx-kotlin/deployments/scripts/update-image.sh horusx-kotlin alpha false
+#   * ./horusx-kotlin/deployments/scripts/update-image.sh horusx-java rc false
+#   * ./horusx-kotlin/deployments/scripts/update-image.sh horusx-kotlin release true
+#   * ./horusx-kotlin/deployments/scripts/update-image.sh horusx-java minor true
+#   * ./horusx-kotlin/deployments/scripts/update-image.sh horusx-kotlin major true
 
 LANGUAGE_NAME=$1
 UPDATE_TYPE=$2
@@ -34,11 +34,11 @@ NEW_RELEASE=""
 getDirectoryAndImagesNameByLanguageName() {
     case "$LANGUAGE_NAME" in
     "c")
-        IMAGE_NAME="horuszup/horusec-c"
+        IMAGE_NAME="horuszup/horusx-c"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/c/deployments"
         ;;
     "csharp")
-        IMAGE_NAME="horuszup/horusec-csharp"
+        IMAGE_NAME="horuszup/horusx-csharp"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/csharp/deployments"
         ;;
     "dart")
@@ -46,19 +46,19 @@ getDirectoryAndImagesNameByLanguageName() {
         exit 0
         ;;
     "elixir")
-        IMAGE_NAME="horuszup/horusec-elixir"
+        IMAGE_NAME="horuszup/horusx-elixir"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/elixir/deployments"
         ;;
     "generic")
-        IMAGE_NAME="horuszup/horusec-generic"
+        IMAGE_NAME="horuszup/horusx-generic"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/generic/deployments"
         ;;
     "go")
-        IMAGE_NAME="horuszup/horusec-go"
+        IMAGE_NAME="horuszup/horusx-go"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/go/deployments"
         ;;
     "hcl")
-        IMAGE_NAME="horuszup/horusec-hcl"
+        IMAGE_NAME="horuszup/horusx-hcl"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/hcl/deployments"
         ;;
     "java")
@@ -66,7 +66,7 @@ getDirectoryAndImagesNameByLanguageName() {
         exit 0
         ;;
     "javascript")
-        IMAGE_NAME="horuszup/horusec-js"
+        IMAGE_NAME="horuszup/horusx-js"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/javascript/deployments"
         ;;
     "kotlin")
@@ -74,23 +74,23 @@ getDirectoryAndImagesNameByLanguageName() {
         exit 0
         ;;
     "leaks")
-        IMAGE_NAME="horuszup/horusec-leaks"
+        IMAGE_NAME="horuszup/horusx-leaks"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/leaks/deployments"
         ;;
     "php")
-        IMAGE_NAME="horuszup/horusec-php"
+        IMAGE_NAME="horuszup/horusx-php"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/php/deployments"
         ;;
     "python")
-        IMAGE_NAME="horuszup/horusec-python"
+        IMAGE_NAME="horuszup/horusx-python"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/python/deployments"
         ;;
     "ruby")
-        IMAGE_NAME="horuszup/horusec-ruby"
+        IMAGE_NAME="horuszup/horusx-ruby"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/ruby/deployments"
         ;;
     "shell")
-        IMAGE_NAME="horuszup/horusec-shell"
+        IMAGE_NAME="horuszup/horusx-shell"
         DIRECTORY_SEMVER="$CURRENT_FOLDER/internal/services/formatters/shell/deployments"
         ;;
     "yaml")
@@ -141,7 +141,7 @@ validateIsToUpdateLatest() {
 
 installSemver () {
     mkdir -p ./bin
-    curl -fsSL -o ./bin/install-semver.sh https://raw.githubusercontent.com/ZupIT/horusec-devkit/main/scripts/install-semver.sh
+    curl -fsSL -o ./bin/install-semver.sh https://raw.githubusercontent.com/ZupIT/horusx-devkit/main/scripts/install-semver.sh
     chmod +x ./bin/install-semver.sh
     ./bin/install-semver.sh
     if ! semver &> /dev/null

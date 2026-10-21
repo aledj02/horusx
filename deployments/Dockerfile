@@ -16,18 +16,18 @@ FROM golang:1.17-alpine AS builder
 
 RUN apk add --no-cache git
 
-ADD . /horusec
-WORKDIR /horusec
+ADD . /horusx
+WORKDIR /horusx
 
 RUN go mod download
 
-RUN env GOOS=linux go build -ldflags '-s -w' -o /bin/horusec ./cmd/app/main.go
+RUN env GOOS=linux go build -ldflags '-s -w' -o /bin/horusx ./cmd/app/main.go
 
 FROM docker:20.10-dind
 
 RUN apk add git --no-cache
 
-COPY --from=builder /bin/horusec /usr/local/bin
-RUN chmod +x /usr/local/bin/horusec
+COPY --from=builder /bin/horusx /usr/local/bin
+RUN chmod +x /usr/local/bin/horusx
 
 CMD [ "sh" ]

@@ -1,6 +1,6 @@
 # **Contributing Guide**
 
-This is Horusec contributing guide. Please read the following sections to learn how to ask questions and how to work on something.
+This is Horusx contributing guide. Please read the following sections to learn how to ask questions and how to work on something.
 
 ## **Table of contents**
 ### 1. [**Before you contribute**](#before-you-contribute)
@@ -27,13 +27,13 @@ This is Horusec contributing guide. Please read the following sections to learn 
 Please follow the [**Code of Conduct**](https://github.com/ZupIT/horusec/blob/main/CODE_OF_CONDUCT.md) in all your interactions with our project.
 
 ### **Legal**
-- Horusec is licensed over [**ASF - Apache License**](https://github.com/ZupIT/horusec/blob/main/LICENSE), version 2, so new files must have the ASF version 2 header. For more information, please check out [**Apache license**](https://www.apache.org/licenses/LICENSE-2.0).
+- Horusx is licensed over [**ASF - Apache License**](https://github.com/ZupIT/horusec/blob/main/LICENSE), version 2, so new files must have the ASF version 2 header. For more information, please check out [**Apache license**](https://www.apache.org/licenses/LICENSE-2.0).
 
 - All contributions are subject to the [**Developer Certificate of Origin (DCO)**](https://developercertificate.org). 
 When you commit, use the ```**-s** ``` option to include the Signed-off-by line at the end of the commit log message.
 
 ## **Prerequisites**
-Check out the requisites before contributing to Horusec:
+Check out the requisites before contributing to Horusx:
 
 ### **Developer Certificate of Origin - DCO**
 
@@ -102,9 +102,9 @@ Writing a good issue will help our team better analyze and manage your contribut
 
 - **[Improvement](https://github.com/ZupIT/horusec/issues/new?assignees=&labels=improvement&template=improvement.md):** Suggest a improvement for a project
 
-- **[Support request](https://github.com/ZupIT/horusec/issues/new?assignees=&labels=support&template=support_request.md):** Support request or question relating to Horusec
+- **[Support request](https://github.com/ZupIT/horusec/issues/new?assignees=&labels=support&template=support_request.md):** Support request or question relating to Horusx
 
-**Example: Horusec-cli:Improvement - Suggestion for CLI installation experience** 
+**Example: Horusx-cli:Improvement - Suggestion for CLI installation experience** 
 
 **With the issue description:**
 
@@ -129,7 +129,7 @@ When you open a Pull Request, follow the requirements below:
 - **hotfix:** PR refers to corrections where you will need a cherry-pick and the update of the minor version. 
 - **chore:** PR refers to changes for the next release, but it was only maintenance without an activity impact.  
 
-**Example:** **start:bugfix - fix bug when Horusec haven't read the new flag of authorization**
+**Example:** **start:bugfix - fix bug when Horusx haven't read the new flag of authorization**
 
  
 2. Answer the questions about what you did, how to verify it and a short description for the changelog, see an example below:
@@ -141,14 +141,14 @@ When you open a Pull Request, follow the requirements below:
 See the guidelines to submit your changes: 
 
 ### **Prepare your development environment**
-To start contributing with Horusec, you need to install [**Go**](https://golang.org/dl/). The minimal version required to build is 1.17.
+To start contributing with Horusx, you need to install [**Go**](https://golang.org/dl/). The minimal version required to build is 1.17.
 [**GNU Make**](https://www.gnu.org/software/make/) is also required to development.
 
 After installing Go you can build using `make build-dev`.
 
 
 #### **Testing**
-Horusec has a suite of unit and end-to-end tests you can run them using the following commands. 
+Horusx has a suite of unit and end-to-end tests you can run them using the following commands. 
 
 ```
 make test
@@ -168,7 +168,7 @@ go tool cover -html=coverage.out # Open coverage status in your browser
 ``` 
 
 #### **Repositories**
-Horusec has other repositories, check them below:
+Horusx has other repositories, check them below:
 
 - [**Charts**](https://github.com/ZupIT/charlescd/tree/main/circle-matcher)
 - [**Devkit**](https://github.com/ZupIT/horusec-devkit)
@@ -183,7 +183,7 @@ Horusec has other repositories, check them below:
 ### **First contribution**
 Contributing to a new feature is only allowed in the [**main repository**](https://github.com/ZupIT/horusec).
 
-Before contributing to this repository, please discuss the changes you wish to make via e-mail or [**forum**](https://forum.zup.com.br/c/en/horusec/14). 
+Before contributing to this repository, please discuss the changes you wish to make via e-mail or [**forum**](https://forum.zup.com.br/c/en/horusx/14). 
 
 ### **Add new feature, bug fixing or improvement**
 If you want to add an improvement, a new feature or bug fix, follow the steps to contribute: 
@@ -216,9 +216,9 @@ Your pull request is approved when:
 
 ## **Community**
 
-- Do you have any question about Horusec? Send to our [**mailing list**](horusec@zup.com.br). 
-- Let's chat in our [**forum**](https://forum.zup.com.br/c/en/horusec/14).
+- Do you have any question about Horusx? Send to our [**mailing list**](horusx@zup.com.br). 
+- Let's chat in our [**forum**](https://forum.zup.com.br/c/en/horusx/14).
 
 Thank you for your contribution, you rock! 🚀
 
-**Horusec team** 
+**Horusx team** 

@@ -33,7 +33,7 @@ import (
 	"github.com/ZupIT/horusec/internal/utils/testutil"
 )
 
-var _ = Describe("running binary Horusec with start parameter", func() {
+var _ = Describe("running binary Horusx with start parameter", func() {
 	var (
 		session     *gexec.Session
 		flags       map[string]string
@@ -43,7 +43,7 @@ var _ = Describe("running binary Horusec with start parameter", func() {
 	JustBeforeEach(func() {
 		var err error
 		flags[testutil.StartFlagDisableDocker] = "true"
-		cmd := testutil.GinkgoGetHorusecCmdWithFlags(testutil.CmdStart, flags)
+		cmd := testutil.GinkgoGetHorusxCmdWithFlags(testutil.CmdStart, flags)
 		session, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 		Expect(err).NotTo(HaveOccurred())
 		session.Wait(testutil.AverageTimeoutAnalyzeForExamplesFolder)
@@ -69,7 +69,7 @@ var _ = Describe("running binary Horusec with start parameter", func() {
 	})
 
 	When("global flag --config-file-path is passed", func() {
-		configFilePathToTest := filepath.Join(projectPath, "horusec-config.json")
+		configFilePathToTest := filepath.Join(projectPath, "horusx-config.json")
 
 		BeforeEach(func() {
 			flags = map[string]string{
@@ -124,7 +124,7 @@ var _ = Describe("running binary Horusec with start parameter", func() {
 		})
 
 		It("Checks if the timeout property was set", func() {
-			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf("Horusec will return a timeout after %s seconds.", analysisTimeout)))
+			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf("Horusx will return a timeout after %s seconds.", analysisTimeout)))
 			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf(`\"timeout_in_seconds_analysis\": %s`, analysisTimeout)))
 		})
 	})
@@ -279,7 +279,7 @@ var _ = Describe("running binary Horusec with start parameter", func() {
 	})
 
 	When("--repository-name is passed", func() {
-		repositoryName := "horusec-e2e-test"
+		repositoryName := "horusx-e2e-test"
 
 		BeforeEach(func() {
 			flags = map[string]string{
@@ -367,22 +367,22 @@ var _ = Describe("running binary Horusec with start parameter", func() {
 		})
 	})
 
-	When("--horusec-api and --headers is passed", func() {
-		horusecApiUrl := "http://localhost:8005"
-		horusecApiHeaderKey := "Authorization"
-		horusecApiHeaderValue := "MySuperSecretToken"
+	When("--horusx-api and --headers is passed", func() {
+		horusxApiUrl := "http://localhost:8005"
+		horusxApiHeaderKey := "Authorization"
+		horusxApiHeaderValue := "MySuperSecretToken"
 
 		BeforeEach(func() {
 			flags = map[string]string{
 				testutil.StartFlagProjectPath: projectPath,
-				testutil.StartFlagHorusecURL:  horusecApiUrl,
-				testutil.StartFlagHeaders:     fmt.Sprintf("%s=%s", horusecApiHeaderKey, horusecApiHeaderValue),
+				testutil.StartFlagHorusxURL:   horusxApiUrl,
+				testutil.StartFlagHeaders:     fmt.Sprintf("%s=%s", horusxApiHeaderKey, horusxApiHeaderValue),
 			}
 		})
 
-		It("Checks if the horusec api and headers properties was set.", func() {
-			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf(`\"horusec_api_uri\": \"%s\"`, horusecApiUrl)))
-			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf(`\"headers\": {\n    \"%s\": \"%s\"\n  }`, horusecApiHeaderKey, horusecApiHeaderValue)))
+		It("Checks if the horusx api and headers properties was set.", func() {
+			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf(`\"horusx_api_uri\": \"%s\"`, horusxApiUrl)))
+			Expect(session.Out.Contents()).To(ContainSubstring(fmt.Sprintf(`\"headers\": {\n    \"%s\": \"%s\"\n  }`, horusxApiHeaderKey, horusxApiHeaderValue)))
 		})
 	})
 
@@ -428,7 +428,7 @@ var _ = Describe("running binary Horusec with start parameter", func() {
 
 		It("Checks if the information severity property was set", func() {
 			Expect(session.Out.Contents()).To(ContainSubstring(`\"enable_information_severity\": true`))
-			Expect(session.Out.Contents()).NotTo(ContainSubstring("Horusec not show info vulnerabilities in this analysis"))
+			Expect(session.Out.Contents()).NotTo(ContainSubstring("Horusx not show info vulnerabilities in this analysis"))
 		})
 	})
 

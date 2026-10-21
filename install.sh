@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# aledj02/horusx — install the latest (or a pinned) horusec binary from GitHub Releases.
+# aledj02/horusx — install the latest (or a pinned) horusx binary from GitHub Releases.
 #
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/aledj02/horusx/main/install.sh | sh
@@ -13,7 +13,7 @@
 set -eu
 
 REPO="${HORUX_REPO:-aledj02/horusx}"
-BIN_NAME="horusec"
+BIN_NAME="horusx"
 VERSION=""
 BIN_DIR="${HORUX_BIN_DIR:-}"
 OS="$(uname -s)"; ARCH="$(uname -m)"

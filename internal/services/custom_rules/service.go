@@ -70,7 +70,7 @@ func (s *Service) loadCustomRules() *Service {
 
 	customRules, err := s.openCustomRulesJSONFile()
 	if err != nil {
-		logger.LogError("{HORUSEC_CLI} failed to get custom rules: ", err)
+		logger.LogError("{HORUSX_CLI} failed to get custom rules: ", err)
 	}
 
 	for index := range customRules {
@@ -82,7 +82,7 @@ func (s *Service) loadCustomRules() *Service {
 
 func (s *Service) validateAndParseCustomRule(rule *CustomRule) {
 	if err := rule.Validate(); err != nil {
-		errMsg := fmt.Sprintf("{HORUSEC_CLI} invalid custom rule: %s", rule.String())
+		errMsg := fmt.Sprintf("{HORUSX_CLI} invalid custom rule: %s", rule.String())
 		logger.LogError(errMsg, err)
 		return
 	}
