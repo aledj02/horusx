@@ -178,7 +178,7 @@ Ver `migration-plan.md` Fase 5.1-5.7 para el template de las 4 imágenes.
 | Reglas Go      | 0 built-in (solo gosec/nancy viejas)   | 11 JSON |
 | Reglas Shell   | 0 built-in (solo shellcheck vieja)      | 12 JSON |
 | Reglas Swift   | 24 built-in | 24 built-in + **11 JSON** |
-| Docker images  | `horuszup/*` | `horusx/*` (Fase 5 pendiente) |
+| Docker images  | `horuszup/*` | `aledj02/horusx-*` (Fase 5 ✅ publicada) |
 | Prefix de reg  | `HS-*` | `HS-*` (iguales) — los custom son `HS-{PY|GO|SH|SW}-100+` |
 | Cosign / firma | Sí (upstream) | No (D5) |
 | Fork           | `ZupIT/horusec` | `horusx/` (privado) |
@@ -198,6 +198,45 @@ Ver `migration-plan.md` Fase 5.1-5.7 para el template de las 4 imágenes.
 
 ---
 
-## 6. Licencia
+## 6. Distribución (Fase 7)
+
+### 6.1 Instalar
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/aledj02/horusx/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/aledj02/horusx/main/install.sh | sh -s -- --version v2.10.1
+horusec version
+```
+
+### 6.2 Build desde cero (sin goreleaser)
+
+```bash
+V=$(git describe --tags --abbrev=0); C=$(git rev-parse --short HEAD); D=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+LF="-s -w -X github.com/ZupIT/horusec/cmd/app/version.Version=${V} -X github.com/ZupIT/horusec/cmd/app/version.Commit=${C} -X github.com/ZupIT/horusec/cmd/app/version.Date=${D}"
+CGO_ENABLED=0 go build -trimpath -ldflags "$LF" -o horusec_darwin_arm64 ./cmd/app   # host
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "$LF" -o horusec_linux_amd64 ./cmd/app
+GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -trimpath -ldflags "$LF" -o horusec_linux_arm64 ./cmd/app
+```
+
+### 6.3 Publicar release (goreleaser)
+
+```bash
+goreleaser release --clean            # lee la tag actual, genera bins+tar.gz, sube assets a GH
+goreleaser build --snapshot --clean   # solo build local, no publica
+```
+
+Configuración en [`.goreleaser.yml`](./.goreleaser.yml): 3 plataformas (`darwin/arm64`, `linux/amd64`, `linux/arm64`), `CGO_ENABLED=0`, version inyectada por ldflags, `custom_rules/` embebido en cada archive.
+
+### 6.4 Custom rules JSON
+
+Los JSON viven en [`custom_rules/`](./custom_rules/) y se embeben en cada release. Para añadir reglas: editar `custom_rules/{python,go,shell,swift}.json` (array de objetos, campo `id`, regex RE2, IDs `HS-{PY|GO|SH|SW}-100+`) y usar con `horusec start -c custom_rules/python.json`.
+
+### 6.5 Update tool versions
+
+Reescribir el Dockerfile por lenguaje en `internal/services/formatters/<lang>/deployments/Dockerfile` (versines pinadas), re-build + push con `docker buildx build --platform linux/amd64,linux/arm64 --push`, y bump de `images.go` si cambia tag. Ver §3.
+
+---
+
+## 7. Licencia
 
 Apache-2.0 (igual que upstream).

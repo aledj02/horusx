@@ -17,3 +17,4 @@ vendor
 obj/
 /dist.DS_Store
 .DS_Store
+/dist

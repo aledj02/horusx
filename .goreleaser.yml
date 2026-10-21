@@ -1,0 +1,59 @@
+# Fork aledj02/horusx — Go 1.24 + 3 plataformas (darwin/arm64, linux/amd64, linux/arm64).
+# Sin cosign, sin homebrew, sin brew — solo bins + zip/tar.gz como GH Release assets.
+#
+# Uso:
+#   goreleaser build --snapshot --clean   # dev, no publica
+#   goreleaser release --clean            # genera tag y publica en GH
+version: 2
+project_name: horusec
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: horusec
+    main: ./cmd/app
+    binary: horusec
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: amd64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/ZupIT/horusec/cmd/app/version.Version={{.Version}}
+      - -X github.com/ZupIT/horusec/cmd/app/version.Commit={{.ShortCommit}}
+      - -X github.com/ZupIT/horusec/cmd/app/version.Date={{.Date}}
+
+archives:
+  - id: horusec
+    formats: [ tar.gz ]
+    name_template: >-
+      {{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    files:
+      - LICENSE
+      - README.md
+      - CHANGELOG-FORK.md
+      - README-FORK.md
+      - custom_rules/*
+
+changelog:
+  disable: true   # changelog propio en CHANGELOG-FORK.md
+
+release:
+  github:
+    owner: aledj02
+    name: horusx
+  # disable: true  # usar para build local sin publish
+  draft: false
+  prerelease: auto
+  name_template: "{{.Tag}}"
