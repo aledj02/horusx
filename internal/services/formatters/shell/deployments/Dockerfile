@@ -11,7 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Fork horusx — FASE 5 (2026-10-21)
+#   - alpine 3.21 (upstream: 3.16.0)
+#   - shellcheck 0.10.0 (upstream: >0.7.2) — pin del repo community de alpine 3.21
+#   - multi-arch (buildx)
+#
+# Uso del parser (debe seguir corriendo):
+#   - shellcheck --format=json <file>
 
-FROM alpine:3.16.0
+FROM alpine:3.21
 
-RUN apk add shellcheck>0.7.2
+RUN apk add --no-cache shellcheck=0.10.0-r1 \
+    && shellcheck --version

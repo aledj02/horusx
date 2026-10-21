@@ -11,11 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Fork horusx — FASE 5 (2026-10-21)
+#   - node 20-alpine (LTS rolling — upstream: 17.6)
+#   - npm 10 + yarn 1.22 (bundled con node 20 alpine; upstream: npm 6.14)
+#   - jq (upstream: 1.5, manual build — ahora por apk)
+#   - multi-arch via TARGETARCH
+#
+# Uso del parser:
+#   - npm audit    --only=prod --json
+#   - yarn audit   --groups dependencies --json
 
-FROM node:17.6.0-alpine
+FROM node:20-alpine
 
-RUN npm install -g npm@6.14.7 #update
+RUN apk add --no-cache jq
 
-RUN wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-RUN chmod +x ./jq
-RUN cp jq /usr/bin
+RUN node --version \
+    && npm  --version \
+    && yarn --version \
+    && jq   --version
