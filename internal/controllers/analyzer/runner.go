@@ -46,6 +46,7 @@ import (
 	"github.com/ZupIT/horusec/internal/services/formatters/generic/semgrep"
 	"github.com/ZupIT/horusec/internal/services/formatters/generic/trivy"
 	"github.com/ZupIT/horusec/internal/services/formatters/go/gosec"
+	"github.com/ZupIT/horusec/internal/services/formatters/go/horusecgo"
 	"github.com/ZupIT/horusec/internal/services/formatters/go/nancy"
 	"github.com/ZupIT/horusec/internal/services/formatters/hcl/checkov"
 	"github.com/ZupIT/horusec/internal/services/formatters/hcl/tfsec"
@@ -59,9 +60,11 @@ import (
 	"github.com/ZupIT/horusec/internal/services/formatters/nginx/horusecnginx"
 	"github.com/ZupIT/horusec/internal/services/formatters/php/phpcs"
 	"github.com/ZupIT/horusec/internal/services/formatters/python/bandit"
+	"github.com/ZupIT/horusec/internal/services/formatters/python/horusecpython"
 	"github.com/ZupIT/horusec/internal/services/formatters/python/safety"
 	"github.com/ZupIT/horusec/internal/services/formatters/ruby/brakeman"
 	"github.com/ZupIT/horusec/internal/services/formatters/ruby/bundler"
+	"github.com/ZupIT/horusec/internal/services/formatters/shell/horusecshell"
 	"github.com/ZupIT/horusec/internal/services/formatters/shell/shellcheck"
 	"github.com/ZupIT/horusec/internal/services/formatters/swift/horusecswift"
 	"github.com/ZupIT/horusec/internal/services/formatters/yaml/horuseckubernetes"
@@ -214,6 +217,8 @@ func (r *runner) detectVulnerabilityLeaks(wg *sync.WaitGroup, projectSubPath str
 }
 
 func (r *runner) detectVulnerabilityGo(wg *sync.WaitGroup, projectSubPath string) error {
+	horusecgo.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Go)); err != nil {
 		return err
 	}
@@ -250,6 +255,8 @@ func (r *runner) detectVulnerabilityJavascript(wg *sync.WaitGroup, projectSubPat
 }
 
 func (r *runner) detectVulnerabilityPython(wg *sync.WaitGroup, projectSubPath string) error {
+	horusecpython.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Python)); err != nil {
 		return err
 	}
@@ -323,6 +330,8 @@ func (r *runner) detectVulnerabilityElixir(wg *sync.WaitGroup, projectSubPath st
 }
 
 func (r *runner) detectVulnerabilityShell(_ *sync.WaitGroup, projectSubPath string) error {
+	horusecshell.NewFormatter(r.formatter).StartAnalysis(projectSubPath)
+
 	if err := r.docker.PullImage(r.getCustomOrDefaultImage(languages.Shell)); err != nil {
 		return err
 	}
