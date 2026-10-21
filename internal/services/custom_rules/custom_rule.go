@@ -54,8 +54,9 @@ func (c *CustomRule) Validate() error {
 		validation.Field(&c.ID, validation.Required, ruleIDValidator{
 			language: c.Language,
 		}),
-		validation.Field(&c.Language, validation.Required, validation.In(languages.CSharp, languages.Dart, languages.Java,
-			languages.Kotlin, languages.Yaml, languages.Leaks, languages.Javascript, languages.Nginx)),
+		validation.Field(&c.Language, validation.Required, validation.In(languages.CSharp, languages.Dart, languages.Go,
+			languages.Java, languages.Kotlin, languages.Yaml, languages.Leaks, languages.Javascript,
+			languages.Nginx, languages.Python, languages.Shell, languages.Swift)),
 		validation.Field(&c.Severity, validation.Required, validation.In(severities.Info, severities.Unknown,
 			severities.Low, severities.Medium, severities.High, severities.Critical)),
 		validation.Field(&c.Confidence, validation.Required, validation.In(confidence.Low,
@@ -142,6 +143,8 @@ func (r ruleIDValidator) Validate(value interface{}) error {
 		rules = javascript.Rules()
 	case languages.Nginx:
 		rules = nginx.Rules()
+	case languages.Go, languages.Python, languages.Shell, languages.Swift:
+		// No builtin ruleset for these languages; only validate ID format.
 	default:
 		return fmt.Errorf("unsupported language %s", r.language)
 	}

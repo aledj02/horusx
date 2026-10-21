@@ -91,14 +91,14 @@ func TestValidate(t *testing.T) {
 		{
 			name: "should return error when not supported language",
 			cr: CustomRule{
-				ID:          "HS-PYTHON-1",
+				ID:          "HS-RUBY-1",
 				Name:        "test",
 				Description: "test",
 				Severity:    severities.Low,
 				Confidence:  confidence.Low,
 				Type:        Regular,
 				Expressions: []string{""},
-				Language:    languages.Python,
+				Language:    languages.Ruby,
 			},
 			validate: func(err error) {
 				require.Error(t, err)
@@ -221,6 +221,58 @@ func TestValidateAllLanguages(t *testing.T) {
 				Confidence: confidence.Low,
 				Type:       Regular,
 				Language:   languages.Nginx,
+			},
+			validate: func(err error) {
+				require.NoError(t, err)
+			},
+		},
+		{
+			name: "Language Go",
+			cr: CustomRule{
+				ID:         "HS-GO-10000",
+				Severity:   severities.Low,
+				Confidence: confidence.Low,
+				Type:       Regular,
+				Language:   languages.Go,
+			},
+			validate: func(err error) {
+				require.NoError(t, err)
+			},
+		},
+		{
+			name: "Language Python",
+			cr: CustomRule{
+				ID:         "HS-PYTHON-10000",
+				Severity:   severities.Low,
+				Confidence: confidence.Low,
+				Type:       Regular,
+				Language:   languages.Python,
+			},
+			validate: func(err error) {
+				require.NoError(t, err)
+			},
+		},
+		{
+			name: "Language Shell",
+			cr: CustomRule{
+				ID:         "HS-SHELL-10000",
+				Severity:   severities.Low,
+				Confidence: confidence.Low,
+				Type:       Regular,
+				Language:   languages.Shell,
+			},
+			validate: func(err error) {
+				require.NoError(t, err)
+			},
+		},
+		{
+			name: "Language Swift",
+			cr: CustomRule{
+				ID:         "HS-SWIFT-10000",
+				Severity:   severities.Low,
+				Confidence: confidence.Low,
+				Type:       Regular,
+				Language:   languages.Swift,
 			},
 			validate: func(err error) {
 				require.NoError(t, err)

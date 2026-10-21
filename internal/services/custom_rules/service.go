@@ -43,12 +43,16 @@ func NewCustomRulesService(cfg *config.Config) *Service {
 		customRules: map[languages.Language][]engine.Rule{
 			languages.CSharp:     make([]engine.Rule, 0),
 			languages.Dart:       make([]engine.Rule, 0),
+			languages.Go:         make([]engine.Rule, 0),
 			languages.Java:       make([]engine.Rule, 0),
 			languages.Kotlin:     make([]engine.Rule, 0),
-			languages.Yaml:       make([]engine.Rule, 0),
 			languages.Leaks:      make([]engine.Rule, 0),
 			languages.Javascript: make([]engine.Rule, 0),
 			languages.Nginx:      make([]engine.Rule, 0),
+			languages.Python:     make([]engine.Rule, 0),
+			languages.Shell:      make([]engine.Rule, 0),
+			languages.Swift:      make([]engine.Rule, 0),
+			languages.Yaml:       make([]engine.Rule, 0),
 		},
 	}
 	return service.loadCustomRules()
