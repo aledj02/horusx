@@ -15,6 +15,7 @@
 package opengrep
 
 const CMD = `
-	    {{WORK_DIR}}
-		opengrep scan --config=p/secrets --config=p/ci --json .
+		{{WORK_DIR}}
+		opengrep scan --config=p/secrets --config=p/ci --json -o results-ANALYSISID.json . 2> /dev/null
+		cat results-ANALYSISID.json
   `

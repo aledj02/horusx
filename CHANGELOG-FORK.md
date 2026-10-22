@@ -119,6 +119,30 @@ Resultados (`analysisVulnerabilities[].vulnerabilities.rule_id`):
 
 ---
 
+## [v2.12.3] — Fix shell POSIX en `generic/{opengrep,trivy}` (dash)
+
+**Fecha**: 2026-10-21 · **Tag**: `v2.12.3` · **Fork**: `aledj02/horusx`
+**Docker image**: N/A — fix en binario CLI (el CMD se inyecta al contenedor desde Go, no desde el Dockerfile). La image `aledj02/horusx-generic:v2.12.2` sigue siendo la vigente.
+
+### Fixed
+- **Bug**: imagen `horusx-generic:v2.12.2` (Debian 13) usa **dash** como `/bin/sh`. El operator `&> /dev/null` **no existe en POSIX/dash** — es bashism. En dash, `cmd &> /dev/null` se parsea como `cmd &` (background) + `> /dev/null` (redirect vacío) → el CMD termina **antes** de escribir el JSON → el CLI intenta `cat resultFs.json` contra un file inexistente → `invalid character 'E'` al parsear el JSON vacío.
+- **Fix**: reemplazar `&> /dev/null` por `2> /dev/null` y `cat` del output file (patrón Bandit). Posición de redirects: `2> /dev/null` va **antes** de `> file` para que stderr caiga a `/dev/null` y stdout a file (POSIX).
+
+### Changed
+- `internal/services/formatters/generic/opengrep/config.go:17-21` — CMD: `opengrep scan --config=p/secrets --config=p/ci --json -o results-ANALYSISID.json . 2> /dev/null` + `cat results-ANALYSISID.json`.
+- `internal/services/formatters/generic/trivy/config.go:17-27` — `CmdFs` + `CmdConfig`: `trivy … -o result*.json ./ 2> /dev/null` (antes `&>`).
+
+### NOT TACADO (busybox ash soporta `&>`)
+- `internal/services/formatters/leaks/gitleaks/config.go:21` — `&>` (image Alpine/busybox).
+- `internal/services/formatters/csharp/scs/config.go:21` — `&>` (image Alpine/busybox).
+
+### Verified
+- `go build ./...` + `go vet ./internal/services/formatters/generic/...` → ok.
+- E2E `horusx start -p /Users/naranjax/nx/hx-e2e` → **STATUS success**, finding OpenGrep `missing-ssl-minversion` presente, **cero** `invalid character`, cero `bind source path does not exist`, cero `No such file`.
+- Note runtime macOS + Docker Desktop: corridas E2E repetidas sobre el mismo directory pueden fallar con `bind source path does not exist` por race de virtiofs/osxfs (VM no ve el dir `.horusx/<id>` a tiempo). Es artefacto del host, no del código: usar un dir fresco por corrida E2E.
+
+---
+
 ## [v2.12.2] — Reemplazo `semgrep` → `OpenGrep` (image `generic`)
 
 **Fecha**: 2026-10-21 · **Tag**: `v2.12.2` · **Fork**: `aledj02/horusx`

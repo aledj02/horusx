@@ -16,12 +16,12 @@ package trivy
 
 const CmdFs = `
 		{{WORK_DIR}}
-		TRIVY_NEW_JSON_SCHEMA=true trivy filesystem -f json -o resultFs.json ./ &> /dev/null
+		TRIVY_NEW_JSON_SCHEMA=true trivy filesystem -f json -o resultFs.json ./ 2> /dev/null
 		cat resultFs.json
   `
 
 const CmdConfig = `
 		{{WORK_DIR}}
-		TRIVY_NEW_JSON_SCHEMA=true trivy config -f json -o resultConfig.json ./ &> /dev/null 
+		TRIVY_NEW_JSON_SCHEMA=true trivy config -f json -o resultConfig.json ./ 2> /dev/null
 		cat resultConfig.json
   `
