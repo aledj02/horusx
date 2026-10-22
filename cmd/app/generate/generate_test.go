@@ -25,8 +25,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 func TestMain(m *testing.M) {

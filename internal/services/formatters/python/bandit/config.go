@@ -18,6 +18,6 @@ const CMD = `
 		{{WORK_DIR}}
       	chmod +x /usr/local/bin/horusx-file-ignore.sh
       	horusx-file-ignore.sh 2> /tmp/errorBanditIgnoreScript-ANALYSISID 1> /dev/null
-      	bandit -r . -f json 2> /dev/null > results-ANALYSISID.json
+		bandit -q -r . -f json -o results-ANALYSISID.json > /dev/null 2> /dev/null
       	jq -j -M -c . results-ANALYSISID.json
   `

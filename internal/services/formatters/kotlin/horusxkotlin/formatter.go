@@ -17,8 +17,8 @@ package horusxkotlin
 import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 
-	"github.com/ZupIT/horusec/internal/services/engines/kotlin"
-	"github.com/ZupIT/horusec/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/services/engines/kotlin"
+	"github.com/aledj02/horusx/internal/services/formatters"
 )
 
 func NewFormatter(service formatters.IService) formatters.IFormatter {

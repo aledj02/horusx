@@ -30,12 +30,12 @@ import (
 	vulnerabilityenum "github.com/ZupIT/horusec-devkit/pkg/enums/vulnerability"
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/enums/outputtype"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/sarif"
-	"github.com/ZupIT/horusec/internal/services/sonarqube"
-	"github.com/ZupIT/horusec/internal/utils/file"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/enums/outputtype"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/sarif"
+	"github.com/aledj02/horusx/internal/services/sonarqube"
+	"github.com/aledj02/horusx/internal/utils/file"
 )
 
 var ErrOutputJSON = errors.New("{HORUSX_CLI} error creating and/or writing to the specified file")

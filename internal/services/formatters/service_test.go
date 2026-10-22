@@ -35,13 +35,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/ZupIT/horusec/config"
-	dockerentities "github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/entities/toolsconfig"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/engines/java"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/config"
+	dockerentities "github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/entities/toolsconfig"
+	"github.com/aledj02/horusx/internal/entities/workdir"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/engines/java"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 func TestParseFindingsToVulnerabilities(t *testing.T) {
@@ -196,6 +196,17 @@ func TestGetConfigProjectPath(t *testing.T) {
 
 		assert.NotEmpty(t, result)
 		assert.Equal(t, filepath.Join("test", ".horusx", "00000000-0000-0000-0000-000000000000"), result)
+	})
+
+	t.Run("uses container bind project path when configured", func(t *testing.T) {
+		cliConfig := &config.Config{StartOptions: config.StartOptions{
+			ProjectPath:              "project",
+			ContainerBindProjectPath: "bind-project",
+		}}
+
+		svc := NewFormatterService(&analysis.Analysis{}, testutil.NewDockerMock(), cliConfig)
+
+		assert.Equal(t, filepath.Join("bind-project", ".horusx", "00000000-0000-0000-0000-000000000000"), svc.GetConfigProjectPath())
 	})
 }
 

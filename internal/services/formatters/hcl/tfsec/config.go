@@ -16,5 +16,6 @@ package tfsec
 
 const CMD = `
 			{{WORK_DIR}}
-        	tfsec --format=json 
+			tfsec --format=json --out=/tmp/tfsec-result-ANALYSISID.json 2> /dev/null
+			cat /tmp/tfsec-result-ANALYSISID.json
   `

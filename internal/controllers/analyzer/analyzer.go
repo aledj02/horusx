@@ -15,7 +15,9 @@
 package analyzer
 
 import (
+	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -29,13 +31,13 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/google/uuid"
 
-	"github.com/ZupIT/horusec/config"
-	languagedetect "github.com/ZupIT/horusec/internal/controllers/language_detect"
-	"github.com/ZupIT/horusec/internal/controllers/printresults"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/docker"
-	"github.com/ZupIT/horusec/internal/services/docker/client"
-	horusx_api "github.com/ZupIT/horusec/internal/services/horusx_api"
+	"github.com/aledj02/horusx/config"
+	languagedetect "github.com/aledj02/horusx/internal/controllers/language_detect"
+	"github.com/aledj02/horusx/internal/controllers/printresults"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/docker"
+	"github.com/aledj02/horusx/internal/services/docker/client"
+	horusx_api "github.com/aledj02/horusx/internal/services/horusx_api"
 )
 
 // LanguageDetect is the interface that detect all languages in some directory.
@@ -103,21 +105,35 @@ func (a *Analyzer) Analyze() (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	if a.config.ProjectPath != "" {
+		source := a.config.AnalysisProjectPath(a.analysis.ID.String())
+		if info, statErr := os.Stat(source); statErr != nil || !info.IsDir() {
+			return 0, fmt.Errorf("%w: %s", docker.ErrAnalysisSourceMissing, source)
+		}
+	}
 
 	if a.config.EnableGitHistoryAnalysis {
 		logger.LogWarnWithLevel(messages.MsgWarnGitHistoryEnable)
 		fmt.Println()
 	}
 
+	var infrastructureErr error
 	for _, err := range a.runner.run(langs) {
 		a.setAnalysisError(err)
+		if errors.Is(err, docker.ErrAnalysisSourceMissing) && infrastructureErr == nil {
+			infrastructureErr = err
+		}
 	}
 
 	if err = a.sendAnalysis(); err != nil {
 		logger.LogStringAsError(fmt.Sprintf("[HORUSX] %s", err.Error()))
 	}
 
-	return a.startPrintResults()
+	totalVulnerabilities, printErr := a.startPrintResults()
+	if printErr != nil {
+		return totalVulnerabilities, printErr
+	}
+	return totalVulnerabilities, infrastructureErr
 }
 
 func (a *Analyzer) startPrintResults() (int, error) {

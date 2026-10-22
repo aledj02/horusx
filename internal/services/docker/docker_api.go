@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -37,14 +36,16 @@ import (
 	"github.com/google/uuid"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/enums/images"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/enums/images"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 // ErrImageTagCmdRequired occurs when an docker image or docker command is empty to start analysis.
 var ErrImageTagCmdRequired = errors.New("image or cmd is empty")
+
+var ErrAnalysisSourceMissing = errors.New("analysis source folder does not exist")
 
 // Docker is the interface that abstract the Docker API.
 type Docker interface {
@@ -251,6 +252,12 @@ func (d *API) removeContainer(containerID string) {
 }
 
 func (d *API) createContainer(imageNameWithTag, cmd string) (string, error) {
+	source := d.getSourceFolder()
+	if d.config.ProjectPath != "" {
+		if info, err := os.Stat(source); err != nil || !info.IsDir() {
+			return "", fmt.Errorf("%w: %s", ErrAnalysisSourceMissing, source)
+		}
+	}
 	cfg, host := d.getContainerAndHostConfig(imageNameWithTag, cmd)
 
 	response, err := d.dockerClient.ContainerCreate(d.ctx, cfg, host, nil, nil, d.getImageID())
@@ -374,13 +381,12 @@ func (d *API) DeleteContainersFromAPI() {
 }
 
 func (d *API) getSourceFolder() (path string) {
-	if d.config.ContainerBindProjectPath != "" {
-		path = filepath.Join(d.config.ContainerBindProjectPath, ".horusx", d.analysisID.String())
-	} else {
-		path = filepath.Join(d.config.ProjectPath, ".horusx", d.analysisID.String())
-	}
+	path = d.config.AnalysisProjectPath(d.analysisID.String())
 
-	separator := path[1:2]
+	separator := ""
+	if len(path) > 1 {
+		separator = path[1:2]
+	}
 	if separator == ":" {
 		return d.getSourceFolderFromWindows(path)
 	}

@@ -17,8 +17,8 @@ package horusxnginx
 import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 
-	"github.com/ZupIT/horusec/internal/services/engines/nginx"
-	"github.com/ZupIT/horusec/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/services/engines/nginx"
+	"github.com/aledj02/horusx/internal/services/formatters"
 )
 
 func NewFormatter(service formatters.IService) formatters.IFormatter {

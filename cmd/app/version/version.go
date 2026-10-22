@@ -18,7 +18,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/spf13/cobra"
 
-	"github.com/ZupIT/horusec/config/dist"
+	"github.com/aledj02/horusx/config/dist"
 )
 
 var (

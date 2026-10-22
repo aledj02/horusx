@@ -29,11 +29,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/enums/toignore"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/utils/copy"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/enums/toignore"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/utils/copy"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 var tmpPath, _ = filepath.Abs("tmp")

@@ -21,8 +21,8 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/config"
-	customrules "github.com/ZupIT/horusec/internal/services/custom_rules"
+	"github.com/aledj02/horusx/config"
+	customrules "github.com/aledj02/horusx/internal/services/custom_rules"
 )
 
 func TestNewCustomRulesService(t *testing.T) {

@@ -18,7 +18,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	docker "github.com/docker/docker/client"
 
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 func NewDockerClient() *docker.Client {

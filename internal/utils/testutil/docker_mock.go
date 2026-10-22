@@ -25,7 +25,7 @@ import (
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/stretchr/testify/mock"
 
-	dockerentities "github.com/ZupIT/horusec/internal/entities/docker"
+	dockerentities "github.com/aledj02/horusx/internal/entities/docker"
 )
 
 type DockerClientMock struct {

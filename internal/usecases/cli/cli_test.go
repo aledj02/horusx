@@ -24,9 +24,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
-	"github.com/ZupIT/horusec/internal/enums/outputtype"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/workdir"
+	"github.com/aledj02/horusx/internal/enums/outputtype"
 )
 
 func TestValidateConfigs(t *testing.T) {
@@ -36,6 +36,21 @@ func TestValidateConfigs(t *testing.T) {
 
 		err := ValidateConfig(cfg)
 		assert.NoError(t, err)
+	})
+	t.Run("Should return error when container bind path is invalid", func(t *testing.T) {
+		cfg := config.New()
+		cfg.WorkDir = &workdir.WorkDir{}
+		cfg.ContainerBindProjectPath = filepath.Join(t.TempDir(), "missing")
+
+		err := ValidateConfig(cfg)
+		assert.Equal(t, "container_bind_project_path: invalid path: "+cfg.ContainerBindProjectPath+".", err.Error())
+	})
+	t.Run("Should return no errors when container bind path is valid", func(t *testing.T) {
+		cfg := config.New()
+		cfg.WorkDir = &workdir.WorkDir{}
+		cfg.ContainerBindProjectPath = t.TempDir()
+
+		assert.NoError(t, ValidateConfig(cfg))
 	})
 	t.Run("Should return no errors when is not valid path", func(t *testing.T) {
 		cfg := config.New()

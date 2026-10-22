@@ -27,10 +27,10 @@ import (
 	"github.com/go-enry/go-enry/v2"
 	"github.com/google/uuid"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/enums/toignore"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/utils/copy"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/enums/toignore"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/utils/copy"
 )
 
 const prefixGitSubModule = "gitdir: "
@@ -194,7 +194,7 @@ func (ld *LanguageDetect) checkExtensionToIgnore(path string) bool {
 }
 
 func (ld *LanguageDetect) copyProjectToHorusxFolder(directory string) error {
-	folderDstName := filepath.Join(directory, ".horusx", ld.analysisID.String())
+	folderDstName := ld.config.AnalysisProjectPathFor(directory, ld.analysisID.String())
 	if err := copy.Copy(directory, folderDstName, ld.isPathToIgnore); err != nil {
 		logger.LogErrorWithLevel(messages.MsgErrorCopyProjectToHorusxAnalysis, err)
 		return err

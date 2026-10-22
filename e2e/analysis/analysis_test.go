@@ -29,10 +29,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/e2e/analysis"
-	customimages "github.com/ZupIT/horusec/internal/entities/custom_images"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/e2e/analysis"
+	customimages "github.com/aledj02/horusx/internal/entities/custom_images"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 const (

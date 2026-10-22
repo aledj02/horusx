@@ -28,7 +28,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/services/http/request/entities"
 	"github.com/google/uuid"
 
-	"github.com/ZupIT/horusec/config"
+	"github.com/aledj02/horusx/config"
 )
 
 type Service struct {

@@ -212,7 +212,7 @@ horusx version
 
 ```bash
 V=$(git describe --tags --abbrev=0); C=$(git rev-parse --short HEAD); D=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-LF="-s -w -X github.com/ZupIT/horusec/cmd/app/version.Version=${V} -X github.com/ZupIT/horusec/cmd/app/version.Commit=${C} -X github.com/ZupIT/horusec/cmd/app/version.Date=${D}"
+LF="-s -w -X github.com/aledj02/horusx/cmd/app/version.Version=${V} -X github.com/aledj02/horusx/cmd/app/version.Commit=${C} -X github.com/aledj02/horusx/cmd/app/version.Date=${D}"
 CGO_ENABLED=0 go build -trimpath -ldflags "$LF" -o horusx_darwin_arm64 ./cmd/app   # host
 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "$LF" -o horusx_linux_amd64 ./cmd/app
 GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -trimpath -ldflags "$LF" -o horusx_linux_arm64 ./cmd/app

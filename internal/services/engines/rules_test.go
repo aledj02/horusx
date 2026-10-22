@@ -21,16 +21,16 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/ZupIT/horusec/internal/services/engines"
-	"github.com/ZupIT/horusec/internal/services/engines/csharp"
-	"github.com/ZupIT/horusec/internal/services/engines/dart"
-	"github.com/ZupIT/horusec/internal/services/engines/java"
-	"github.com/ZupIT/horusec/internal/services/engines/javascript"
-	"github.com/ZupIT/horusec/internal/services/engines/kotlin"
-	"github.com/ZupIT/horusec/internal/services/engines/kubernetes"
-	"github.com/ZupIT/horusec/internal/services/engines/leaks"
-	"github.com/ZupIT/horusec/internal/services/engines/nginx"
-	"github.com/ZupIT/horusec/internal/services/engines/swift"
+	"github.com/aledj02/horusx/internal/services/engines"
+	"github.com/aledj02/horusx/internal/services/engines/csharp"
+	"github.com/aledj02/horusx/internal/services/engines/dart"
+	"github.com/aledj02/horusx/internal/services/engines/java"
+	"github.com/aledj02/horusx/internal/services/engines/javascript"
+	"github.com/aledj02/horusx/internal/services/engines/kotlin"
+	"github.com/aledj02/horusx/internal/services/engines/kubernetes"
+	"github.com/aledj02/horusx/internal/services/engines/leaks"
+	"github.com/aledj02/horusx/internal/services/engines/nginx"
+	"github.com/aledj02/horusx/internal/services/engines/swift"
 )
 
 func TestGetRules(t *testing.T) {

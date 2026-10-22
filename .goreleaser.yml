@@ -30,9 +30,9 @@ builds:
       - -trimpath
     ldflags:
       - -s -w
-      - -X github.com/ZupIT/horusec/cmd/app/version.Version={{.Version}}
-      - -X github.com/ZupIT/horusec/cmd/app/version.Commit={{.ShortCommit}}
-      - -X github.com/ZupIT/horusec/cmd/app/version.Date={{.Date}}
+      - -X github.com/aledj02/horusx/cmd/app/version.Version={{.Version}}
+      - -X github.com/aledj02/horusx/cmd/app/version.Commit={{.ShortCommit}}
+      - -X github.com/aledj02/horusx/cmd/app/version.Date={{.Date}}
 
 archives:
   - id: horusx

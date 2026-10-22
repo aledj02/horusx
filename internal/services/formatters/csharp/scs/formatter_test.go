@@ -24,11 +24,11 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/toolsconfig"
-	"github.com/ZupIT/horusec/internal/services/formatters"
-	"github.com/ZupIT/horusec/internal/services/formatters/csharp/scs"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/toolsconfig"
+	"github.com/aledj02/horusx/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/services/formatters/csharp/scs"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 func TestParseOutput(t *testing.T) {

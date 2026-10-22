@@ -20,10 +20,10 @@ import (
 	engine "github.com/ZupIT/horusec-engine"
 	"github.com/spf13/cobra"
 
-	"github.com/ZupIT/horusec/cmd/app/generate"
-	"github.com/ZupIT/horusec/cmd/app/start"
-	"github.com/ZupIT/horusec/cmd/app/version"
-	"github.com/ZupIT/horusec/config"
+	"github.com/aledj02/horusx/cmd/app/generate"
+	"github.com/aledj02/horusx/cmd/app/start"
+	"github.com/aledj02/horusx/cmd/app/version"
+	"github.com/aledj02/horusx/config"
 )
 
 // nolint:funlen,lll

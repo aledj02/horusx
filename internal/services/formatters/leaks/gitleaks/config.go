@@ -18,7 +18,7 @@ package gitleaks
 // it's necessary to avoid the 'inexact rename detection was skipped due to too many files' error in big projects.
 const CMD = `
 	{{WORK_DIR}}
-	if ! gitleaks detect -c /rules/rules.toml -f json -r /tmp/leaks.json --exit-code 0 &> /tmp/leaks-output.txt; then
+	if ! gitleaks detect -c /rules/rules.toml -f json -r /tmp/leaks.json --exit-code 0 > /tmp/leaks-output.txt 2>&1; then
 		cat /tmp/leaks-output.txt
 	else
 		cat /tmp/leaks.json

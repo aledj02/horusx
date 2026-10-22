@@ -32,14 +32,14 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	engine "github.com/ZupIT/horusec-engine"
 
-	"github.com/ZupIT/horusec/config"
-	dockerentity "github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	customrules "github.com/ZupIT/horusec/internal/services/custom_rules"
-	"github.com/ZupIT/horusec/internal/services/docker"
-	"github.com/ZupIT/horusec/internal/services/git"
-	"github.com/ZupIT/horusec/internal/utils/file"
-	vulnhash "github.com/ZupIT/horusec/internal/utils/vuln_hash"
+	"github.com/aledj02/horusx/config"
+	dockerentity "github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	customrules "github.com/aledj02/horusx/internal/services/custom_rules"
+	"github.com/aledj02/horusx/internal/services/docker"
+	"github.com/aledj02/horusx/internal/services/git"
+	"github.com/aledj02/horusx/internal/utils/file"
+	vulnhash "github.com/aledj02/horusx/internal/utils/vuln_hash"
 )
 
 // MaxCharacters is the maximum length of code that a vulnerability can have.
@@ -84,7 +84,7 @@ func (s *Service) GetAnalysisIDErrorMessage(tool tools.Tool, output string) stri
 }
 
 func (s *Service) GetConfigProjectPath() string {
-	return filepath.Join(s.config.ProjectPath, ".horusx", s.analysis.ID.String())
+	return s.config.AnalysisProjectPath(s.analysis.ID.String())
 }
 
 func (s *Service) AddWorkDirInCmd(cmd, projectSubPath string, tool tools.Tool) string {

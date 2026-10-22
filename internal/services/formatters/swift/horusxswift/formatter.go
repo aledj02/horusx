@@ -17,8 +17,8 @@ package horusxswift
 import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 
-	"github.com/ZupIT/horusec/internal/services/engines/swift"
-	"github.com/ZupIT/horusec/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/services/engines/swift"
+	"github.com/aledj02/horusx/internal/services/formatters"
 )
 
 func NewFormatter(service formatters.IService) formatters.IFormatter {

@@ -26,11 +26,11 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 
-	dockerEntities "github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/enums/images"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/formatters"
-	vulnhash "github.com/ZupIT/horusec/internal/utils/vuln_hash"
+	dockerEntities "github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/enums/images"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/formatters"
+	vulnhash "github.com/aledj02/horusx/internal/utils/vuln_hash"
 )
 
 type Formatter struct {

@@ -31,14 +31,14 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/ZupIT/horusec/cmd/app/version"
-	"github.com/ZupIT/horusec/config/dist"
-	customimages "github.com/ZupIT/horusec/internal/entities/custom_images"
-	"github.com/ZupIT/horusec/internal/entities/toolsconfig"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	jsonutils "github.com/ZupIT/horusec/internal/utils/json"
-	"github.com/ZupIT/horusec/internal/utils/valueordefault"
+	"github.com/aledj02/horusx/cmd/app/version"
+	"github.com/aledj02/horusx/config/dist"
+	customimages "github.com/aledj02/horusx/internal/entities/custom_images"
+	"github.com/aledj02/horusx/internal/entities/toolsconfig"
+	"github.com/aledj02/horusx/internal/entities/workdir"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	jsonutils "github.com/aledj02/horusx/internal/utils/json"
+	"github.com/aledj02/horusx/internal/utils/valueordefault"
 )
 
 const (
@@ -468,9 +468,28 @@ func (c *Config) Normalize() *Config {
 		c.JSONOutputFilePath, _ = filepath.Abs(c.JSONOutputFilePath)
 	}
 	c.ProjectPath, _ = filepath.Abs(c.ProjectPath)
+	if c.ContainerBindProjectPath != "" {
+		c.ContainerBindProjectPath, _ = filepath.Abs(c.ContainerBindProjectPath)
+	}
 	c.ConfigFilePath, _ = filepath.Abs(c.ConfigFilePath)
 	c.LogFilePath, _ = filepath.Abs(c.LogFilePath)
 	return c
+}
+
+// AnalysisProjectPath returns the host path used to materialize an analysis.
+// ContainerBindProjectPath is an optional host root for Docker-accessible files.
+func (c *Config) AnalysisProjectPath(analysisID string) string {
+	return c.AnalysisProjectPathFor(c.ProjectPath, analysisID)
+}
+
+// AnalysisProjectPathFor returns the analysis directory below projectPath,
+// unless a separate host bind root is configured.
+func (c *Config) AnalysisProjectPathFor(projectPath, analysisID string) string {
+	root := projectPath
+	if c.ContainerBindProjectPath != "" {
+		root = c.ContainerBindProjectPath
+	}
+	return filepath.Join(root, ".horusx", analysisID)
 }
 
 func (c *Config) toLowerCamel(value string) string {

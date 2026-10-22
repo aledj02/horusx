@@ -29,8 +29,8 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 
-	"github.com/ZupIT/horusec/internal/enums/outputtype"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/internal/enums/outputtype"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 var _ = Describe("running binary Horusx with start parameter", func() {

@@ -22,7 +22,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/stretchr/testify/assert"
 
-	customimages "github.com/ZupIT/horusec/internal/entities/custom_images"
+	customimages "github.com/aledj02/horusx/internal/entities/custom_images"
 )
 
 func TestNewCustomImages(t *testing.T) {

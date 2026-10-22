@@ -28,10 +28,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	cliConfig "github.com/ZupIT/horusec/config"
-	dockerEntities "github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/services/docker/client"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	cliConfig "github.com/aledj02/horusx/config"
+	dockerEntities "github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/services/docker/client"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 var ErrGeneric = errors.New("some error generic")
@@ -324,5 +324,25 @@ func TestDeleteContainersFromAPI(t *testing.T) {
 
 		response := api.getSourceFolder()
 		assert.Equal(t, "//c//Users//usr//Documents//Horusx//project//.horusx//"+api.analysisID.String(), response)
+	})
+}
+
+func TestAPIAnalysisSource(t *testing.T) {
+	analysisID := uuid.New()
+	bindRoot := t.TempDir()
+	cfg := &cliConfig.Config{StartOptions: cliConfig.StartOptions{
+		ProjectPath:              t.TempDir(),
+		ContainerBindProjectPath: bindRoot,
+	}}
+	api := New(testutil.NewDockerClientMock(), cfg, analysisID)
+
+	t.Run("uses the configured bind root", func(t *testing.T) {
+		assert.Equal(t, cfg.AnalysisProjectPath(analysisID.String()), api.getSourceFolder())
+	})
+
+	t.Run("returns a source missing error before creating a container", func(t *testing.T) {
+		_, err := api.createContainer(Image, "scan")
+
+		assert.ErrorIs(t, err, ErrAnalysisSourceMissing)
 	})
 }

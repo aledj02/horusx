@@ -20,7 +20,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 // ToolsConfig is a map of a tool to config for easily index access.

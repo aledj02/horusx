@@ -27,7 +27,7 @@ import (
 	vulnerabilityenum "github.com/ZupIT/horusec-devkit/pkg/enums/vulnerability"
 	"github.com/google/uuid"
 
-	vulnhash "github.com/ZupIT/horusec/internal/utils/vuln_hash"
+	vulnhash "github.com/aledj02/horusx/internal/utils/vuln_hash"
 )
 
 // CreateAnalysisMock creates a mocked plain entity to use in test suites.

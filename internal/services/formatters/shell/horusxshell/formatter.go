@@ -17,8 +17,8 @@ package horusxshell
 import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 
-	"github.com/ZupIT/horusec/internal/services/engines/shell"
-	"github.com/ZupIT/horusec/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/services/engines/shell"
+	"github.com/aledj02/horusx/internal/services/formatters"
 )
 
 // NewFormatter returns a DefaultFormatter for Shell scripts that runs the

@@ -25,12 +25,12 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 
-	"github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/enums/images"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/formatters"
-	fileutils "github.com/ZupIT/horusec/internal/utils/file"
-	vulnHash "github.com/ZupIT/horusec/internal/utils/vuln_hash"
+	"github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/enums/images"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/formatters"
+	fileutils "github.com/aledj02/horusx/internal/utils/file"
+	vulnHash "github.com/aledj02/horusx/internal/utils/vuln_hash"
 )
 
 var (
@@ -45,7 +45,7 @@ var (
 	// ErrInvalidSDKOutput occurs when SCS try to use an old version of csharp SDK to analyze a project with the new One
 	ErrInvalidSDKOutput = errors.New("horusx-engine-csharp SDK is outdated, " +
 		"you can build your own and add to horusxCliCustomImages config" +
-		" or create a new issue on https://github.com/ZupIT/horusec/issues to maintainers update the image")
+		" or create a new issue on https://github.com/aledj02/horusx/issues to maintainers update the image")
 )
 
 const (

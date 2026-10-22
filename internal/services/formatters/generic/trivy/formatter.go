@@ -30,12 +30,12 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/google/uuid"
 
-	"github.com/ZupIT/horusec/internal/entities/docker"
-	"github.com/ZupIT/horusec/internal/enums/images"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/formatters"
-	"github.com/ZupIT/horusec/internal/utils/file"
-	vulnhash "github.com/ZupIT/horusec/internal/utils/vuln_hash"
+	"github.com/aledj02/horusx/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/enums/images"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/utils/file"
+	vulnhash "github.com/aledj02/horusx/internal/utils/vuln_hash"
 )
 
 // trivyResult represents the results after execute Trivy commands.
@@ -181,7 +181,7 @@ func (f *Formatter) addVulnerabilitiesOutput(vulnerabilities []*trivyVulnerabili
 }
 
 // getDeprecatedHashes func necessary to avoid a breaking change in the trivy hash generation. Since the pull request
-// https://github.com/ZupIT/horusec/pull/882 some changes were made in the line and code, and this data influences
+// https://github.com/aledj02/horusx/pull/882 some changes were made in the line and code, and this data influences
 // directly the hash generation. This func will avoid this hash change by using the same data as before, but for the
 // users the data will be showed with the fixes made in the pull request 882, leading to no braking changes and keeping
 // the fixes.

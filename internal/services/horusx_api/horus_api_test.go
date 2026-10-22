@@ -31,7 +31,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	cliConfig "github.com/ZupIT/horusec/config"
+	cliConfig "github.com/aledj02/horusx/config"
 )
 
 var localhostCert = []byte(`-----BEGIN CERTIFICATE-----

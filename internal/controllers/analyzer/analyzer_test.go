@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/ZupIT/horusec-devkit/pkg/entities/analysis"
@@ -38,11 +39,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
-	"github.com/ZupIT/horusec/internal/services/docker"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
-	vulnhash "github.com/ZupIT/horusec/internal/utils/vuln_hash"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/workdir"
+	"github.com/aledj02/horusx/internal/services/docker"
+	"github.com/aledj02/horusx/internal/utils/testutil"
+	vulnhash "github.com/aledj02/horusx/internal/utils/vuln_hash"
 )
 
 func BenchmarkAnalyzerAnalyze(b *testing.B) {
@@ -151,6 +152,7 @@ func TestAnalyzerWithoutMock(t *testing.T) {
 		cfg := config.New()
 
 		cfg.ProjectPath = testutil.GoExample
+		cfg.Normalize()
 		controller := New(cfg)
 		_, err := controller.Analyze()
 		assert.NoError(t, err)
@@ -238,6 +240,9 @@ func TestAnalyze(t *testing.T) {
 		}
 
 		controller.analysis = &analysis.Analysis{ID: uuid.New()}
+		analysisSource := configs.AnalysisProjectPath(controller.analysis.ID.String())
+		assert.NoError(t, os.MkdirAll(analysisSource, 0o750))
+		defer os.RemoveAll(filepath.Join(configs.ProjectPath, ".horusx"))
 		totalVulns, err := controller.Analyze()
 		assert.NoError(t, err)
 		assert.Equal(t, 0, totalVulns)
@@ -292,6 +297,9 @@ func TestAnalyze(t *testing.T) {
 		}
 
 		controller.analysis = &analysis.Analysis{ID: uuid.New()}
+		analysisSource := configs.AnalysisProjectPath(controller.analysis.ID.String())
+		assert.NoError(t, os.MkdirAll(analysisSource, 0o750))
+		defer os.RemoveAll(filepath.Join(configs.ProjectPath, ".horusx"))
 		totalVulns, err := controller.Analyze()
 		assert.NoError(t, err)
 		assert.Equal(t, 0, totalVulns)
@@ -331,6 +339,9 @@ func TestAnalyze(t *testing.T) {
 		}
 
 		controller.analysis = &analysis.Analysis{ID: uuid.New()}
+		analysisSource := configs.AnalysisProjectPath(controller.analysis.ID.String())
+		assert.NoError(t, os.MkdirAll(analysisSource, 0o750))
+		defer os.RemoveAll(filepath.Join(configs.ProjectPath, ".horusx"))
 		totalVulns, err := controller.Analyze()
 		assert.Error(t, err)
 		assert.Equal(t, 0, totalVulns)
@@ -368,6 +379,8 @@ func TestAnalyze(t *testing.T) {
 			analysis:        analysiss,
 			runner:          newRunner(cfg, analysiss, docker.New(testutil.NewDockerClientMock(), cfg, uuid.New())),
 		}
+		assert.NoError(t, os.MkdirAll(cfg.AnalysisProjectPath(analysiss.ID.String()), 0o750))
+		defer os.RemoveAll(filepath.Join(cfg.ProjectPath, ".horusx"))
 
 		_, err := analyzer.Analyze()
 		require.NoError(t, err, "Expected no error to execute analysis")

@@ -22,8 +22,8 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/internal/entities/toolsconfig"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/entities/toolsconfig"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 func TestDefaultValues(t *testing.T) {

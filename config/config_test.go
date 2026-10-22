@@ -31,10 +31,10 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/ZupIT/horusec/cmd/app/start"
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/toolsconfig"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
+	"github.com/aledj02/horusx/cmd/app/start"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/toolsconfig"
+	"github.com/aledj02/horusx/internal/entities/workdir"
 )
 
 func TestMain(m *testing.M) {
@@ -366,7 +366,9 @@ func TestNewHorusxConfig(t *testing.T) {
 		assert.Equal(t, true, configs.EnableInformationSeverity)
 		assert.Equal(t, repositoryAuthorization, configs.RepositoryAuthorization)
 		assert.Equal(t, target, configs.CertPath)
-		assert.Equal(t, "container-bind-project-path-test", configs.ContainerBindProjectPath)
+		containerBindPath, err := filepath.Abs("container-bind-project-path-test")
+		assert.NoError(t, err)
+		assert.Equal(t, containerBindPath, configs.ContainerBindProjectPath)
 		assert.Equal(t, "custom-rules-path-test", configs.CustomRulesPath)
 		assert.Equal(t, true, configs.DisableDocker)
 		assert.Equal(t, true, configs.EnableCommitAuthor)
@@ -383,6 +385,25 @@ func TestNewHorusxConfig(t *testing.T) {
 		assert.Equal(t, "repository-name-test", configs.RepositoryName)
 		assert.Equal(t, int64(123), configs.TimeoutInSecondsRequest)
 		assert.Equal(t, true, configs.ReturnErrorIfFoundVulnerability)
+	})
+}
+
+func TestAnalysisProjectPath(t *testing.T) {
+	analysisID := "analysis-id"
+
+	t.Run("uses project path by default", func(t *testing.T) {
+		cfg := &config.Config{StartOptions: config.StartOptions{ProjectPath: "/project"}}
+
+		assert.Equal(t, filepath.Join("/project", ".horusx", analysisID), cfg.AnalysisProjectPath(analysisID))
+	})
+
+	t.Run("uses container bind project path when configured", func(t *testing.T) {
+		cfg := &config.Config{StartOptions: config.StartOptions{
+			ProjectPath:              "/project",
+			ContainerBindProjectPath: "/docker/project",
+		}}
+
+		assert.Equal(t, filepath.Join("/docker/project", ".horusx", analysisID), cfg.AnalysisProjectPath(analysisID))
 	})
 }
 

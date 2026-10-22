@@ -17,7 +17,7 @@ package goengine
 import (
 	engine "github.com/ZupIT/horusec-engine"
 
-	"github.com/ZupIT/horusec/internal/services/engines"
+	"github.com/aledj02/horusx/internal/services/engines"
 )
 
 // NewRules returns a rule manager for Go. It intentionally ships no built-in

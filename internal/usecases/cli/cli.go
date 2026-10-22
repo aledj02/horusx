@@ -29,11 +29,11 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
-	"github.com/ZupIT/horusec/internal/enums/outputtype"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	"github.com/ZupIT/horusec/internal/services/git"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/workdir"
+	"github.com/aledj02/horusx/internal/enums/outputtype"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/services/git"
 )
 
 // ValidateConfig validate if the fields from config has valid values.
@@ -51,6 +51,7 @@ func ValidateConfig(cfg *config.Config) error {
 		validation.Field(&cfg.SeveritiesToIgnore, validation.By(validationSeverities(cfg))),
 		validation.Field(&cfg.ReturnErrorIfFoundVulnerability, validation.In(true, false)),
 		validation.Field(&cfg.ProjectPath, validation.By(validateIfIsValidPath(cfg.ProjectPath))),
+		validation.Field(&cfg.ContainerBindProjectPath, validation.By(validateOptionalPath(cfg.ContainerBindProjectPath, cfg.DisableDocker))),
 		validation.Field(&cfg.WorkDir, validation.By(validateWorkDir(cfg.WorkDir, cfg.ProjectPath))),
 		validation.Field(&cfg.CertInsecureSkipVerify, validation.In(true, false)),
 		validation.Field(&cfg.CertPath, validation.By(validateCertPath(cfg.CertPath))),
@@ -163,6 +164,15 @@ func validateIfIsValidPath(dir string) validation.RuleFunc {
 			return fmt.Errorf("%s %s", messages.MsgErrorPathNotValid, dir)
 		}
 		return nil
+	}
+}
+
+func validateOptionalPath(dir string, disableDocker bool) validation.RuleFunc {
+	return func(_ interface{}) error {
+		if dir == "" || disableDocker {
+			return nil
+		}
+		return validateIfIsValidPath(dir)(dir)
 	}
 }
 

@@ -20,7 +20,7 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/tools"
 	engine "github.com/ZupIT/horusec-engine"
 
-	"github.com/ZupIT/horusec/internal/entities/docker"
+	"github.com/aledj02/horusx/internal/entities/docker"
 )
 
 // IFormatter is the interface that tools implement to run an

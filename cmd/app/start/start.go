@@ -23,13 +23,13 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 	"github.com/spf13/cobra"
 
-	"github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/config/dist"
-	"github.com/ZupIT/horusec/internal/controllers/analyzer"
-	"github.com/ZupIT/horusec/internal/controllers/requirements"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
-	usecases "github.com/ZupIT/horusec/internal/usecases/cli"
-	"github.com/ZupIT/horusec/internal/utils/prompt"
+	"github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/config/dist"
+	"github.com/aledj02/horusx/internal/controllers/analyzer"
+	"github.com/aledj02/horusx/internal/controllers/requirements"
+	"github.com/aledj02/horusx/internal/helpers/messages"
+	usecases "github.com/aledj02/horusx/internal/usecases/cli"
+	"github.com/aledj02/horusx/internal/utils/prompt"
 )
 
 // Analyzer is the interface that execute the analysis on some directory.

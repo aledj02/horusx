@@ -31,8 +31,8 @@ import (
 	"github.com/ZupIT/horusec-engine/text"
 	"github.com/stretchr/testify/require"
 
-	"github.com/ZupIT/horusec/config"
-	customrules "github.com/ZupIT/horusec/internal/services/custom_rules"
+	"github.com/aledj02/horusx/config"
+	customrules "github.com/aledj02/horusx/internal/services/custom_rules"
 )
 
 // rootPath goes three levels up from this test package to the horusx repo root.

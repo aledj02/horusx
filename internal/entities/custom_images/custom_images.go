@@ -21,8 +21,8 @@ import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 
-	"github.com/ZupIT/horusec/internal/enums/images"
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/enums/images"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 // CustomImages is a map of language to a custom image.

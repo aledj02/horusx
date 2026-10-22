@@ -27,7 +27,7 @@ import (
 
 	"github.com/ZupIT/horusec-devkit/pkg/utils/logger"
 
-	"github.com/ZupIT/horusec/internal/helpers/messages"
+	"github.com/aledj02/horusx/internal/helpers/messages"
 )
 
 // GetPathFromFilename return the relative file path inside basePath

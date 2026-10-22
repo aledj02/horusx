@@ -21,7 +21,7 @@ import (
 
 	engine "github.com/ZupIT/horusec-engine"
 
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 func TestRulesVulnerableCode(t *testing.T) {

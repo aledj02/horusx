@@ -16,9 +16,9 @@
 URL_DOWNLOAD=""
 VERSION_DOWNLOAD=$1
 # Contains the value of the latest stable release launched by horusx cli.
-LATEST=$(curl -sL https://api.github.com/repos/ZupIT/horusx/releases/latest | jq -r ".tag_name")
-LATEST_RC=$(git ls-remote --exit-code --sort='v:refname' --tags https://github.com/ZupIT/horusec.git --ref 'v*.*.*-rc.*' | cut --delimiter='/' --fields=3 | tail --lines=1 | sed 's/.*\///; s/\^{}//')
-LATEST_BETA=$(git ls-remote --exit-code --sort='v:refname' --tags https://github.com/ZupIT/horusec.git --ref 'v*.*.*-beta.*' | cut --delimiter='/' --fields=3 | tail --lines=1 | sed 's/.*\///; s/\^{}//')
+LATEST=$(curl -sL https://api.github.com/repos/aledj02/horusx/releases/latest | jq -r ".tag_name")
+LATEST_RC=$(git ls-remote --exit-code --sort='v:refname' --tags https://github.com/aledj02/horusx.git --ref 'v*.*.*-rc.*' | cut --delimiter='/' --fields=3 | tail --lines=1 | sed 's/.*\///; s/\^{}//')
+LATEST_BETA=$(git ls-remote --exit-code --sort='v:refname' --tags https://github.com/aledj02/horusx.git --ref 'v*.*.*-beta.*' | cut --delimiter='/' --fields=3 | tail --lines=1 | sed 's/.*\///; s/\^{}//')
 IS_NEW_URL=false
 
 regex='^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
@@ -39,7 +39,7 @@ horusxSetVersion() {
   elif echo $VERSION_DOWNLOAD | grep -Eq $regex; then
     echo "Version set to $VERSION_DOWNLOAD"
   else
-    echo "input not match required params: 'latest-rc' 'latest-beta' 'latest' or a semantic version compliant, check https://github.com/ZupIT/horusec/releases"
+    echo "input not match required params: 'latest-rc' 'latest-beta' 'latest' or a semantic version compliant, check https://github.com/aledj02/horusx/releases"
     exit 1
   fi
 }
@@ -48,21 +48,21 @@ horusxIdentifyOSLatest() {
   if [ "$(uname)" = "Linux" ]; then
     if [ "$(uname -m)" = "x86_64" ]; then
       echo "Installing Horusx for Linux amd64"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/${VERSION_DOWNLOAD}/download/horusx_linux_amd64"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/${VERSION_DOWNLOAD}/download/horusx_linux_amd64"
     elif [ "$(uname -m)" = "aarch64" ]; then
       echo "Installing Horusx for Linux arm64"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/${VERSION_DOWNLOAD}/download/horusx_linux_arm64"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/${VERSION_DOWNLOAD}/download/horusx_linux_arm64"
     else
       echo "Installing Horusx for Linux x86"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/${VERSION_DOWNLOAD}/download/horusx_linux_x86"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/${VERSION_DOWNLOAD}/download/horusx_linux_x86"
     fi
   elif [ "$(uname)" = "Darwin" ]; then
     if [ "$(uname -m)" = "x86_64" ]; then
       echo "Installing Horusx for Mac amd64"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/${VERSION_DOWNLOAD}/download/horusx_mac_amd64"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/${VERSION_DOWNLOAD}/download/horusx_mac_amd64"
     elif [ "$(uname -m)" = "arm64" ]; then
       echo "Installing Horusx for Mac arm64"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/${VERSION_DOWNLOAD}/download/horusx_mac_arm64"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/${VERSION_DOWNLOAD}/download/horusx_mac_arm64"
     else
       echo "Not enable Horusx to Mac x86"
       exit 1
@@ -78,28 +78,28 @@ horusxIdentifyOSWithVersion() {
     if [ "$(uname -m)" = "x86_64" ]; then
       echo "Installing Horusx for Linux amd64"
       if [ $IS_NEW_URL = true ]; then
-        URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_linux_amd64"
+        URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_linux_amd64"
       else
-        URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_linux_x64"
+        URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_linux_x64"
       fi
     elif [ "$(uname -m)" = "aarch64" ]; then
       echo "Installing Horusx for Linux arm64"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_linux_arm64"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_linux_arm64"
     else
       echo "Installing Horusx for Linux x86"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_linux_x86"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_linux_x86"
     fi
   elif [ "$(uname)" = "Darwin" ]; then
     if [ "$(uname -m)" = "x86_64" ]; then
       echo "Installing Horusx for Mac amd64"
       if [ $IS_NEW_URL = true ]; then
-        URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_mac_amd64"
+        URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_mac_amd64"
       else
-        URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_mac_x64"
+        URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_mac_x64"
       fi
     elif [ "$(uname -m)" = "x86_64" ]; then
       echo "Installing Horusx for amr64"
-      URL_DOWNLOAD="https://github.com/ZupIT/horusec/releases/download/${VERSION_DOWNLOAD}/horusx_mac_arm64"
+      URL_DOWNLOAD="https://github.com/aledj02/horusx/releases/download/${VERSION_DOWNLOAD}/horusx_mac_arm64"
     else
       echo "Not enable Horusx to Mac x86"
       exit 1

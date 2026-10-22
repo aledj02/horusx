@@ -25,11 +25,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	cliConfig "github.com/ZupIT/horusec/config"
-	"github.com/ZupIT/horusec/internal/entities/toolsconfig"
-	"github.com/ZupIT/horusec/internal/entities/workdir"
-	"github.com/ZupIT/horusec/internal/services/formatters"
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	cliConfig "github.com/aledj02/horusx/config"
+	"github.com/aledj02/horusx/internal/entities/toolsconfig"
+	"github.com/aledj02/horusx/internal/entities/workdir"
+	"github.com/aledj02/horusx/internal/services/formatters"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 func getAnalysis() *entitiesAnalysis.Analysis {
@@ -51,6 +51,11 @@ func TestNewFormatter(t *testing.T) {
 	service := formatters.NewFormatterService(nil, nil, config)
 
 	assert.IsType(t, NewFormatter(service), &Formatter{})
+}
+
+func TestBanditCommandDisablesProgressOutput(t *testing.T) {
+	assert.Contains(t, CMD, "bandit -q -r . -f json -o results-ANALYSISID.json")
+	assert.Contains(t, CMD, "> /dev/null 2> /dev/null")
 }
 
 func TestFormatter_StartSafety(t *testing.T) {

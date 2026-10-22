@@ -20,7 +20,7 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 
-	"github.com/ZupIT/horusec/internal/utils/testutil"
+	"github.com/aledj02/horusx/internal/utils/testutil"
 )
 
 var _ = Describe("Run horusx CLI with version argument", func() {

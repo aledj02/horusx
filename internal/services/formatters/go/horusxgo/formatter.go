@@ -17,8 +17,8 @@ package horusxgo
 import (
 	"github.com/ZupIT/horusec-devkit/pkg/enums/languages"
 
-	goengine "github.com/ZupIT/horusec/internal/services/engines/go"
-	"github.com/ZupIT/horusec/internal/services/formatters"
+	goengine "github.com/aledj02/horusx/internal/services/engines/go"
+	"github.com/aledj02/horusx/internal/services/formatters"
 )
 
 // NewFormatter returns a DefaultFormatter for Go that runs the user's
