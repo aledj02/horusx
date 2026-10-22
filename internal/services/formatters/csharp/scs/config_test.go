@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ZupIT/horusec/internal/services/formatters/csharp/scs"
+	"github.com/aledj02/horusx/internal/services/formatters/csharp/scs"
 )
 
 func TestCommandUsesPOSIXOutputRedirection(t *testing.T) {
