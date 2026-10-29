@@ -535,7 +535,7 @@ func NewNoUseFridaServer() *text.Rule {
 	}
 }
 
-// NewNoUseSSLPinningLib not really sure about this vulnerability, needs to be revised in the future.
+// Deprecated: SSL pinning is a defensive control and must not be reported as a vulnerability.
 func NewNoUseSSLPinningLib() *text.Rule {
 	return &text.Rule{
 		Metadata: engine.Metadata{
@@ -1849,7 +1849,7 @@ func NewLDAPAuthenticatedAnalyzeYourCode() *text.Rule {
 	}
 }
 
-// Deprecated: the javax package is deprecated in the Jakarta EE newest version. We'll use jakarta package.
+// Deprecated: a main method is normal in Spring Boot and other web applications.
 func NewWebApplicationsShouldHotHaveAMainMethod() *text.Rule {
 	return &text.Rule{
 		Metadata: engine.Metadata{
@@ -2215,15 +2215,15 @@ func NewInsecureRandomNumberGenerator() *text.Rule {
 			ID:            "HS-JAVA-114",
 			SafeExample:   SampleSafeHSJAVA114,
 			UnsafeExample: SampleVulnerableHSJAVA114,
-			Name:          "Insecure Random Number Generator",
-			Description:   "The App uses an insecure Random Number Generator. For more information checkout the CWE-330 (https://cwe.mitre.org/data/definitions/330.html) advisory.",
+			Name:          "Insecure Random Number Generator Used For Security",
+			Description:   "java.util.Random is not suitable for security-sensitive values such as tokens, session identifiers, or keys. Use java.security.SecureRandom instead. For more information checkout the CWE-330 (https://cwe.mitre.org/data/definitions/330.html) advisory.",
 			Severity:      severities.High.ToString(),
 			Confidence:    confidence.Low.ToString(),
 		},
-		Type: text.Regular,
+		Type: text.AndMatch,
 		Expressions: []*regexp.Regexp{
-			regexp.MustCompile(`java\.util\.Random`),
-			regexp.MustCompile(`scala\.util\.Random`),
+			regexp.MustCompile(`java\.util\.Random|scala\.util\.Random`),
+			regexp.MustCompile(`(?i)(token|secret|password|credential|session|nonce|key|salt|auth)`),
 		},
 	}
 }
@@ -2234,14 +2234,15 @@ func NewNoDefaultHash() *text.Rule {
 			ID:            "HS-JAVA-115",
 			SafeExample:   SampleSafeHSJAVA115,
 			UnsafeExample: SampleVulnerableHSJAVA115,
-			Name:          "No Default  Hash",
-			Description:   `This App uses  Hash Code. It"s a weak hash function and should never be used in Secure Crypto Implementation. For more information checkout the CWE-327 (https://cwe.mitre.org/data/definitions/327.html) advisory.`,
+			Name:          "Hash Code Used For Security",
+			Description:   `Object.hashCode() is not a cryptographic hash and must not be used for passwords, tokens, signatures, or other security-sensitive values. For more information checkout the CWE-327 (https://cwe.mitre.org/data/definitions/327.html) advisory.`,
 			Severity:      severities.High.ToString(),
 			Confidence:    confidence.Low.ToString(),
 		},
-		Type: text.Regular,
+		Type: text.AndMatch,
 		Expressions: []*regexp.Regexp{
-			regexp.MustCompile(`.hashCode()`),
+			regexp.MustCompile(`\.hashCode\(\)`),
+			regexp.MustCompile(`(?i)(token|secret|password|credential|session|signature)`),
 		},
 	}
 }
@@ -2509,9 +2510,10 @@ func NewHostnameVerifierThatAcceptAnySignedCertificates() *text.Rule {
 			Severity:      severities.High.ToString(),
 			Confidence:    confidence.Low.ToString(),
 		},
-		Type: text.Regular,
+		Type: text.AndMatch,
 		Expressions: []*regexp.Regexp{
 			regexp.MustCompile(`implements\sHostnameVerifier`),
+			regexp.MustCompile(`(?s)verify\s*\([^)]*\)\s*\{[^}]*return\s+true\s*;`),
 		},
 	}
 }
@@ -2811,13 +2813,13 @@ func NewRequestMappingMethodsNotPublic() *text.Rule {
 			SafeExample:   SampleSafeHSJAVA147,
 			UnsafeExample: SampleVulnerableHSJAVA147,
 			Name:          "@RequestMapping methods should be public",
-			Description:   "A method with a @RequestMapping annotation part of a class annotated with @Controller (directly or indirectly through a meta annotation - @RestController from Spring Boot is a good example) will be called to handle matching web requests. That will happen even if the method is private, because Spring invokes such methods via reflection, without checking visibility. For more information checkout the OWASAP:A6 (https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A6-Security_Misconfiguration) advisory",
+			Description:   "A private method annotated with @RequestMapping can still be invoked by Spring through reflection. Keep request-mapped handler methods public. For more information checkout the OWASAP:A6 (https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A6-Security_Misconfiguration) advisory",
 			Severity:      severities.High.ToString(),
 			Confidence:    confidence.Low.ToString(),
 		},
 		Type: text.Regular,
 		Expressions: []*regexp.Regexp{
-			regexp.MustCompile(`RequestMapping\((.*\n)(.*)private`),
+			regexp.MustCompile(`@RequestMapping\s*\([^)]*\)\s*\n\s*private\s+`),
 		},
 	}
 }

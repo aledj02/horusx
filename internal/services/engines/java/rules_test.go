@@ -348,22 +348,6 @@ func TestRulesVulnerableCode(t *testing.T) {
 			},
 		},
 		{
-			Name:     "HS-JAVA-28",
-			Rule:     NewNoUseSSLPinningLib(),
-			Src:      SampleVulnerableHSJAVA28,
-			Filename: filepath.Join(tempDir, fmt.Sprintf("%s%s", "HS-JAVA-28", ".test")),
-			Findings: []engine.Finding{
-				{
-					CodeSample: "package org.thoughtcrime.ssl.pinning;",
-					SourceLocation: engine.Location{
-						Filename: filepath.Join(tempDir, fmt.Sprintf("%s%s", "HS-JAVA-28", ".test")),
-						Line:     2,
-						Column:   8,
-					},
-				},
-			},
-		},
-		{
 			Name:     "HS-JAVA-111",
 			Rule:     NewWeakHash(),
 			Src:      SampleVulnerableHSJAVA111,
@@ -502,7 +486,7 @@ func TestRulesVulnerableCode(t *testing.T) {
 					SourceLocation: engine.Location{
 						Filename: filepath.Join(tempDir, fmt.Sprintf("%s%s", "HS-JAVA-147", ".test")),
 						Line:     3,
-						Column:   5,
+						Column:   4,
 					},
 				},
 			},
@@ -928,12 +912,6 @@ func TestRulesSafeCode(t *testing.T) {
 			Rule:     NewSQLInjectionWithSqlUtil(),
 			Src:      SampleSafeHSJAVA26,
 			Filename: filepath.Join(tempDir, fmt.Sprintf("%s%s", "HS-JAVA-26", ".test")),
-		},
-		{
-			Name:     "HS-JAVA-28",
-			Rule:     NewNoUseSSLPinningLib(),
-			Src:      SampleSafeHSJAVA28,
-			Filename: filepath.Join(tempDir, fmt.Sprintf("%s%s", "HS-JAVA-28", ".test")),
 		},
 		{
 			Name:     "HS-JAVA-111",

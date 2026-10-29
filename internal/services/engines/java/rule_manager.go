@@ -45,7 +45,7 @@ func Rules() []engine.Rule {
 		NewNoUseWebviewIgnoringSSL(),
 		NewSQLInjectionWithSqlUtil(),
 		NewNoUseFridaServer(),
-		NewNoUseSSLPinningLib(),
+		// NewNoUseSSLPinningLib(), // SSL pinning is a defensive control, not a vulnerability.
 		NewNoUseDexGuardAppDebuggable(),
 		NewNoUseDexGuardDebuggerConnected(),
 		NewNoUseDexGuardEmulatorDetection(),
@@ -129,15 +129,15 @@ func Rules() []engine.Rule {
 		NewOpenSAML2ShouldBeConfiguredToPreventAuthenticationBypass(),
 		NewHttpServletRequestGetRequestedSessionIdShouldNotBeUsed(),
 		NewJakartaAndHttpServletRequestGetRequestedSessionIdShouldNotBeUsed(),
-		NewWebApplicationsShouldHotHaveAMainMethod(),
-		NewJakartaAndWebApplicationsShouldHotHaveAMainMethod(),
+		// NewWebApplicationsShouldHotHaveAMainMethod(), // Spring Boot applications legitimately have main.
+		// NewJakartaAndWebApplicationsShouldHotHaveAMainMethod(),
 
 		// Or Rules
 		NewFileIsWorldReadable(),
 		NewFileIsWorldWritable(),
-		NewNoWriteExternalContent(),
+		// NewNoWriteExternalContent(), // Storage API usage alone does not prove exposure.
 		NewNoUseIVsWeak(),
-		NewRootDetectionCapabilities(),
+		// NewRootDetectionCapabilities(), // Root detection is a defensive capability.
 		NewJARURLConnection(),
 		// NewSetOrReadClipboardData(),
 		// NewMessageDigest(),
@@ -146,29 +146,29 @@ func Rules() []engine.Rule {
 		NewVulnerableRemoteCodeExecutionSpringFramework(),
 
 		// Regular rules
-		NewHiddenElements(),
+		// NewHiddenElements(), // Hidden UI elements are normal application behavior.
 		NewWeakCypherBlockMode(),
 		NewPossibleFileWithVulnerabilityWhenOpen(),
 		NewWeakHash(),
-		NewSensitiveInformationNotEncrypted(),
+		// NewSensitiveInformationNotEncrypted(), // MODE_PRIVATE does not imply unencrypted data.
 		NewInsecureRandomNumberGenerator(),
 		NewNoDefaultHash(),
-		NewLayoutParamsFlagSecure(),
-		NewNoUseSQLCipher(),
-		NewPreventTapJackingAttacks(),
-		NewPreventWriteSensitiveInformationInTmpFile(),
-		NewGetWindowFlagSecure(),
-		NewLoadingNativeCode(),
+		// NewLayoutParamsFlagSecure(), // FLAG_SECURE is a defensive control.
+		// NewNoUseSQLCipher(), // getWritableDatabase does not prove missing encryption.
+		// NewPreventTapJackingAttacks(), // This setting is itself defensive.
+		// NewPreventWriteSensitiveInformationInTmpFile(), // Temp-file creation alone is benign.
+		// NewGetWindowFlagSecure(), // FLAG_SECURE is a defensive control.
+		// NewLoadingNativeCode(), // JNI loading is normal and not unsafe by itself.
 		NewDynamicClassAndDexloading(),
-		NewCryptoImport(),
-		NewStartingService(),
-		NewSendingBroadcast(),
-		NewLocalFileOperations(),
-		NewInterProcessCommunication(),
+		// NewCryptoImport(), // Importing crypto libraries is not a vulnerability.
+		// NewStartingService(), // Service APIs require permission/export analysis.
+		// NewSendingBroadcast(), // Broadcast APIs require permission/data-flow analysis.
+		// NewLocalFileOperations(), // Local I/O APIs are normal application behavior.
+		// NewInterProcessCommunication(), // IPC requires permission/export analysis.
 		NewURLRewritingMethod(),
 		NewOverlyPermissiveCORSPolicy(),
 		NewHostnameVerifierThatAcceptAnySignedCertificates(),
-		NewDefaultHttpClient(),
+		// NewDefaultHttpClient(), // The old pattern matched the recommended client.
 		NewWeakSSLContext(),
 		NewSQLInjection(),
 		NewDisablingHTMLEscaping(),
